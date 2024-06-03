@@ -39,7 +39,10 @@
                         <label for="area" class="block">Area</label>
                         <select name="area" id="area" required
                             class="w-full p-2 border border-gray-300 rounded appearance-none text-black">
-                            <option selected>Area 1</option>
+                            @foreach ($areas as $area)
+                                <option value="{{ $area->number }}">{{ str_pad($area->number, 3, '0', STR_PAD_LEFT) }}:
+                                    {{ $area->name }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="grid gap-1 w-full">

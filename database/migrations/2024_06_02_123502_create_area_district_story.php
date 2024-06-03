@@ -14,6 +14,7 @@ return new class () extends Migration {
             $table->id();
             $table->unsignedInteger('number')->unique();
             $table->string('name');
+            $table->string('website');
         });
 
         Schema::create('districts', function (Blueprint $table) {
@@ -50,10 +51,10 @@ return new class () extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('areas');
-        Schema::dropIfExists('districts');
-        Schema::dropIfExists('stories');
         Schema::dropIfExists('buttons');
+        Schema::dropIfExists('stories');
+        Schema::dropIfExists('districts');
+        Schema::dropIfExists('areas');
 
     }
 };
