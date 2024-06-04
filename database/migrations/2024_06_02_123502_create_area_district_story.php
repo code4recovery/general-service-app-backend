@@ -25,6 +25,11 @@ return new class () extends Migration {
             $table->timestamps();
         });
 
+        Schema::create('district_user', function (Blueprint $table) {
+            $table->foreignId('district_id')->constrained();
+            $table->foreignId('user_id')->constrained();
+        });
+
         Schema::create('stories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('area_id')->nullable()->constrained();
@@ -53,6 +58,7 @@ return new class () extends Migration {
     {
         Schema::dropIfExists('buttons');
         Schema::dropIfExists('stories');
+        Schema::dropIfExists('district_user');
         Schema::dropIfExists('districts');
         Schema::dropIfExists('areas');
 
