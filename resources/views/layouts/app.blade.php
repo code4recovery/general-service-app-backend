@@ -34,18 +34,39 @@
                         <h1>General Service App</h1>
                     </a>
                 </div>
-                <div class="flex gap-4 items-center">
+                <div class="flex gap-5 items-center pr-3">
 
-                    @if (!Request::is('register'))
-                        <a href="/register"
-                            class="bg-blue-600 hover:bg-blue-700 py-2 px-6 rounded font-semibold mr-3 text-white">Register</a>
+                    @if (Auth::check())
+                        @if (!Request::is('home'))
+                            <a href="/home"
+                                class="bg-gray-400 hover:bg-gray-500 py-2 px-6 rounded font-semibold text-gray-900">
+                                Home
+                            </a>
+                        @endif
+
+                        <a href="/logout"
+                            class="bg-gray-400 hover:bg-gray-500 py-2 px-6 rounded font-semibold text-gray-900">
+                            Log out
+                        </a>
+                    @else
+                        <a href="/login"
+                            class="bg-gray-400 hover:bg-gray-500 py-2 px-6 rounded font-semibold text-gray-900">
+                            Log in
+                        </a>
+
+                        @if (!Request::is('register'))
+                            <a href="/register"
+                                class="bg-blue-600 hover:bg-blue-700 py-2 px-6 rounded font-semibold text-white">
+                                Register
+                            </a>
+                        @endif
                     @endif
                 </div>
             </div>
         </div>
     </header>
 
-    <main class="flex-grow">
+    <main class="flex-grow @yield('main-class')">
 
         @yield('content')
 

@@ -22,6 +22,7 @@ return new class () extends Migration {
             $table->foreignId('area_id')->constrained();
             $table->unsignedInteger('number');
             $table->string('name');
+            $table->string('website')->nullable();
             $table->timestamps();
         });
 
@@ -47,8 +48,6 @@ return new class () extends Migration {
             $table->enum('style', ['primary', 'secondary']);
             $table->timestamps();
         });
-
-
     }
 
     /**
@@ -61,6 +60,5 @@ return new class () extends Migration {
         Schema::dropIfExists('district_user');
         Schema::dropIfExists('districts');
         Schema::dropIfExists('areas');
-
     }
 };
