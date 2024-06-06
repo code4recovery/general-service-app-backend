@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\StoryController;
 use App\Http\Controllers\UserController;
 use App\Models\Area;
 use App\Models\District;
@@ -9,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     $districts = District::with('area')->get();
-    return view('home', ['districts' => $districts]);
+    return view('index', ['districts' => $districts]);
 });
 
 Route::view('/privacy', 'privacy');
@@ -31,18 +32,9 @@ Route::post('/register', [RegistrationController::class, 'store']);
 # Authenticated Routes
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/district/{areaId}/{districtNumber}', function () {
-        $user = auth()->user()->with('districts', 'districts.stories', 'districts.area')->first();
-        $district = $user->districts->where(function ($district) {
-            return $district->area_id == request('areaId') && $district->number == request('districtNumber');
-        })->first();
-
-        if (!$district) {
-            return redirect('/');
-        }
-
-        return view('district', ['district' => $district]);
-    });
+    Route::get('/stories/{areaId}/{districtNumber}', [StoryController::class, 'index']);
+    Route::get('/stories/{areaId}/{districtNumber}/create', [StoryController::class, 'create']);
+    Route::post('/stories/{areaId}/{districtNumber}', [StoryController::class, 'store']);
 });
 
 

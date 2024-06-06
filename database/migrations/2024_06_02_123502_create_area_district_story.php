@@ -36,6 +36,9 @@ return new class () extends Migration {
             $table->foreignId('district_id')->nullable()->constrained();
             $table->string('title');
             $table->string('description');
+            $table->date('effective_at');
+            $table->date('expire_at');
+            $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });
 

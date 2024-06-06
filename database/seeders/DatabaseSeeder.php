@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Support\Facades\DB;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -514,6 +515,24 @@ class DatabaseSeeder extends Seeder
                 "name" => "Southeast Nevada",
                 "website" => "http://www.area100aa.org"
             ]
-    ]);
+        ]);
+
+        DB::table('districts')->insert([
+            'area_id' => 6,
+            'number' => 6,
+            'name' => 'San Francisco',
+            'website' => 'https://sfgeneralservice.org',
+        ]);
+
+        DB::table('users')->insert([
+            'name' => env('ADMIN_NAME'),
+            'email' => env('ADMIN_EMAIL'),
+            'password' => Hash::make(env('ADMIN_PASSWORD')),
+        ]);
+
+        DB::table('district_user')->insert([
+            'district_id' => 1,
+            'user_id' => 1,
+        ]);
     }
 }
