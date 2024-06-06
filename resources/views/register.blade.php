@@ -15,7 +15,7 @@
 
         @if (session('success'))
             <div class="bg-green-200 dark:bg-green-700 border-l-6 border-green-900 px-4 py-2 rounded">
-                {{ session('status') }}
+                {{ session('success') }}
             </div>
         @else
             @if ($errors->register->any())

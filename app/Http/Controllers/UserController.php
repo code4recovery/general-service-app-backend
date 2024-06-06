@@ -16,7 +16,8 @@ class UserController extends Controller
         ]);
 
         if (Auth::attempt($credentials, true)) {
-            return redirect('/home');
+            $district = Auth::user()->districts()->first();
+            return redirect('/district/' . $district->area_id . '/' . $district->number);
         }
 
         return back()->with('error', 'Invalid credentials');

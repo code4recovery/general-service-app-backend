@@ -9,12 +9,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     $districts = District::with('area')->get();
-    return view('welcome', ['districts' => $districts]);
+    return view('home', ['districts' => $districts]);
 });
 
 Route::view('/privacy', 'privacy');
 
-Route::view('/login', 'login');
+Route::view('/login', 'login')->name('login');
 
 Route::post('/login', [UserController::class, 'login']);
 
@@ -31,9 +31,17 @@ Route::post('/register', [RegistrationController::class, 'store']);
 # Authenticated Routes
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/home', function () {
-        $user = auth()->user()->with('districts', 'districts.stories')->first();
-        return view('home', ['user' => $user]);
+    Route::get('/district/{areaId}/{districtNumber}', function () {
+        $user = auth()->user()->with('districts', 'districts.stories', 'districts.area')->first();
+        $district = $user->districts->where(function ($district) {
+            return $district->area_id == request('areaId') && $district->number == request('districtNumber');
+        })->first();
+
+        if (!$district) {
+            return redirect('/');
+        }
+
+        return view('district', ['district' => $district]);
     });
 });
 

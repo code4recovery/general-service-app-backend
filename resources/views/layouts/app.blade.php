@@ -9,6 +9,8 @@
     <meta name="description" content="@yield('description')">
 
     @vite('resources/css/app.css')
+
+    <script src="//unpkg.com/alpinejs" defer></script>
 </head>
 
 <body class="font-sans antialiased bg-gray-200 dark:bg-gray-700 dark:text-white min-h-screen flex flex-col gap-6">
@@ -34,33 +36,53 @@
                         <h1>General Service App</h1>
                     </a>
                 </div>
-                <div class="flex gap-5 items-center pr-3">
+                <div class="flex gap-5 items-center">
 
-                    @if (Auth::check())
-                        @if (!Request::is('home'))
-                            <a href="/home"
-                                class="bg-gray-400 hover:bg-gray-500 py-2 px-6 rounded font-semibold text-gray-900">
-                                Home
+                    @auth
+                        <div x-data="{ isOpen: false }" class="relative">
+                            <button type="button" @click="isOpen = !isOpen"
+                                class="bg-gray-300 hover:bg-gray-400 dark:bg-gray-400 dark:hover:bg-white py-2 px-6 rounded font-semibold text-gray-900">
+                                <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                    class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                </svg>
+                            </button>
+
+                            <div x-show="isOpen" x-cloak x-transition:enter="transition ease-out duration-100 transform"
+                                x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+                                x-transition:leave="transition ease-in duration-75 transform"
+                                x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
+                                class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg">
+                                <div class="rounded bg-white text-black shadow-xs">
+                                    @foreach (auth()->user()->districts as $district)
+                                        <a href="/district/{{ $district->area_id }}/{{ $district->number }}"
+                                            class="block p-3 border-b">
+                                            {{ $district->name }}
+                                        </a>
+                                    @endforeach
+                                    <a href="/logout" class="block p-3">
+                                        Log out
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    @endauth
+
+                    @guest
+                        @if (!Request::is('login'))
+                            <a href="/login"
+                                class="bg-gray-300 hover:bg-gray-400 dark:bg-gray-400 dark:hover:bg-white py-2 px-6 rounded font-semibold text-gray-900">
+                                Log in
                             </a>
                         @endif
-
-                        <a href="/logout"
-                            class="bg-gray-400 hover:bg-gray-500 py-2 px-6 rounded font-semibold text-gray-900">
-                            Log out
-                        </a>
-                    @else
-                        <a href="/login"
-                            class="bg-gray-400 hover:bg-gray-500 py-2 px-6 rounded font-semibold text-gray-900">
-                            Log in
-                        </a>
 
                         @if (!Request::is('register'))
                             <a href="/register"
-                                class="bg-blue-600 hover:bg-blue-700 py-2 px-6 rounded font-semibold text-white">
+                                class="bg-gray-300 hover:bg-gray-400 dark:bg-gray-400 dark:hover:bg-white py-2 px-6 rounded font-semibold text-gray-900">
                                 Register
                             </a>
                         @endif
-                    @endif
+                    @endguest
                 </div>
             </div>
         </div>

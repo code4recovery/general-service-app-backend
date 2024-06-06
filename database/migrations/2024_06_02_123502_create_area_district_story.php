@@ -12,7 +12,6 @@ return new class () extends Migration {
     {
         Schema::create('areas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('number')->unique();
             $table->string('name');
             $table->string('website');
         });
