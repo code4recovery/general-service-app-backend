@@ -39,8 +39,8 @@
             <ul class="list-disc pl-5 pt-3">
                 @foreach ($districts as $district)
                     <li>
-                        Area {{ str_pad($district->area_id, 2, '0', STR_PAD_LEFT) }} -
-                        District {{ str_pad($district->number, 2, '0', STR_PAD_LEFT) }}:
+                        Area {{ $district->area->number() }} -
+                        District {{ $district->number() }}:
                         {{ $district->name }}
                     </li>
                 @endforeach

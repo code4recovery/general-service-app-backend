@@ -55,8 +55,9 @@
                                 class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg">
                                 <div class="rounded bg-white text-black shadow-xs">
                                     @foreach (auth()->user()->districts as $district)
-                                        <a href="/district/{{ $district->area_id }}/{{ $district->number }}"
+                                        <a href="/stories/{{ $district->area_id }}/{{ $district->number }}"
                                             class="block p-3 border-b">
+                                            District {{ $district->number() }}:
                                             {{ $district->name }}
                                         </a>
                                     @endforeach

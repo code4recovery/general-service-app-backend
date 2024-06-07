@@ -15,15 +15,7 @@
             </div>
         @endif
 
-        @if ($errors->login->any())
-            <div class="bg-red-200 dark:bg-red-700 border-l-6 border-red-900 px-4 py-2 rounded">
-                <ul class="list-disc list-inside">
-                    @foreach ($errors->login->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+        @include('common.errors')
 
         <form class="grid gap-4 bg-white dark:bg-gray-800 rounded-lg shadow p-8" method="post">
             @csrf
@@ -33,8 +25,8 @@
             <fieldset class="grid gap-4">
                 <div class="grid gap-1 w-full">
                     <label for="email" class="block">Email</label>
-                    <input type="email" name="email" id="email"
-                        class="w-full border p-2 rounded bg-white text-black" value="{{ old('email') }}" required>
+                    <input type="email" name="email" id="email" class="w-full border p-2 rounded bg-white text-black"
+                        value="{{ old('email') }}" required>
                 </div>
 
                 <div class="grid gap-1 w-full">

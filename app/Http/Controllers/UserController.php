@@ -10,7 +10,7 @@ class UserController extends Controller
 {
     public function login(Request $request)
     {
-        $credentials = $request->validateWithBag('login', [
+        $credentials = $request->validate([
             'email' => ['required', 'email', 'max:255'],
             'password' => ['required', 'max:255'],
         ]);

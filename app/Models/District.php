@@ -16,12 +16,18 @@ class District extends Model
         'area_id',
         'number',
         'name',
-        'website'
+        'website',
+        'timezone',
     ];
 
     public function area(): BelongsTo
     {
         return $this->belongsTo(Area::class);
+    }
+
+    public function number(): string
+    {
+        return str_pad($this->number, 2, '0', STR_PAD_LEFT);
     }
 
     public function stories(): HasMany

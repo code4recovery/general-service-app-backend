@@ -22,6 +22,7 @@ return new class () extends Migration {
             $table->unsignedInteger('number');
             $table->string('name');
             $table->string('website')->nullable();
+            $table->string('timezone')->nullable();
             $table->timestamps();
         });
 

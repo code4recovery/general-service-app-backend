@@ -18,17 +18,10 @@
                 {{ session('success') }}
             </div>
         @else
-            @if ($errors->register->any())
-                <div class="bg-red-200 dark:bg-red-700 border-l-6 border-red-900 px-4 py-2 rounded">
-                    <ul class="list-disc list-inside">
-                        @foreach ($errors->register->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-            <form class="grid gap-12 mt-5" method="post">
+            @include('common.errors')
+            <form class="grid gap-12 mt-5" method="post" x-data="{ timezone: Intl.DateTimeFormat().resolvedOptions().timeZone }">
                 @csrf
+                <input type="hidden" name="timezone" :value="timezone">
                 <fieldset class="grid gap-5 border-t pt-4 border-gray-500">
                     <legend class="px-2 mx-4">About You</legend>
                     <p class="text-sm">
@@ -74,7 +67,7 @@
                                 class="w-full p-2 border border-gray-300 rounded appearance-none text-black">
                                 @foreach ($areas as $area)
                                     <option value="{{ $area->id }}" {{ old('area') == $area->id ? 'selected' : '' }}>
-                                        {{ str_pad($area->number, 3, '0', STR_PAD_LEFT) }}:
+                                        {{ $area->number() }}:
                                         {{ $area->name }}
                                     </option>
                                 @endforeach

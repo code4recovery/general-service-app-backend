@@ -16,7 +16,7 @@ class RegistrationController extends Controller
 
         // todo check if the district already exists
 
-        $validated = $request->validateWithBag('register', [
+        $validated = $request->validate([
             'name' => ['required', 'max:255'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'max:255', 'confirmed'],
@@ -25,6 +25,7 @@ class RegistrationController extends Controller
                 Rule::unique('districts', 'number')->where('area_id', $request->input('area_id'))],
             'location' => ['required'],
             'website' => ['max:255'],
+            'timezone' => ['max:255'],
         ]);
 
         // todo save the registration

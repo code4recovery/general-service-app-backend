@@ -32,7 +32,7 @@ class StoryController extends Controller
             return redirect('/');
         }
 
-        return view('story.create', ['district' => $district]);
+        return view('story.create', ['district' => $district, 'now' => now()->setTimezone($district->timezone)]);
     }
 
     public function store()
@@ -53,7 +53,7 @@ class StoryController extends Controller
             'expire_at' => ['required', 'date'],
             'buttons' => ['array'],
             'buttons.*.title' => ['max:255'],
-            'buttons.*.link' => ['max:255', 'url'],
+            'buttons.*.link' => ['max:255'],
             // 'buttons.*.style' => ['required', 'in:primary,secondary'],
         ]);
 
@@ -63,9 +63,13 @@ class StoryController extends Controller
             'effective_at' => $validated['effective_at'],
             'expire_at' => $validated['expire_at'],
             'user_id' => $user->id,
+            'style' => 'primary',
         ]);
 
         foreach ($validated['buttons'] as $button) {
+            if (empty($button['title']) || empty($button['link'])) {
+                continue;
+            }
             $story->buttons()->create($button);
         }
 

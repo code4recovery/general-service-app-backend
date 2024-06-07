@@ -10,8 +10,7 @@
 
         <div class="flex items-center justify-between w-full">
             <h1 class="text-2xl font-bold">
-                {{ str_pad($district->number, 2, '0', STR_PAD_LEFT) }}:
-                {{ $district->name }}
+                {{ $district->number() }}: {{ $district->name }}
             </h1>
             <a href="/stories/{{ $district->area_id }}/{{ $district->number }}/create"
                 class="bg-gray-300 hover:bg-gray-400 dark:bg-gray-400 dark:hover:bg-white py-2 px-6 rounded font-semibold text-gray-900">
