@@ -20,6 +20,14 @@ class Story extends Model
         'user_id',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'effective_at' => 'datetime',
+            'expire_at' => 'datetime',
+        ];
+    }
+
     public function district(): BelongsTo
     {
         return $this->belongsTo(District::class);

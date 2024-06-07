@@ -10,24 +10,42 @@
 
         <div class="flex items-center justify-between w-full">
             <h1 class="text-2xl font-bold">
-                {{ $district->number() }}: {{ $district->name }}
+                District {{ $district->number() }}: {{ $district->name }}
             </h1>
-            <a href="/stories/{{ $district->area_id }}/{{ $district->number }}/create"
-                class="bg-gray-300 hover:bg-gray-400 dark:bg-gray-400 dark:hover:bg-white py-2 px-6 rounded font-semibold text-gray-900">
-                Create
-            </a>
+            @include('common.button', [
+                'href' => "/stories/$district->area_id/$district->number/create",
+                'label' => 'Create',
+            ])
         </div>
 
         @if ($district->stories->isEmpty())
             <p>No stories yet.</p>
+        @else
+            <table>
+                <thead>
+                    <tr>
+                        <th class="w-1/4 p-3 border-b border-gray-600 text-left font-light">Title</th>
+                        <th class="w-1/4 p-3 border-b border-gray-600 text-right font-light">Effective</th>
+                        <th class="w-1/4 p-3 border-b border-gray-600 text-right font-light">Expires</th>
+                    </tr>
+                    @foreach ($district->stories as $story)
+                        <tr>
+                            <td class="w-1/4 p-3 border border-gray-600">
+                                <a href="/stories/{{ $district->area_id }}/{{ $district->number }}/{{ $story->id }}"
+                                    class="text-blue-500 dark:text-white underline">
+                                    {{ $story->title }}
+                                </a>
+                            </td>
+                            <td class="w-1/4 p-3 border border-gray-600 text-right">
+                                {{ $story->effective_at->format('M j') }}
+                            </td>
+                            <td class="w-1/4 p-3 border border-gray-600 text-right">
+                                {{ floor(abs($story->expire_at->diffInDays())) }} days from now
+                            </td>
+                        </tr>
+                    @endforeach
+            </table>
         @endif
-
-        @foreach ($district->stories as $story)
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-8">
-                <h2 class="text-xl font-bold">{{ $story->title }}</h2>
-                <p>{{ $story->content }}</p>
-            </div>
-        @endforeach
 
     </div>
 

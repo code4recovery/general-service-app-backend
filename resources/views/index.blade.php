@@ -36,15 +36,22 @@
             <h3 class="mt-4 font-bold">
                 Participating Districts
             </h3>
-            <ul class="list-disc pl-5 pt-3">
+            <ol class="list-decimal pl-5 pt-3">
                 @foreach ($districts as $district)
                     <li>
+                        @if ($district->website)
+                            <a href="{{ $district->website }}" class="text-blue-500 dark:text-white underline"
+                                target="_blank">
+                        @endif
                         Area {{ $district->area->number() }} -
                         District {{ $district->number() }}:
                         {{ $district->name }}
+                        @if ($district->website)
+                            </a>
+                        @endif
                     </li>
                 @endforeach
-            </ul>
+            </ol>
         </div>
         <div class="lg:-mr-3">
             <img src="{{ asset('screenshot.png') }}" alt="Hero" class="h-auto max-w-full">

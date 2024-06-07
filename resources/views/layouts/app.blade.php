@@ -19,8 +19,7 @@
             <div class="flex justify-between items-center">
                 <div class="flex gap-4 items-center">
                     <a href="/" class="text-2xl font-bold">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0.02 431.99 431.99"
-                            class="h-20">
+                        <svg fill="currentColor" viewBox="0 0.02 431.99 431.99" class="h-20">
                             <path
                                 d="M2034.04 5139.98v524.2c-.22 22.64.66 56.03-13.12 87.79-6.94 15.8-18.42 31.35-35.51 42.2-17.06 10.91-38.75 16.65-64.26 16.61-25.62.04-47.4-5.85-64.46-16.99-25.82-16.8-37.83-43.07-43.16-66.61-5.44-23.79-5.23-46.77-5.28-63v-549.22h225.79v25.02"
                                 transform="matrix(.13333 0 0 -.13333 0 920.64)" />
@@ -36,17 +35,14 @@
                         <h1>General Service App</h1>
                     </a>
                 </div>
-                <div class="flex gap-5 items-center">
+                <div class="flex gap-2 flex-col sm:flex-row sm:gap-5 items-stretch sm:items-center">
 
                     @auth
                         <div x-data="{ isOpen: false }" class="relative">
-                            <button type="button" @click="isOpen = !isOpen"
-                                class="bg-gray-300 hover:bg-gray-400 dark:bg-gray-400 dark:hover:bg-white py-2 px-6 rounded font-semibold text-gray-900">
-                                <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                    class="size-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                                </svg>
-                            </button>
+                            @include('common.button', [
+                                'click' => 'isOpen = !isOpen',
+                                'icon' => 'caret-down',
+                            ])
 
                             <div x-show="isOpen" x-cloak x-transition:enter="transition ease-out duration-100 transform"
                                 x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
@@ -71,17 +67,11 @@
 
                     @guest
                         @if (!Request::is('login'))
-                            <a href="/login"
-                                class="bg-gray-300 hover:bg-gray-400 dark:bg-gray-400 dark:hover:bg-white py-2 px-6 rounded font-semibold text-gray-900">
-                                Log in
-                            </a>
+                            @include('common.button', ['href' => '/login', 'label' => 'Log in'])
                         @endif
 
                         @if (!Request::is('register'))
-                            <a href="/register"
-                                class="bg-gray-300 hover:bg-gray-400 dark:bg-gray-400 dark:hover:bg-white py-2 px-6 rounded font-semibold text-gray-900">
-                                Register
-                            </a>
+                            @include('common.button', ['href' => '/register', 'label' => 'Register'])
                         @endif
                     @endguest
                 </div>

@@ -20,26 +20,25 @@
         <form class="grid gap-4 bg-white dark:bg-gray-800 rounded-lg shadow p-8" method="post">
             @csrf
 
-            <legend class="text-2xl font-bold">Login</legend>
+            <legend class="text-2xl font-bold">Log in</legend>
 
-            <fieldset class="grid gap-4">
-                <div class="grid gap-1 w-full">
-                    <label for="email" class="block">Email</label>
-                    <input type="email" name="email" id="email" class="w-full border p-2 rounded bg-white text-black"
-                        value="{{ old('email') }}" required>
-                </div>
+            <fieldset class="grid gap-4 mb-4">
+                @include('common.input', [
+                    'name' => 'email',
+                    'label' => 'Email',
+                    'type' => 'email',
+                    'required' => true,
+                ])
 
-                <div class="grid gap-1 w-full">
-                    <label for="password" class="block">Password</label>
-                    <input type="password" name="password" id="password"
-                        class="w-full border p-2 bg-white text-black rounded" required>
-                </div>
+                @include('common.input', [
+                    'name' => 'password',
+                    'label' => 'Password',
+                    'type' => 'password',
+                    'required' => true,
+                ])
             </fieldset>
 
-            <div class="mt-4">
-                <button type="submit"
-                    class="bg-blue-600 hover:bg-blue-700 py-2 px-6 rounded font-semibold text-white">Login</button>
-            </div>
+            @include('common.submit')
 
         </form>
     </div>

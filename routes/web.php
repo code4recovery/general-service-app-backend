@@ -8,10 +8,9 @@ use App\Models\District;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    $districts = District::with('area')->get();
-    return view('index', ['districts' => $districts]);
-});
+Route::view('/', 'index', [
+    'districts' => District::with('area')->orderBy('area_id')->orderBy('number')->get()
+]);
 
 Route::view('/privacy', 'privacy');
 
@@ -21,10 +20,7 @@ Route::post('/login', [UserController::class, 'login']);
 
 Route::get('/logout', [UserController::class, 'logout']);
 
-Route::get('/register', function () {
-    $areas = Area::all();
-    return view('register', ['areas' => $areas]);
-});
+Route::view('/register', 'register', ['areas' => Area::orderBy('id')->get()]);
 
 Route::post('/register', [RegistrationController::class, 'store']);
 
