@@ -94,7 +94,7 @@
                         ])
                         @include('common.input', [
                             'name' => 'website',
-                            'label' => 'District Website (optional)',
+                            'label' => 'District Website',
                             'type' => 'url',
                             'placeholder' => 'https://district.org',
                         ])

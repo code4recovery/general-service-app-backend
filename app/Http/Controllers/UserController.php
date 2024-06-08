@@ -17,7 +17,7 @@ class UserController extends Controller
 
         if (Auth::attempt($credentials, true)) {
             $district = Auth::user()->districts()->first();
-            return redirect('/stories/' . $district->area_id . '/' . $district->number);
+            return redirect()->route('district', [$district->area_id, $district->number]);
         }
 
         return back()->with('error', 'Invalid credentials');
@@ -31,7 +31,7 @@ class UserController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->route('home');
     }
 
 }

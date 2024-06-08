@@ -9,12 +9,12 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('index', [
+    return view('home', [
         'districts' => District::with('area')->orderBy('area_id')->orderBy('number')->get()
     ]);
-});
+})->name('home');
 
-Route::view('/privacy', 'privacy');
+Route::view('/privacy', 'privacy')->name('privacy');
 
 Route::view('/login', 'login')->name('login');
 
@@ -22,11 +22,11 @@ Route::post('/login', [UserController::class, 'login']);
 
 Route::get('/logout', [UserController::class, 'logout']);
 
-Route::view('/register', function () {
+Route::get('/register', function () {
     return view('register', [
         'areas' => Area::orderBy('id')->get()
     ]);
-});
+})->name('register');
 
 Route::post('/register', [RegistrationController::class, 'store']);
 
@@ -34,9 +34,11 @@ Route::post('/register', [RegistrationController::class, 'store']);
 # Authenticated Routes
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/stories/{areaId}/{districtNumber}', [StoryController::class, 'index']);
-    Route::get('/stories/{areaId}/{districtNumber}/create', [StoryController::class, 'create']);
-    Route::post('/stories/{areaId}/{districtNumber}', [StoryController::class, 'store']);
+    Route::get('/district/{areaId}/{districtNumber}', [StoryController::class, 'index'])->name('district');
+    Route::get('/create-story/{areaId}/{districtNumber}', [StoryController::class, 'create'])->name('create-story');
+    Route::post('/create-story/{areaId}/{districtNumber}', [StoryController::class, 'store']);
+    Route::get('/edit-story/{story}', [StoryController::class, 'edit'])->name('edit-story');
+    Route::post('/edit-story/{story}', [StoryController::class, 'edit']);
 });
 
 

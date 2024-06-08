@@ -31,7 +31,7 @@
                     @foreach ($district->stories as $story)
                         <tr>
                             <td class="w-1/4 p-3 border border-gray-600">
-                                <a href="/stories/{{ $district->area_id }}/{{ $district->number }}/{{ $story->id }}"
+                                <a href="{{ route('edit-story', [$story->id]) }}"
                                     class="text-blue-500 dark:text-white underline">
                                     {{ $story->title }}
                                 </a>

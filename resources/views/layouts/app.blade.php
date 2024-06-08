@@ -18,7 +18,7 @@
         <div class="container max-w-6xl mx-auto px-4 py-6">
             <div class="flex justify-between items-center">
                 <div class="flex gap-4 items-center">
-                    <a href="/" class="text-2xl font-bold">
+                    <a href="{{ route('home') }}" class="text-2xl font-bold">
                         <svg fill="currentColor" viewBox="0 0.02 431.99 431.99" class="h-20">
                             <path
                                 d="M2034.04 5139.98v524.2c-.22 22.64.66 56.03-13.12 87.79-6.94 15.8-18.42 31.35-35.51 42.2-17.06 10.91-38.75 16.65-64.26 16.61-25.62.04-47.4-5.85-64.46-16.99-25.82-16.8-37.83-43.07-43.16-66.61-5.44-23.79-5.23-46.77-5.28-63v-549.22h225.79v25.02"
@@ -51,7 +51,7 @@
                                 class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg">
                                 <div class="rounded bg-white text-black shadow-xs">
                                     @foreach (auth()->user()->districts as $district)
-                                        <a href="/stories/{{ $district->area_id }}/{{ $district->number }}"
+                                        <a href="{{ route('district', [$district->area_id, $district->number]) }}"
                                             class="block p-3 border-b">
                                             District {{ $district->number() }}:
                                             {{ $district->name }}
@@ -67,11 +67,11 @@
 
                     @guest
                         @if (!Request::is('login'))
-                            @include('common.button', ['href' => '/login', 'label' => 'Log in'])
+                            @include('common.button', ['href' => route('login'), 'label' => 'Log in'])
                         @endif
 
                         @if (!Request::is('register'))
-                            @include('common.button', ['href' => '/register', 'label' => 'Register'])
+                            @include('common.button', ['href' => route('register'), 'label' => 'Register'])
                         @endif
                     @endguest
                 </div>
@@ -87,7 +87,7 @@
 
     <footer class="pb-8 text-center text-sm">
         <p>
-            <a href="/privacy" class="text-black/70 dark:text-white/70 hover:underline">Privacy Policy</a>
+            <a href="{{ route('privacy') }}" class="text-black/70 dark:text-white/70 hover:underline">Privacy Policy</a>
         </p>
     </footer>
 </body>

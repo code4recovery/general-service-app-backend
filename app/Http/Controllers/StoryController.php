@@ -15,10 +15,10 @@ class StoryController extends Controller
         })->first();
 
         if (!$district) {
-            return redirect('/');
+            return redirect()->route('home');
         }
 
-        return view('story.index', ['district' => $district]);
+        return view('district', ['district' => $district]);
     }
 
     public function create()
@@ -29,10 +29,10 @@ class StoryController extends Controller
         })->first();
 
         if (!$district) {
-            return redirect('/');
+            return redirect()->route('home');
         }
 
-        return view('story.create', ['district' => $district, 'now' => now()->setTimezone($district->timezone)]);
+        return view('story', ['district' => $district, 'now' => now()->setTimezone($district->timezone)]);
     }
 
     public function store()
@@ -74,5 +74,23 @@ class StoryController extends Controller
         }
 
         return redirect('/stories/' . $district->area_id . '/' . $district->number);
+    }
+
+    public function edit()
+    {
+        $user = auth()->user()->with('districts', 'districts.stories', 'districts.stories.buttons', 'districts.area')->first();
+        $district = $user->districts->first();
+
+        if (!$district) {
+            return redirect()->route('home');
+        }
+
+        $story = $district->stories->where('id', request('story'))->first();
+
+        if (!$story) {
+            return redirect()->route('home');
+        }
+
+        return view('story', ['district' => $district, 'story' => $story]);
     }
 }

@@ -48,6 +48,6 @@ class RegistrationController extends Controller
 
         // todo send verification email
 
-        return redirect('/register')->with('success', 'Thank you! Please check your email for a verification message.');
+        return redirect()->route('register')->with('success', 'Thank you! Please check your email for a verification message.');
     }
 }
