@@ -38,7 +38,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/create-story/{areaId}/{districtNumber}', [StoryController::class, 'create'])->name('create-story');
     Route::post('/create-story/{areaId}/{districtNumber}', [StoryController::class, 'store']);
     Route::get('/edit-story/{story}', [StoryController::class, 'edit'])->name('edit-story');
-    Route::post('/edit-story/{story}', [StoryController::class, 'edit']);
+    Route::put('/edit-story/{story}', [StoryController::class, 'update']);
 });
 
 

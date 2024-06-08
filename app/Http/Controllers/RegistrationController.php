@@ -14,8 +14,6 @@ class RegistrationController extends Controller
     public function store(Request $request)
     {
 
-        // todo check if the district already exists
-
         $validated = $request->validate([
             'name' => ['required', 'max:255'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
@@ -28,25 +26,36 @@ class RegistrationController extends Controller
             'timezone' => ['max:255'],
         ]);
 
-        // todo save the registration
-
-        // temp save user & district
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
         ]);
 
+        // validate language (can this move to the model?)
+        $default_language = 'en';
+        $language = $request->input('language', $default_language);
+        if (!in_array($language, ['en', 'es', 'fr'])) {
+            $language = $default_language;
+        }
+
+        // validate timezone (can this move to the model?)
+        $default_timezone = 'America/New_York';
+        $timezone = $request->input('timezone', $default_timezone);
+        if (!in_array($timezone, timezone_identifiers_list())) {
+            $timezone = $default_timezone;
+        }
+
         $district = District::create([
             'area_id' => $validated['area'],
             'number' => $validated['district'],
             'name' => $validated['location'],
             'website' => $validated['website'],
+            'language' => $language,
+            'timezone' => $timezone,
         ]);
 
         $user->districts()->attach($district);
-
-        // todo send verification email
 
         return redirect()->route('register')->with('success', 'Thank you! Please check your email for a verification message.');
     }

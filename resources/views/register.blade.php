@@ -19,15 +19,16 @@
             </div>
         @else
             @include('common.errors')
-            <form class="grid gap-12 mt-5" method="post" x-data="{ timezone: Intl.DateTimeFormat().resolvedOptions().timeZone }">
+            <form class="grid gap-12 mt-5" method="post" x-data="{ timezone: Intl.DateTimeFormat().resolvedOptions().timeZone, language: navigator.language.substr(0, 2) }">
                 @csrf
                 <input type="hidden" name="timezone" :value="timezone">
+                <input type="hidden" name="language" :value="language">
                 <fieldset class="grid gap-5 border-t pt-4 border-gray-500 whitespace-nowrap">
                     <legend class="px-2 mx-4">About You</legend>
                     <p class="text-sm">
                         Personal information is kept confidential and only used to contact you about your account.
                     </p>
-                    <div class="flex gap-5 w-full">
+                    <div class="flex gap-5">
                         @include('common.input', [
                             'name' => 'name',
                             'label' => 'Your Name',
@@ -42,7 +43,7 @@
                             'required' => true,
                         ])
                     </div>
-                    <div class="flex gap-5 w-full">
+                    <div class="flex gap-5">
                         @include('common.input', [
                             'name' => 'password',
                             'label' => 'Password',
@@ -63,7 +64,7 @@
                     <p class="text-sm">
                         District information is displayed on the website and in the app.
                     </p>
-                    <div class="flex gap-5 w-full">
+                    <div class="flex gap-5">
                         <div class="grid gap-1 w-full">
                             <label for="area" class="block">Area</label>
                             <select name="area" id="area" required
@@ -84,7 +85,7 @@
                             'required' => true,
                         ])
                     </div>
-                    <div class="flex gap-5 w-full">
+                    <div class="flex gap-5">
                         @include('common.input', [
                             'name' => 'location',
                             'label' => 'District Location',

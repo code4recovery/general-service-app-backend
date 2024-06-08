@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $story ? 'Edit Story' : 'Create Story')
+@section('title', isset($story) ? 'Edit Story' : 'Create Story')
 
 @section('content')
 
@@ -17,7 +17,7 @@
                     'name' => 'title',
                     'type' => 'text',
                     'required' => true,
-                    'value' => $story['title'] ?? '',
+                    'value' => isset($story) ? $story['title'] : '',
                 ])
                 <div class="text-sm lg:pt-6">
                     This is the headline of your story.
@@ -30,11 +30,30 @@
                     'name' => 'description',
                     'type' => 'textarea',
                     'required' => true,
-                    'value' => $story['description'] ?? '',
+                    'value' => isset($story) ? $story['description'] : '',
                 ])
                 <div class="text-sm lg:pt-6">
                     This is the content of your story. This is plain text only because apps have trouble displaying
                     rich text.
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-3 lg:gap-8">
+                <div class="grid gap-1 w-full">
+                    <label for="type" class="block">Type</label>
+                    <div class="grid grid-cols-2 gap-8">
+                        @foreach (['announcement', 'event'] as $type)
+                            <label class="flex items-center gap-2">
+                                <input type="radio" name="type" value="{{ $type }}" required
+                                    @if (old('type') === $type) checked @endif />
+                                {{ ucfirst($type) }}
+                            </label>
+                        @endforeach
+                    </div>
+                </div>
+                <div class="text-sm lg:pt-6">
+                    Users can filter stories in the app by type. Announcements are for general news and updates. Events are
+                    for a specific date and time.
                 </div>
             </div>
 
@@ -44,14 +63,14 @@
                     'name' => 'effective_at',
                     'type' => 'date',
                     'required' => true,
-                    'value' => $story ? $story['effective_at']->format('Y-m-d') : $now->format('Y-m-d'),
+                    'value' => isset($story) ? $story['effective_at']->format('Y-m-d') : $now->format('Y-m-d'),
                 ])
                 @include('common.input', [
                     'label' => 'Expire Date',
                     'name' => 'expire_at',
                     'type' => 'date',
                     'required' => true,
-                    'value' => $story
+                    'value' => isset($story)
                         ? $story['expire_at']->format('Y-m-d')
                         : $now->add(2, 'months')->format('Y-m-d'),
                 ])
@@ -60,23 +79,31 @@
                 </div>
             </div>
 
-            @foreach (['1', '2', '3'] as $button)
+            @foreach ([0, 1, 2] as $button)
+                @isset($story['buttons'][$button - 1])
+                    <input type="hidden" name="buttons[{{ $button }}][id]"
+                        value="{{ $story['buttons'][$button]['id'] }}" />
+                @endisset
                 <div class="grid lg:grid-cols-4 gap-3 lg:gap-8">
                     @include('common.input', [
-                        'label' => "Button $button Label",
-                        'name' => "buttons[$button][link]",
+                        'label' => 'Button Title',
+                        'name' => "buttons[$button][title]",
                         'type' => 'text',
                         'placeholder' => 'View Flyer',
+                        'value' => $story['buttons'][$button]['title'] ?? '',
                     ])
                     @include('common.input', [
-                        'label' => "Button $button Link",
+                        'label' => 'Button Link',
                         'name' => "buttons[$button][link]",
                         'type' => 'url',
-                        'placeholder' => "https://intergroup.org/img/flyer-$button.pdf",
+                        'placeholder' => "https://district.org/img/flyer-$button.pdf",
+                        'value' => $story['buttons'][$button]['link'] ?? '',
                     ])
                     <div class="lg:col-span-2 text-sm lg:pt-6">
-                        An optional "call-to-action" button to go below your story. To be valid, a button must have
-                        both a URL and label text.
+                        @if ($loop->first)
+                            Optional “call-to-action” buttons to go below your story. Buttons need
+                            both a title and a link.
+                        @endif
                     </div>
                 </div>
             @endforeach

@@ -523,6 +523,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'San Francisco',
             'website' => 'https://sfgeneralservice.org',
             'timezone' => 'America/Los_Angeles',
+            'language' => 'en'
         ]);
 
         DB::table('users')->insert([

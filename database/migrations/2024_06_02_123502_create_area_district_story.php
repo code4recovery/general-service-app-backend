@@ -23,6 +23,7 @@ return new class () extends Migration {
             $table->string('name');
             $table->string('website')->nullable();
             $table->string('timezone')->nullable();
+            $table->enum('language', ['en', 'es', 'fr']);
             $table->timestamps();
         });
 
@@ -37,6 +38,7 @@ return new class () extends Migration {
             $table->foreignId('district_id')->nullable()->constrained();
             $table->string('title');
             $table->string('description');
+            $table->enum('type', ['announcement', 'event']);
             $table->date('effective_at');
             $table->date('expire_at');
             $table->foreignId('user_id')->constrained();
