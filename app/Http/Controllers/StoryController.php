@@ -66,7 +66,7 @@ class StoryController extends Controller
             // 'buttons.*.style' => ['required', 'in:primary,secondary'],
         ]);
 
-        $district->stories()->create([
+        $story = $district->stories()->create([
             'title' => $validated['title'],
             'description' => $validated['description'],
             'type' => $validated['type'],
