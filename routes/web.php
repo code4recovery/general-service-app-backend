@@ -39,6 +39,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/create-story/{areaId}/{districtNumber}', [StoryController::class, 'store']);
     Route::get('/edit-story/{story}', [StoryController::class, 'edit'])->name('edit-story');
     Route::put('/edit-story/{story}', [StoryController::class, 'update']);
+    Route::get('/delete-story/{story}', [StoryController::class, 'destroy'])->name('delete-story');
 });
 
 

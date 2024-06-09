@@ -13,12 +13,9 @@
         <p>Are you a District Chair? In some places this is called a DCMC (District Committee Member Chairperson) and in
             others it's a DCM (District Committee Member).</p>
 
-        @if (session('success'))
-            <div class="bg-green-200 dark:bg-green-700 border-l-6 border-green-900 px-4 py-2 rounded">
-                {{ session('success') }}
-            </div>
-        @else
-            @include('common.errors')
+        @include('common.alerts')
+
+        @if (!session('success'))
             <form class="grid gap-12 mt-5" method="post" x-data="{ timezone: Intl.DateTimeFormat().resolvedOptions().timeZone, language: navigator.language.substr(0, 2) }">
                 @csrf
                 <input type="hidden" name="timezone" :value="timezone">

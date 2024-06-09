@@ -9,13 +9,8 @@
 @section('content')
 
     <div class="container max-w-md mx-auto px-4 grid gap-4 -mt-8">
-        @if (session('error'))
-            <div class="bg-red-200 dark:bg-red-700 border-l-6 border-red-900 px-4 py-2 rounded">
-                {{ session('error') }}
-            </div>
-        @endif
 
-        @include('common.errors')
+        @include('common.alerts')
 
         <form class="grid gap-4 bg-white dark:bg-gray-800 rounded-lg shadow p-8" method="post">
             @csrf

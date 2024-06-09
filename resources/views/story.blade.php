@@ -6,10 +6,13 @@
 
     <div class="container max-w-6xl mx-auto px-4 grid gap-4">
 
-        @include('common.errors')
+        @include('common.alerts')
 
         <form method="post" class="grid gap-8">
             @csrf
+            @isset($story)
+                @method('put')
+            @endisset
 
             <div class="grid lg:grid-cols-2 gap-3 lg:gap-8">
                 @include('common.input', [
@@ -42,10 +45,10 @@
                 <div class="grid gap-1 w-full">
                     <label for="type" class="block">Type</label>
                     <div class="grid grid-cols-2 gap-8">
-                        @foreach (['announcement', 'event'] as $type)
+                        @foreach ($types as $type)
                             <label class="flex items-center gap-2">
                                 <input type="radio" name="type" value="{{ $type }}" required
-                                    @if (old('type') === $type) checked @endif />
+                                    @if (old('type', isset($story) ? $story['type'] : '') === $type) checked @endif />
                                 {{ ucfirst($type) }}
                             </label>
                         @endforeach
@@ -79,8 +82,8 @@
                 </div>
             </div>
 
-            @foreach ([0, 1, 2] as $button)
-                @isset($story['buttons'][$button - 1])
+            @foreach ($buttons as $button)
+                @isset($story['buttons'][$button])
                     <input type="hidden" name="buttons[{{ $button }}][id]"
                         value="{{ $story['buttons'][$button]['id'] }}" />
                 @endisset
@@ -101,17 +104,17 @@
                     ])
                     <div class="lg:col-span-2 text-sm lg:pt-6">
                         @if ($loop->first)
-                            Optional “call-to-action” buttons to go below your story. Buttons need
-                            both a title and a link.
+                            <p>Optional “call-to-action” buttons to go below your story. Buttons need
+                                both a title and a link.
+                            </p>
                         @endif
                     </div>
                 </div>
             @endforeach
 
             @include('common.submit', [
-                'buttons' => [
-                    route('district', [$district->area_id, $district->number]) => 'Cancel',
-                ],
+                'cancel' => route('district', [$district->area_id, $district->number]),
+                'delete' => isset($story) ? route('delete-story', [$story->id]) : null,
             ])
 
         </form>
