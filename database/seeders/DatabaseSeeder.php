@@ -521,6 +521,7 @@ class DatabaseSeeder extends Seeder
             'area_id' => 6,
             'number' => 6,
             'name' => 'San Francisco',
+            'banner' => 'https://sfgeneralservice.org/wp-content/uploads/2019/06/cropped-cropped-bigstock-Golden-Gate-Bridge-Aerial-View-213412633.jpg',
             'website' => 'https://sfgeneralservice.org',
             'timezone' => 'America/Los_Angeles',
             'language' => 'en'

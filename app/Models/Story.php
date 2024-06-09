@@ -14,6 +14,7 @@ class Story extends Model
     protected $fillable = [
         'district_id',
         'title',
+        'type',
         'description',
         'effective_at',
         'expire_at',

@@ -21,9 +21,10 @@ return new class () extends Migration {
             $table->foreignId('area_id')->constrained();
             $table->unsignedInteger('number');
             $table->string('name');
+            $table->string('banner')->nullable();
             $table->string('website')->nullable();
             $table->string('timezone')->nullable();
-            $table->enum('language', ['en', 'es', 'fr']);
+            $table->string('language');
             $table->timestamps();
         });
 
@@ -38,7 +39,7 @@ return new class () extends Migration {
             $table->foreignId('district_id')->nullable()->constrained();
             $table->string('title');
             $table->string('description');
-            $table->enum('type', ['announcement', 'event']);
+            $table->string('type');
             $table->date('effective_at');
             $table->date('expire_at');
             $table->foreignId('user_id')->constrained();
@@ -50,7 +51,7 @@ return new class () extends Migration {
             $table->foreignId('story_id')->constrained();
             $table->string('title');
             $table->string('link');
-            $table->enum('style', ['primary', 'secondary']);
+            $table->string('style');
             $table->timestamps();
         });
     }

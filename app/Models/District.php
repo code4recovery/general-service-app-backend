@@ -14,6 +14,7 @@ class District extends Model
 
     protected $fillable = [
         'area_id',
+        'banner',
         'number',
         'name',
         'website',
