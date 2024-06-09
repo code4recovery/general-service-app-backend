@@ -3,6 +3,7 @@
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\StoryController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\UserIsAdmin;
 use App\Models\Area;
 use App\Models\District;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -40,6 +41,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/edit-story/{story}', [StoryController::class, 'edit'])->name('edit-story');
     Route::put('/edit-story/{story}', [StoryController::class, 'update']);
     Route::get('/delete-story/{story}', [StoryController::class, 'destroy'])->name('delete-story');
+
+    Route::resource('users', UserController::class)->middleware(UserIsAdmin::class);
+    Route::get('/delete-user/{user}', [UserController::class, 'destroy'])->name('delete-user');
+
 });
 
 

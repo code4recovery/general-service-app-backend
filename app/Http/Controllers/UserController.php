@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use App\Models\District;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -16,6 +19,11 @@ class UserController extends Controller
         ]);
 
         if (Auth::attempt($credentials, true)) {
+            $user = Auth::user();
+
+            $user->last_seen = now();
+            $user->save();
+
             $district = Auth::user()->districts()->first();
             return redirect()->route('district', [$district->area_id, $district->number]);
         }
@@ -32,6 +40,73 @@ class UserController extends Controller
         $request->session()->regenerateToken();
 
         return redirect()->route('home');
+    }
+
+    public function index()
+    {
+        return view('users', [
+            'users' => User::all()
+        ]);
+    }
+
+    public function create()
+    {
+        return view('user', [
+            'districts' => District::all()
+        ]);
+    }
+
+    public function store(Request $request): RedirectResponse
+    {
+        $user = new User();
+        $user->name = request('name');
+        $user->email = request('email');
+        $user->password = Hash::make(request('password'));
+        $user->admin = request('admin') === 'on';
+
+        foreach ($request->input('districts') as $district) {
+            $user->districts()->attach($district);
+        }
+
+        $user->save();
+
+        return redirect()->route('users.index')->with('success', 'User created');
+    }
+
+    public function edit(string $id)
+    {
+        return view('user', [
+            'user' => User::find($id),
+            'districts' => District::all()
+        ]);
+    }
+
+    public function update(string $id)
+    {
+        $user = User::find($id);
+
+        $user->name = request('name');
+        $user->email = request('email');
+        $user->admin = request('admin') === 'on';
+
+        $user->save();
+
+        //save districts
+        $user->districts()->sync(request('districts'));
+
+        return redirect()->route('users.index')->with('success', 'User updated');
+    }
+
+    public function destroy(string $id): RedirectResponse
+    {
+        $user = User::find($id);
+
+        $user->districts()->detach();
+
+        $user->delete();
+
+
+        return redirect()->route('users.index')->with('success', 'User deleted');
     }
 
 }

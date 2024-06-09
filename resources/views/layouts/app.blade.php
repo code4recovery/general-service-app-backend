@@ -57,6 +57,11 @@
                                             {{ $district->name }}
                                         </a>
                                     @endforeach
+                                    @if (auth()->user()->admin)
+                                        <a href="{{ route('users.index') }}" class="block p-3 border-b">
+                                            Users
+                                        </a>
+                                    @endif
                                     <a href="/logout" class="block p-3">
                                         Log out
                                     </a>
