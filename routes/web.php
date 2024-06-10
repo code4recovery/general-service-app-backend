@@ -35,16 +35,21 @@ Route::post('/register', [RegistrationController::class, 'store']);
 # Authenticated Routes
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/district/{areaId}/{districtNumber}', [StoryController::class, 'index'])->name('district');
+    Route::get('/district/{areaId}/{districtNumber}', [StoryController::class, 'district'])->name('district');
     Route::get('/create-story/{areaId}/{districtNumber}', [StoryController::class, 'create'])->name('create-story');
     Route::post('/create-story/{areaId}/{districtNumber}', [StoryController::class, 'store']);
     Route::get('/edit-story/{story}', [StoryController::class, 'edit'])->name('edit-story');
     Route::put('/edit-story/{story}', [StoryController::class, 'update']);
     Route::get('/delete-story/{story}', [StoryController::class, 'destroy'])->name('delete-story');
 
-    Route::resource('users', UserController::class)->middleware(UserIsAdmin::class);
-    Route::get('/delete-user/{user}', [UserController::class, 'destroy'])->name('delete-user');
-
+    Route::middleware(UserIsAdmin::class)->group(function () {
+        Route::resource('users', UserController::class);
+        Route::get('/areas', [StoryController::class, 'areas'])->name('areas');
+        Route::get('/area/{areaId}', [StoryController::class, 'area'])->name('area');
+        Route::get('/districts', [StoryController::class, 'districts'])->name('districts');
+        Route::get('/gso', [StoryController::class, 'gso'])->name('gso');
+        Route::get('/delete-user/{user}', [UserController::class, 'destroy'])->name('delete-user');
+    });
 });
 
 

@@ -50,17 +50,27 @@
                                 x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
                                 class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg">
                                 <div class="rounded bg-white text-black shadow-xs">
-                                    @foreach (auth()->user()->districts as $district)
-                                        <a href="{{ route('district', [$district->area_id, $district->number]) }}"
-                                            class="block p-3 border-b">
-                                            District {{ $district->number() }}:
-                                            {{ $district->name }}
-                                        </a>
-                                    @endforeach
                                     @if (auth()->user()->admin)
+                                        <a href="{{ route('districts') }}" class="block p-3 border-b">
+                                            Districts
+                                        </a>
+                                        <a href="{{ route('areas') }}" class="block p-3 border-b">
+                                            Areas
+                                        </a>
+                                        <a href="{{ route('gso') }}" class="block p-3 border-b">
+                                            GSO
+                                        </a>
                                         <a href="{{ route('users.index') }}" class="block p-3 border-b">
                                             Users
                                         </a>
+                                    @else
+                                        @foreach (auth()->user()->districts as $district)
+                                            <a href="{{ route('district', [$district->area_id, $district->number]) }}"
+                                                class="block p-3 border-b">
+                                                District {{ $district->number() }}:
+                                                {{ $district->name }}
+                                            </a>
+                                        @endforeach
                                     @endif
                                     <a href="/logout" class="block p-3">
                                         Log out

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Area;
+use App\Models\District;
 use App\Models\Story;
 
 class StoryController extends Controller
@@ -10,7 +12,7 @@ class StoryController extends Controller
     private $buttons = [0, 1, 2];
     private $types = ['announcement', 'event'];
 
-    public function index()
+    public function district()
     {
         $user = auth()->user()->with('districts', 'districts.stories', 'districts.area')->first();
         $district = $user->districts->where(function ($district) {
@@ -22,6 +24,25 @@ class StoryController extends Controller
         }
 
         return view('district', ['district' => $district]);
+    }
+
+    public function areas()
+    {
+        $areas = Area::with('districts')->get();
+        return view('areas', ['areas' => $areas]);
+    }
+
+    public function area()
+    {
+        $user = auth()->user();
+
+        if (!$user->admin) {
+            return redirect()->route('home');
+        }
+
+        $area = Area::with('stories')->where('id', request('areaId'))->first();
+
+        return view('area', ['area' => $area]);
     }
 
     public function create()

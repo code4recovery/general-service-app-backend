@@ -29,6 +29,11 @@ class Story extends Model
         ];
     }
 
+    public function area(): BelongsTo
+    {
+        return $this->belongsTo(Area::class);
+    }
+
     public function district(): BelongsTo
     {
         return $this->belongsTo(District::class);
