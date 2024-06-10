@@ -8,7 +8,9 @@
 
     <div class="container max-w-3xl mx-auto px-4 grid gap-4">
 
-        <h1 class="text-2xl font-bold">Register</h1>
+        @include('common.heading', [
+            'title' => 'Register',
+        ])
 
         <p>Are you a District Chair? In some places this is called a DCMC (District Committee Member Chairperson) and in
             others it's a DCM (District Committee Member).</p>

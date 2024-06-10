@@ -8,7 +8,9 @@
 
     <div class="container max-w-3xl mx-auto px-4 grid gap-4">
 
-        <h1 class="text-2xl font-bold">Privacy Policy</h1>
+        @include('common.heading', [
+            'title' => 'Privacy Policy',
+        ])
 
         <p>Effective date: June 2, 2024</p>
 

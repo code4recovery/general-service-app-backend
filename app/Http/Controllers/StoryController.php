@@ -63,7 +63,6 @@ class StoryController extends Controller
             'buttons' => ['array'],
             'buttons.*.title' => ['max:255'],
             'buttons.*.link' => ['max:255'],
-            // 'buttons.*.style' => ['required', 'in:primary,secondary'],
         ]);
 
         $story = $district->stories()->create([
@@ -88,7 +87,9 @@ class StoryController extends Controller
 
         $this->updateDistrictJson($district->id);
 
-        return redirect()->route('district', [$district->area_id, $district->number]);
+        return redirect()
+            ->route('district', [$district->area_id, $district->number])
+            ->with('success', 'Story created.');
     }
 
     public function edit()
@@ -173,7 +174,7 @@ class StoryController extends Controller
 
         return redirect()
             ->route('district', [$story->district->area_id, $story->district->number])
-            ->with('success', 'Story updated successfully.');
+            ->with('success', 'Story updated.');
     }
 
     public function destroy()
@@ -200,6 +201,6 @@ class StoryController extends Controller
 
         return redirect()
             ->route('district', [$story->district->area_id, $story->district->number])
-            ->with('success', 'Story deleted successfully.');
+            ->with('success', 'Story deleted.');
     }
 }
