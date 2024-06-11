@@ -25,7 +25,7 @@ class UserController extends Controller
             $user->save();
 
             $district = Auth::user()->districts()->first();
-            return redirect()->route('district', [$district->area_id, $district->number]);
+            return redirect()->route('entity', [$district->area_id, $district->number]);
         }
 
         return back()->with('error', 'Invalid credentials');

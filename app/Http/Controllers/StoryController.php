@@ -12,39 +12,6 @@ class StoryController extends Controller
     private $buttons = [0, 1, 2];
     private $types = ['announcement', 'event'];
 
-    public function district()
-    {
-        $user = auth()->user()->with('districts', 'districts.stories', 'districts.area')->first();
-        $district = $user->districts->where(function ($district) {
-            return $district->area_id == request('areaId') && $district->number == request('districtNumber');
-        })->first();
-
-        if (!$district) {
-            return redirect()->route('home');
-        }
-
-        return view('district', ['district' => $district]);
-    }
-
-    public function areas()
-    {
-        $areas = Area::with('districts')->get();
-        return view('areas', ['areas' => $areas]);
-    }
-
-    public function area()
-    {
-        $user = auth()->user();
-
-        if (!$user->admin) {
-            return redirect()->route('home');
-        }
-
-        $area = Area::with('stories')->where('id', request('areaId'))->first();
-
-        return view('area', ['area' => $area]);
-    }
-
     public function create()
     {
         $user = auth()->user()->with('districts', 'districts.area')->first();
@@ -109,7 +76,7 @@ class StoryController extends Controller
         $this->updateDistrictJson($district->id);
 
         return redirect()
-            ->route('district', [$district->area_id, $district->number])
+            ->route('entity', [$district->area_id, $district->number])
             ->with('success', 'Story created.');
     }
 
@@ -194,7 +161,7 @@ class StoryController extends Controller
         $this->updateDistrictJson($story->district->id);
 
         return redirect()
-            ->route('district', [$story->district->area_id, $story->district->number])
+            ->route('entity', [$story->district->area_id, $story->district->number])
             ->with('success', 'Story updated.');
     }
 
@@ -221,7 +188,7 @@ class StoryController extends Controller
         $this->updateDistrictJson($story->district->id);
 
         return redirect()
-            ->route('district', [$story->district->area_id, $story->district->number])
+            ->route('entity', [$story->district->area_id, $story->district->number])
             ->with('success', 'Story deleted.');
     }
 }

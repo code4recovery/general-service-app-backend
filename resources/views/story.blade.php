@@ -113,7 +113,7 @@
             @endforeach
 
             @include('common.submit', [
-                'cancel' => route('district', [$district->area_id, $district->number]),
+                'cancel' => route('entity', [$district->area_id, $district->number]),
                 'delete' => isset($story) ? route('delete-story', [$story->id]) : null,
             ])
 
