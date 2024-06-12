@@ -63,12 +63,11 @@ class UserController extends Controller
         $user->email = request('email');
         $user->password = Hash::make(request('password'));
         $user->admin = request('admin') === 'on';
+        $user->save();
 
         foreach ($request->input('districts') as $district) {
             $user->districts()->attach($district);
         }
-
-        $user->save();
 
         return redirect()->route('users.index')->with('success', 'User created');
     }
