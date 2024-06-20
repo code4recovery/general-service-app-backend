@@ -69,9 +69,8 @@
                             <select name="area" id="area" required
                                 class="w-full p-2 border border-gray-300 rounded appearance-none text-black">
                                 @foreach ($areas as $area)
-                                    <option value="{{ $area->id }}" {{ old('area') == $area->id ? 'selected' : '' }}>
-                                        {{ $area->number() }}:
-                                        {{ $area->name }}
+                                    <option value="{{ $area->area }}" {{ old('area') == $area->id ? 'selected' : '' }}>
+                                        {{ $area->name() }}
                                     </option>
                                 @endforeach
                             </select>

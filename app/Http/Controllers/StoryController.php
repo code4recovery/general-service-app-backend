@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Area;
-use App\Models\District;
 use App\Models\Story;
 
 class StoryController extends Controller
@@ -14,18 +12,16 @@ class StoryController extends Controller
 
     public function create()
     {
-        $user = auth()->user()->with('districts', 'districts.area')->first();
-        $district = $user->districts->where(function ($district) {
-            return $district->area_id == request('areaId') && $district->number == request('districtNumber');
-        })->first();
+        $user = auth()->user()->with('entities')->first();
+        $entity = $user->entities->where('id', request('entityId'))->first();
 
-        if (!$district) {
+        if (!$entity) {
             return redirect()->route('home');
         }
 
         return view('story', [
-            'district' => $district,
-            'now' => now()->setTimezone($district->timezone),
+            'entity' => $entity,
+            'now' => now()->setTimezone('America/Chicago'),
             'buttons' => $this->buttons,
             'types' => $this->types
         ]);
@@ -33,33 +29,34 @@ class StoryController extends Controller
 
     public function store()
     {
-        $user = auth()->user()->with('districts', 'districts.area')->first();
-        $district = $user->districts->where(function ($district) {
-            return $district->area_id == request('areaId') && $district->number == request('districtNumber');
-        })->first();
+        $user = auth()->user()->with('entities')->first();
+        $entity = $user->entities->where('id', request('entityId'))->first();
 
-        if (!$district) {
+        if (!$entity) {
             return redirect('/');
         }
 
         $validated = request()->validate([
             'title' => ['required', 'max:255'],
             'description' => ['required', 'max:255'],
-            'effective_at' => ['required', 'date'],
-            'expire_at' => ['required', 'date'],
+            'start_at' => ['required', 'date'],
+            'end_at' => ['required', 'date'],
             'type' => ['required', 'in:' . implode(',', $this->types)],
             'buttons' => ['array'],
             'buttons.*.title' => ['max:255'],
             'buttons.*.link' => ['max:255'],
         ]);
 
-        $story = $district->stories()->create([
+        $story = $entity->stories()->create([
             'title' => $validated['title'],
             'description' => $validated['description'],
+            'reference' => $this->reference(),
             'type' => $validated['type'],
-            'effective_at' => $validated['effective_at'],
-            'expire_at' => $validated['expire_at'],
+            'start_at' => $validated['start_at'],
+            'end_at' => $validated['end_at'],
+            'language' => 'en',
             'user_id' => $user->id,
+            'order' => $entity->stories->count(),
         ]);
 
         foreach ($validated['buttons'] as $button) {
@@ -73,30 +70,31 @@ class StoryController extends Controller
             ]);
         }
 
-        $this->updateDistrictJson($district->id);
+        $this->updateJson($entity->id);
 
         return redirect()
-            ->route('entity', [$district->area_id, $district->number])
+            ->route('entity', $entity->id)
             ->with('success', 'Story created.');
     }
 
     public function edit()
     {
-        $user = auth()->user()->with('districts', 'districts.stories', 'districts.stories.buttons', 'districts.area')->first();
-        $district = $user->districts->first();
+        $user = auth()->user()->with('entities', 'entities.stories', 'entities.stories.buttons')->first();
+        $story = Story::where('id', request('story'))->first();
+        $entity = $user->entities->where('id', $story->entity_id)->first();
 
-        if (!$district) {
+        if (!$entity) {
             return redirect()->route('home');
         }
 
-        $story = $district->stories->where('id', request('story'))->first();
+        $story = $entity->stories->where('id', request('story'))->first();
 
         if (!$story) {
             return redirect()->route('home');
         }
 
         return view('story', [
-            'district' => $district,
+            'entity' => $entity,
             'story' => $story,
             'buttons' => $this->buttons,
             'types' => $this->types
@@ -105,15 +103,15 @@ class StoryController extends Controller
 
     public function update()
     {
-        $user = auth()->user()->with('districts')->first();
+        $user = auth()->user()->with('entities')->first();
 
-        $story = Story::with('buttons', 'district', 'district.users')->where('id', request('story'))->first();
+        $story = Story::with('buttons', 'entity', 'entity.users')->where('id', request('story'))->first();
 
         if (!$story) {
             return redirect()->back()->with('error', 'Story to edit was not found.');
         }
 
-        if ($story->district->users->where('id', $user->id)->isEmpty()) {
+        if ($story->entity->users->where('id', $user->id)->isEmpty()) {
             return redirect()->back()->with('error', 'You do not have permission to edit this story.');
         }
 
@@ -121,8 +119,8 @@ class StoryController extends Controller
             'title' => ['required', 'max:255'],
             'description' => ['required', 'max:255'],
             'type' => ['required', 'in:' . implode(',', $this->types)],
-            'effective_at' => ['required', 'date'],
-            'expire_at' => ['required', 'date'],
+            'start_at' => ['required', 'date'],
+            'end_at' => ['required', 'date'],
             'buttons' => ['array'],
             'buttons.*.id' => ['max:255'],
             'buttons.*.title' => ['max:255'],
@@ -133,8 +131,8 @@ class StoryController extends Controller
             'title' => $validated['title'],
             'description' => $validated['description'],
             'type' => $validated['type'],
-            'effective_at' => $validated['effective_at'],
-            'expire_at' => $validated['expire_at'],
+            'start_at' => $validated['start_at'],
+            'end_at' => $validated['end_at'],
         ]);
 
         foreach ($this->buttons as $index) {
@@ -158,24 +156,24 @@ class StoryController extends Controller
             }
         }
 
-        $this->updateDistrictJson($story->district->id);
+        $this->updateJson($story->entity_id);
 
         return redirect()
-            ->route('entity', [$story->district->area_id, $story->district->number])
+            ->route('entity', $story->entity_id)
             ->with('success', 'Story updated.');
     }
 
     public function destroy()
     {
-        $user = auth()->user()->with('districts')->first();
+        $user = auth()->user()->with('entities')->first();
 
-        $story = Story::with('district', 'district.users', 'buttons')->where('id', request('story'))->first();
+        $story = Story::with('entity', 'entity.users', 'buttons')->where('id', request('story'))->first();
 
         if (!$story) {
             return redirect()->back()->with('error', 'Story to delete was not found.');
         }
 
-        if ($story->district->users->where('id', $user->id)->isEmpty()) {
+        if ($story->entity->users->where('id', $user->id)->isEmpty()) {
             return redirect()->back()->with('error', 'You do not have permission to delete this story.');
         }
 
@@ -185,10 +183,45 @@ class StoryController extends Controller
 
         $story->delete();
 
-        $this->updateDistrictJson($story->district->id);
+        $this->updateJson($story->entity_id);
 
         return redirect()
-            ->route('entity', [$story->district->area_id, $story->district->number])
+            ->route('entity', $story->entity_id)
             ->with('success', 'Story deleted.');
     }
+
+    private function reference()
+    {
+        $reference = substr(bin2hex(random_bytes(7)), 0, 7);
+        if (Story::where('reference', $reference)->exists()) {
+            return $this->reference();
+        }
+        return $reference;
+    }
+
+    public function reorder()
+    {
+        $user = auth()->user()->with('entities')->first();
+
+        $entity = $user->entities->where('id', request('entityId'))->first();
+
+        if (!$entity) {
+            return redirect()->route('home');
+        }
+
+        $validated = request()->validate([
+            'order' => ['array'],
+        ]);
+
+        $stories = $entity->stories->whereIn('id', $validated['order']);
+
+        foreach ($stories as $story) {
+            $story->update([
+                'order' => array_search($story->id, $validated['order']),
+            ]);
+        }
+
+        $this->updateJson($entity->id);
+    }
+
 }

@@ -62,19 +62,19 @@
 
             <div class="grid lg:grid-cols-4 gap-3 lg:gap-8">
                 @include('common.input', [
-                    'label' => 'Effective Date',
-                    'name' => 'effective_at',
+                    'label' => 'Start Date',
+                    'name' => 'start_at',
                     'type' => 'date',
                     'required' => true,
-                    'value' => isset($story) ? $story['effective_at']->format('Y-m-d') : $now->format('Y-m-d'),
+                    'value' => isset($story) ? $story['start_at']->format('Y-m-d') : $now->format('Y-m-d'),
                 ])
                 @include('common.input', [
-                    'label' => 'Expire Date',
-                    'name' => 'expire_at',
+                    'label' => 'End Date',
+                    'name' => 'end_at',
                     'type' => 'date',
                     'required' => true,
                     'value' => isset($story)
-                        ? $story['expire_at']->format('Y-m-d')
+                        ? $story['end_at']->format('Y-m-d')
                         : $now->add(2, 'months')->format('Y-m-d'),
                 ])
                 <div class="lg:col-span-2 text-sm lg:pt-6">
@@ -113,7 +113,7 @@
             @endforeach
 
             @include('common.submit', [
-                'cancel' => route('entity', [$district->area_id, $district->number]),
+                'cancel' => route('entity', $entity->id),
                 'delete' => isset($story) ? route('delete-story', [$story->id]) : null,
             ])
 

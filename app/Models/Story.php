@@ -16,27 +16,25 @@ class Story extends Model
         'title',
         'type',
         'description',
-        'effective_at',
-        'expire_at',
+        'start_at',
+        'end_at',
+        'language',
         'user_id',
+        'order',
+        'reference'
     ];
 
     protected function casts(): array
     {
         return [
-            'effective_at' => 'datetime',
-            'expire_at' => 'datetime',
+            'start_at' => 'datetime',
+            'end_at' => 'datetime',
         ];
     }
 
-    public function area(): BelongsTo
+    public function entity(): BelongsTo
     {
-        return $this->belongsTo(Area::class);
-    }
-
-    public function district(): BelongsTo
-    {
-        return $this->belongsTo(District::class);
+        return $this->belongsTo(Entity::class);
     }
 
     public function buttons(): HasMany

@@ -33,12 +33,12 @@
                     @foreach ($areas as $area)
                         <tr class="hover:bg-gray-300 dark:hover:bg-gray-600">
                             <td class="border border-gray-300 dark:border-gray-600 w-16 text-center">
-                                <a href="{{ route('entity', [$area->id]) }}" class="p-3 block">
+                                <a href="{{ route('entity', $area->id) }}" class="p-3 block">
                                     {{ $area->number() }}
                                 </a>
                             </td>
                             <td colspan="2" class="border border-gray-300 dark:border-gray-600">
-                                <a href="{{ route('entity', [$area->id]) }}" class="p-3 block">
+                                <a href="{{ route('entity', $area->id) }}" class="p-3 block">
                                     {{ $area->name }}
                                 </a>
                             </td>
@@ -48,7 +48,7 @@
                                 <td class="border border-gray-300 dark:border-gray-600 w-16 text-center">
                                 </td>
                                 <td class="border border-gray-300 dark:border-gray-600 w-16 text-center">
-                                    <a href="{{ route('entity', [$area->id]) }}" class="p-3 block">
+                                    <a href="{{ route('entity', $area->id) }}" class="p-3 block">
                                         {{ $district->number() }}
                                     </a>
                                 </td>

@@ -7,7 +7,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 
 use App\Models\User;
-use App\Models\District;
+use App\Models\Entity;
 
 class RegistrationController extends Controller
 {
@@ -32,27 +32,19 @@ class RegistrationController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
-        // validate language (can this move to the model?)
+        // validate language
         $default_language = 'en';
         $language = $request->input('language', $default_language);
         if (!in_array($language, ['en', 'es', 'fr'])) {
             $language = $default_language;
         }
 
-        // validate timezone (can this move to the model?)
-        $default_timezone = 'America/New_York';
-        $timezone = $request->input('timezone', $default_timezone);
-        if (!in_array($timezone, timezone_identifiers_list())) {
-            $timezone = $default_timezone;
-        }
-
-        $district = District::create([
-            'area_id' => $validated['area'],
-            'number' => $validated['district'],
+        $district = Entity::create([
+            'area' => $validated['area'],
+            'district' => $validated['district'],
             'name' => $validated['location'],
             'website' => $validated['website'],
             'language' => $language,
-            'timezone' => $timezone,
         ]);
 
         $user->districts()->attach($district);

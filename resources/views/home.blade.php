@@ -37,16 +37,14 @@
                 Participating Districts
             </h3>
             <ol class="list-decimal pl-5 pt-3">
-                @foreach ($districts as $district)
+                @foreach ($entities as $entity)
                     <li>
-                        @if ($district->website)
-                            <a href="{{ $district->website }}" class="text-blue-500 dark:text-white underline"
+                        @if ($entity->website)
+                            <a href="{{ $entity->website }}" class="text-blue-500 dark:text-white underline"
                                 target="_blank">
                         @endif
-                        Area {{ $district->area->number() }} -
-                        District {{ $district->number() }}:
-                        {{ $district->name }}
-                        @if ($district->website)
+                        {{ $entity->name() }}
+                        @if ($entity->website)
                             </a>
                         @endif
                     </li>

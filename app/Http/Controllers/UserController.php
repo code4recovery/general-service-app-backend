@@ -24,8 +24,8 @@ class UserController extends Controller
             $user->last_seen = now();
             $user->save();
 
-            $district = Auth::user()->districts()->first();
-            return redirect()->route('entity', [$district->area_id, $district->number]);
+            $entity = Auth::user()->entities()->first();
+            return redirect()->route('entity', $entity->id);
         }
 
         return back()->with('error', 'Invalid credentials');

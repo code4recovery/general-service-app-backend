@@ -10,39 +10,34 @@ return new class () extends Migration {
      */
     public function up(): void
     {
-        Schema::create('areas', function (Blueprint $table) {
+        Schema::create('entities', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('website');
-        });
-
-        Schema::create('districts', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('area_id')->constrained();
-            $table->unsignedInteger('number');
+            $table->unsignedInteger('area')->nullable();
+            $table->unsignedInteger('district')->nullable();
             $table->string('name');
             $table->string('banner')->nullable();
             $table->string('website')->nullable();
-            $table->string('timezone')->nullable();
-            $table->string('language');
+            $table->string('language', 2)->nullable();
             $table->timestamps();
         });
 
-        Schema::create('district_user', function (Blueprint $table) {
-            $table->foreignId('district_id')->constrained();
+        Schema::create('entity_user', function (Blueprint $table) {
+            $table->foreignId('entity_id')->constrained();
             $table->foreignId('user_id')->constrained();
         });
 
         Schema::create('stories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('area_id')->nullable()->constrained();
-            $table->foreignId('district_id')->nullable()->constrained();
+            $table->string('reference', 7)->unique();
+            $table->foreignId('entity_id')->constrained();
             $table->string('title');
             $table->string('description');
             $table->string('type');
-            $table->date('effective_at');
-            $table->date('expire_at');
+            $table->date('start_at');
+            $table->date('end_at');
             $table->foreignId('user_id')->constrained();
+            $table->smallInteger('order')->unsigned()->nullable();
+            $table->string('language', 2);
             $table->timestamps();
         });
 
@@ -63,8 +58,7 @@ return new class () extends Migration {
     {
         Schema::dropIfExists('buttons');
         Schema::dropIfExists('stories');
-        Schema::dropIfExists('district_user');
-        Schema::dropIfExists('districts');
-        Schema::dropIfExists('areas');
+        Schema::dropIfExists('entity_user');
+        Schema::dropIfExists('entities');
     }
 };

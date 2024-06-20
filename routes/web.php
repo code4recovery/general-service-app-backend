@@ -5,14 +5,13 @@ use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\StoryController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\UserIsAdmin;
-use App\Models\Area;
-use App\Models\District;
+use App\Models\Entity;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('home', [
-        'districts' => District::with('area')->orderBy('area_id')->orderBy('number')->get()
+        'entities' => Entity::orderBy('area')->orderBy('district')->whereHas('users')->get()
     ]);
 })->name('home');
 
@@ -26,7 +25,7 @@ Route::get('/logout', [UserController::class, 'logout']);
 
 Route::get('/register', function () {
     return view('register', [
-        'areas' => Area::orderBy('id')->get()
+        'areas' => Entity::orderBy('area')->whereNotNull('area')->whereNull('district')->get()
     ]);
 })->name('register');
 
@@ -36,12 +35,13 @@ Route::post('/register', [RegistrationController::class, 'store']);
 # Authenticated Routes
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/entity/{areaId?}/{districtNumber?}', [EntityController::class, 'show'])->name('entity');
-    Route::get('/create-story/{areaId?}/{districtNumber?}', [StoryController::class, 'create'])->name('create-story');
-    Route::post('/create-story/{areaId?}/{districtNumber?}', [StoryController::class, 'store']);
+    Route::get('/entity/{entityId?}', [EntityController::class, 'show'])->name('entity');
+    Route::get('/create-story/{entityId?}', [StoryController::class, 'create'])->name('create-story');
+    Route::post('/create-story/{entityId?}', [StoryController::class, 'store']);
     Route::get('/edit-story/{story}', [StoryController::class, 'edit'])->name('edit-story');
     Route::put('/edit-story/{story}', [StoryController::class, 'update']);
     Route::get('/delete-story/{story}', [StoryController::class, 'destroy'])->name('delete-story');
+    Route::post('/reorder-stories/{entityId?}', [StoryController::class, 'reorder'])->name('reorder-stories');
 
     Route::middleware(UserIsAdmin::class)->group(function () {
         Route::resource('entities', EntityController::class);

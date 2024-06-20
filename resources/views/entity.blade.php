@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $district->name)
+@section('title', $entity->name())
 
 @section('description', 'View stories')
 
@@ -11,25 +11,31 @@
         @include('common.alerts')
 
         @include('common.heading', [
-            'title' => 'District ' . $district->number() . ': ' . $district->name,
+            'title' => $entity->name(),
             'button' => [
-                'href' => route('create-story', [$district->area_id, $district->number]),
+                'href' => route('create-story', $entity->id),
                 'label' => 'Create',
             ],
         ])
 
         @include('common.table', [
-            'rows' => $district->stories->map(function ($story) {
+            'empty' => 'No stories yet.',
+            'headings' => ['Title', 'Type', 'Effective', 'Expires'],
+            'reorder' => route('reorder-stories', $entity->id),
+            'rows' => $entity->stories->map(function ($story) {
                 return [
-                    'Title' => $story->title,
-                    'Type' => ucfirst($story->type),
-                    'Effective' => $story->effective_at->format('M j'),
-                    'Expires' => $story->expire_at->format('M j'),
                     'href' => route('edit-story', [$story->id]),
+                    'id' => $story->id,
+                    'values' => [
+                        $story->title,
+                        ucfirst($story->type),
+                        $story->start_at->format('M j'),
+                        $story->end_at->format('M j'),
+                    ],
                 ];
             }),
-            'empty' => 'No stories yet.',
         ])
+
     </div>
 
 @endsection

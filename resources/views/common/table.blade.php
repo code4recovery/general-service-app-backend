@@ -3,43 +3,60 @@
         {{ $empty }}
     </p>
 @else
-    <div class="overflow-x-auto">
-        <table class="table-fixed min-w-full">
-            <thead>
-                <tr>
-                    @foreach (array_keys($rows[0]) as $label)
-                        @if ($label === 'href')
-                            @continue
-                        @endif
-                        <th @class([
-                            'border-b border-gray-300 dark:border-gray-600 font-light p-3',
-                            'text-left' => $loop->index < 2,
-                            'text-right' => $loop->index > 1,
-                            'w-1/2' => $loop->first,
-                            'w-1/6' => !$loop->first,
-                        ])>
-                            {{ $label }}
-                        </th>
-                    @endforeach
-                </tr>
-                @foreach ($rows as $row)
-                    <tr class="hover:bg-gray-300 dark:hover:bg-gray-600">
-                        @foreach ($row as $label => $value)
-                            @if ($label === 'href')
-                                @continue
-                            @endif
-                            <td @class([
-                                'border border-gray-300 dark:border-gray-600',
-                                'text-left' => $loop->index < 2,
-                                'text-right' => $loop->index > 1,
-                            ])>
-                                <a href="{{ $row['href'] }}" class="p-3 block">
-                                    {{ $value }}
-                                </a>
-                            </td>
-                        @endforeach
+    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+            <table class="table-fixed min-w-full border-collapse">
+                <thead x-data="{ headings: @js($headings) }">
+                    <tr>
+                        @isset($reorder)
+                            <th class="border-b border-gray-300 dark:border-gray-600 font-light p-3"></th>
+                        @endisset
+                        <template x-for="(heading, index) in headings" :key="index">
+                            <th class="border-b border-gray-300 dark:border-gray-600 font-light p-3"
+                                :class="{
+                                    'text-left': index < 2,
+                                    'text-right': index > 1,
+                                    'w-1/2': !index,
+                                    'w-1/6': index,
+                                }"
+                                x-text="heading"></th>
+                        </template>
                     </tr>
-                @endforeach
-        </table>
+                </thead>
+
+                <tbody x-data="{ rows: @js($rows) }"
+                    @isset($reorder) x-sort="(item, position) => {
+                        const order = [...document.querySelectorAll('tr[data-id]')].map((e) => parseInt(e.getAttribute('data-id')));
+                        order.splice(position, 0, order.splice(order.indexOf(item), 1)[0]);
+                        fetch('{{ $reorder }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-Csrf-Token': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({ order })
+                        });
+                    }" @endisset>
+                    <template x-for="(row, index) in rows" :key="index">
+                        <tr class="hover:bg-gray-300 dark:hover:bg-gray-600 select-none table-row"
+                            @isset($reorder) x-sort:item="row.id" x-bind:data-id="row.id">
+                                <td x-sort:handle class="border border-gray-300 dark:border-gray-600 p-3 cursor-grab">
+                                    @include('common.icon', ['icon' => 'bars-3'])
+                                </td>
+                            @endisset>
+                            <template x-for="(value, index) in row.values" :key="index">
+                                <td class="border border-gray-300 dark:border-gray-600 table-cell"
+                                    :class="{
+                                        'text-left': index < 2,
+                                        'text-right': index > 1,
+                                    }">
+                                    <a x-bind:href="row.href" class="p-3 block" x-text="value"></a>
+                                </td>
+                            </template>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
     </div>
 @endif

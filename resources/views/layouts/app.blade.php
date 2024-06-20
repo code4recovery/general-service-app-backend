@@ -10,10 +10,11 @@
 
     @vite('resources/css/app.css')
 
-    <script src="//unpkg.com/alpinejs" defer></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/sort@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
-<body class="font-sans antialiased bg-gray-200 dark:bg-gray-700 dark:text-white min-h-screen flex flex-col gap-6">
+<body class="bg-gray-200 dark:bg-gray-700 dark:text-white min-h-screen flex flex-col gap-6">
     <header>
         <div class="container max-w-6xl mx-auto px-4 py-6">
             <div class="flex justify-between items-center">
@@ -50,12 +51,11 @@
                                 x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
                                 class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg">
                                 <div class="rounded bg-white text-black shadow-xs">
-                                    @foreach (auth()->user()->districts as $district)
-                                        <a href="{{ route('entity', [$district->area_id, $district->number]) }}"
+                                    @foreach (auth()->user()->entities as $entity)
+                                        <a href="{{ route('entity', $entity->id) }}"
                                             class="flex p-3 border-b gap-2 align-center">
                                             @include ('common.icon', ['icon' => 'home'])
-                                            District {{ $district->number() }}:
-                                            {{ $district->name }}
+                                            {{ $entity->name() }}
                                         </a>
                                     @endforeach
                                     @if (auth()->user()->admin)

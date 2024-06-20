@@ -38,23 +38,28 @@ class EntityController extends Controller
      */
     public function show()
     {
-        $user = auth()->user()->with('districts', 'districts.stories', 'districts.area')->first();
+        $user = auth()->user()->with(['entities', 'entities.stories' => function ($query) {
+            $query->orderBy('order', 'asc');
+        }])->first();
+
+        $area = request('area');
+        $district = request('district');
 
         if ($user->admin) {
-            $district = District::with('stories', 'area')
-                ->where('area_id', request('areaId'))
-                ->where('number', request('districtNumber'))
+            $entity = Entity::with(['stories' => function ($query) {
+                $query->orderBy('order', 'asc');
+            }, 'area'])
+                ->where('area', $areaId)
+                ->where('number', $district)
                 ->first();
         } else {
-            $district = $user->districts->where(function ($district) {
-                return $district->area_id == request('areaId') && $district->number == request('districtNumber');
-            })->first();
-            if (!$district) {
+            $entity = $user->entities->where('id', request('entityId'))->first();
+            if (!$entity) {
                 return redirect()->route('home');
             }
         }
 
-        return view('entity', ['district' => $district]);
+        return view('entity', ['entity' => $entity]);
     }
 
     /**

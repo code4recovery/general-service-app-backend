@@ -17,19 +17,21 @@
         ])
 
         @include('common.table', [
+            'empty' => 'No users yet.',
+            'headings' => ['Name', 'Admin', 'Districts', 'Last Seen'],
             'rows' => $users->map(function ($user) {
                 return [
-                    'Name' => $user->name,
-                    'Admin' => $user->admin ? 'Yes' : 'No',
-                    'Districts' =>
+                    'href' => route('users.edit', [$user->id]),
+                    'values' => [
+                        $user->name,
+                        $user->admin ? 'Yes' : 'No',
                         $user->districts->count() === 1
                             ? $user->districts[0]->number() . ': ' . $user->districts[0]->name
                             : $user->districts->count() . ' districts',
-                    'Last Seen' => $user->last_seen ? $user->last_seen->diffForHumans() : 'Never',
-                    'href' => route('users.edit', [$user->id]),
+                        $user->last_seen ? $user->last_seen->diffForHumans() : 'Never',
+                    ],
                 ];
             }),
-            'empty' => 'No users yet.',
         ])
 
     </div>
