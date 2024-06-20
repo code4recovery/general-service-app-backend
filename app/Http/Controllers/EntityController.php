@@ -12,7 +12,7 @@ class EntityController extends Controller
      */
     public function index()
     {
-        $entities = Entity::orderBy('area')->orderBy('district')->get();
+        $entities = Entity::with(['stories', 'users'])->orderBy('area')->orderBy('district')->get();
         return view('entities', ['entities' => $entities]);
     }
 

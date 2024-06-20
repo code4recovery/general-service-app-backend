@@ -61,4 +61,15 @@ class Entity extends Model
         return $this->belongsToMany(User::class);
     }
 
+    public function type(): string
+    {
+        if ($this->area && $this->district) {
+            return 'District';
+        }
+        if ($this->area) {
+            return 'Area';
+        }
+        return 'GSO';
+    }
+
 }

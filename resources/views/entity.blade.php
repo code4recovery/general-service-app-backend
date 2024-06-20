@@ -21,7 +21,7 @@
         @include('common.table', [
             'empty' => 'No stories yet.',
             'headings' => ['Title', 'Type', 'Effective', 'Expires'],
-            'reorder' => route('reorder-stories', $entity->id),
+            'reorder' => $entity->stories->count() > 1 ? route('reorder-stories', $entity->id) : null,
             'rows' => $entity->stories->map(function ($story) {
                 return [
                     'href' => route('edit-story', [$story->id]),

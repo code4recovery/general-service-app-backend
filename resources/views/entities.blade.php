@@ -14,37 +14,22 @@
             'title' => 'Entites',
         ])
 
-        <div class="overflow-x-auto">
-            <table class="table-fixed min-w-full">
-                <tbody>
-                    @foreach ($entities as $entity)
-                        <tr class="hover:bg-gray-300 dark:hover:bg-gray-600">
-                            @if ($entity->area)
-                                <td class="border border-gray-300 dark:border-gray-600 w-16 text-center">
-                                    <a href="{{ route('entity', $entity->id) }}" class="p-3 block">
-                                        {{ $entity->area() }}
-                                    </a>
-                                </td>
-                            @endif
-                            @if ($entity->district)
-                                <td class="border border-gray-300 dark:border-gray-600 w-16 text-center">
-                                    <a href="{{ route('entity', $entity->id) }}" class="p-3 block">
-                                        {{ $entity->area() }}
-                                    </a>
-                                </td>
-                            @endif
-                            <td @empty($entity->district) @empty($entity->area) colspan="3" @else colspan="2" @endempty
-                            @endempty class="border border-gray-300 dark:border-gray-600">
-                            <a href="{{ route('entity', $entity->id) }}" class="p-3 block">
-                                {{ $entity->name }}
-                            </a>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
+        @include('common.table', [
+            'empty' => 'No entities yet.',
+            'headings' => ['Name', 'Type', 'Users', 'Stories'],
+            'rows' => $entities->map(function ($entity) {
+                return [
+                    'href' => route('entity', $entity->id),
+                    'values' => [
+                        $entity->name(),
+                        $entity->type(),
+                        $entity->users->count() ? $entity->users->count() : '',
+                        $entity->stories->count() ? $entity->stories->count() : '',
+                    ],
+                ];
+            }),
+        ])
 
-</div>
+    </div>
 
 @endsection

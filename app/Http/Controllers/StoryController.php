@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Entity;
 use App\Models\Story;
 
 class StoryController extends Controller
@@ -10,14 +11,51 @@ class StoryController extends Controller
     private $buttons = [0, 1, 2];
     private $types = ['announcement', 'event'];
 
-    public function create()
+    private function getEntity($entityId)
     {
         $user = auth()->user()->with('entities')->first();
-        $entity = $user->entities->where('id', request('entityId'))->first();
+
+        $entity = ($user->admin)
+            ? Entity::where('id', $entityId)->first()
+            : $user->entities->where('id', $entityId)->first();
 
         if (!$entity) {
             return redirect()->route('home');
         }
+
+        return $entity;
+    }
+
+    private function getStory($storyId)
+    {
+        $user = auth()->user()->with('entities', 'entities.stories', 'entities.stories.buttons')->first();
+        $story = Story::with(['entity', 'buttons'])->where('id', $storyId)->first();
+
+        if (!$story || !$user) {
+            return redirect()->route('home');
+        }
+
+        if ($user->admin) {
+            return $story;
+        }
+
+        $story = $entity->stories->where('id', request('story'))->first();
+
+        if (!$story) {
+            return redirect()->back()->with('error', 'Story to edit was not found.');
+        }
+
+        if ($story->entity->users->where('id', $user->id)->isEmpty()) {
+            return redirect()->back()->with('error', 'You do not have permission to edit this story.');
+        }
+
+        return $story;
+    }
+
+    public function create()
+    {
+
+        $entity = $this->getEntity(request('entityId'));
 
         return view('story', [
             'entity' => $entity,
@@ -29,12 +67,7 @@ class StoryController extends Controller
 
     public function store()
     {
-        $user = auth()->user()->with('entities')->first();
-        $entity = $user->entities->where('id', request('entityId'))->first();
-
-        if (!$entity) {
-            return redirect('/');
-        }
+        $entity = $this->getEntity(request('entityId'));
 
         $validated = request()->validate([
             'title' => ['required', 'max:255'],
@@ -55,7 +88,7 @@ class StoryController extends Controller
             'start_at' => $validated['start_at'],
             'end_at' => $validated['end_at'],
             'language' => 'en',
-            'user_id' => $user->id,
+            'user_id' => auth()->user()->id,
             'order' => $entity->stories->count(),
         ]);
 
@@ -79,22 +112,10 @@ class StoryController extends Controller
 
     public function edit()
     {
-        $user = auth()->user()->with('entities', 'entities.stories', 'entities.stories.buttons')->first();
-        $story = Story::where('id', request('story'))->first();
-        $entity = $user->entities->where('id', $story->entity_id)->first();
-
-        if (!$entity) {
-            return redirect()->route('home');
-        }
-
-        $story = $entity->stories->where('id', request('story'))->first();
-
-        if (!$story) {
-            return redirect()->route('home');
-        }
+        $story = $this->getStory(request('story'));
 
         return view('story', [
-            'entity' => $entity,
+            'entity' => $story->entity,
             'story' => $story,
             'buttons' => $this->buttons,
             'types' => $this->types
@@ -103,17 +124,7 @@ class StoryController extends Controller
 
     public function update()
     {
-        $user = auth()->user()->with('entities')->first();
-
-        $story = Story::with('buttons', 'entity', 'entity.users')->where('id', request('story'))->first();
-
-        if (!$story) {
-            return redirect()->back()->with('error', 'Story to edit was not found.');
-        }
-
-        if ($story->entity->users->where('id', $user->id)->isEmpty()) {
-            return redirect()->back()->with('error', 'You do not have permission to edit this story.');
-        }
+        $story = $this->getStory(request('story'));
 
         $validated = request()->validate([
             'title' => ['required', 'max:255'],
@@ -165,17 +176,7 @@ class StoryController extends Controller
 
     public function destroy()
     {
-        $user = auth()->user()->with('entities')->first();
-
-        $story = Story::with('entity', 'entity.users', 'buttons')->where('id', request('story'))->first();
-
-        if (!$story) {
-            return redirect()->back()->with('error', 'Story to delete was not found.');
-        }
-
-        if ($story->entity->users->where('id', $user->id)->isEmpty()) {
-            return redirect()->back()->with('error', 'You do not have permission to delete this story.');
-        }
+        $story = $this->getStory(request('story'));
 
         foreach ($story->buttons as $button) {
             $button->delete();
@@ -201,13 +202,7 @@ class StoryController extends Controller
 
     public function reorder()
     {
-        $user = auth()->user()->with('entities')->first();
-
-        $entity = $user->entities->where('id', request('entityId'))->first();
-
-        if (!$entity) {
-            return redirect()->route('home');
-        }
+        $entity = $this->getEntity(request('entityId'));
 
         $validated = request()->validate([
             'order' => ['array'],

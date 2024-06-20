@@ -43,6 +43,7 @@
                             @include('common.button', [
                                 'click' => 'isOpen = !isOpen',
                                 'icon' => 'caret-down',
+                                'highlighted' => 'isOpen',
                             ])
 
                             <div x-show="isOpen" x-cloak x-transition:enter="transition ease-out duration-100 transform"
