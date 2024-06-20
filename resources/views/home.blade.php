@@ -7,22 +7,14 @@
 @section('content')
 
     <div class="container max-w-6xl mx-auto px-4 grid lg:grid-cols-3 gap-8">
-        <div class="lg:col-span-2">
-            <h2 class="mt-4 text-2xl font-light">Carry the message to your groups.</h2>
-            <p class="mt-4">
-                District Chairs (DCMs and DCMCs) are invited to use this free service to provide local
-                news and event information to General Service Representatives.</p>
-            <h3 class="mt-4 font-bold">
-                Feature Overview
-            </h3>
-            <ul class="list-disc pl-5 pt-3">
-                <li>Free</li>
-                <li>Private</li>
-                <li>Dark mode</li>
-                <li>Native support for English, Spanish, and French</li>
-                <li>Available on Android and iOS</li>
-            </ul>
-            <div class="my-8 flex gap-4">
+        <div class="lg:col-span-2 grid gap-10 content-start">
+            <div class="grid gap-4">
+                <h2 class="text-2xl font-light">Carry the message to your groups.</h2>
+                <p>
+                    District Chairs (DCMs and DCMCs) are invited to use this free service to provide local
+                    news and event information to General Service Representatives.</p>
+            </div>
+            <div class="flex gap-4">
                 <a href="https://apps.apple.com/us/app/aa-general-service/id1580190136"
                     class="block dark:ring-gray-600 dark:hover:ring-gray-400 ring-1 rounded-md">
                     <img src="{{ asset('download-apple-new.svg') }}" alt="App Store" class="h-14 block pointer-events-none">
@@ -33,23 +25,38 @@
                         class="h-14 block pointer-events-none">
                 </a>
             </div>
-            <h3 class="mt-4 font-bold">
-                Participating Service Entities
-            </h3>
-            <ol class="list-decimal pl-5 pt-3">
-                @foreach ($entities as $entity)
-                    <li>
-                        @if ($entity->website)
-                            <a href="{{ $entity->website }}" class="text-blue-500 dark:text-white underline"
-                                target="_blank">
-                        @endif
-                        {{ $entity->name() }}
-                        @if ($entity->website)
-                            </a>
-                        @endif
+            <ul class="grid grid-cols-2">
+                @foreach ([
+            'gift' => 'Free of Charge',
+            'eye-slash' => 'No Tracking',
+            'moon' => 'Light / Dark Modes',
+            'language' => 'English, French, and Spanish',
+        ] as $icon => $text)
+                    <li class="p-10 border border-gray-300 dark:border-gray-600 grid gap-2 justify-items-center">
+                        @include('common.icon', ['icon' => $icon, 'size' => 'size-12'])
+                        {{ $text }}
                     </li>
                 @endforeach
-            </ol>
+            </ul>
+            <div class="grid gap-3">
+                <h3 class="font-bold text-xl">
+                    Participating Service Entities
+                </h3>
+                <ol class="list-decimal pl-5">
+                    @foreach ($entities as $entity)
+                        <li>
+                            @if ($entity->website)
+                                <a href="{{ $entity->website }}" class="text-blue-500 dark:text-white hover:underline"
+                                    target="_blank">
+                                    {{ $entity->name() }}
+                                </a>
+                            @else
+                                {{ $entity->name() }}
+                            @endif
+                        </li>
+                    @endforeach
+                </ol>
+            </div>
         </div>
         <div class="lg:-mr-3">
             <img src="{{ asset('screenshot.png') }}" alt="Hero" class="h-auto max-w-full">

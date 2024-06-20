@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Entities')
+@section('title', 'Service Entities')
 
 @section('description', 'View all service entities.')
 
@@ -11,7 +11,7 @@
         @include('common.alerts')
 
         @include('common.heading', [
-            'title' => 'Entites',
+            'title' => 'Service Entities',
         ])
 
         @include('common.table', [

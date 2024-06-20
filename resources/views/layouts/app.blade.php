@@ -63,7 +63,7 @@
                                         <a href="{{ route('entities.index') }}"
                                             class="flex p-3 border-b gap-2 align-center">
                                             @include ('common.icon', ['icon' => 'cog'])
-                                            Entities
+                                            Service Entities
                                         </a>
                                         <a href="{{ route('users.index') }}" class="flex p-3 border-b gap-2 align-center">
                                             @include ('common.icon', ['icon' => 'cog'])
