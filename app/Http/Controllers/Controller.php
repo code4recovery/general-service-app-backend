@@ -20,14 +20,9 @@ abstract class Controller
         }
     }
 
-    public function formatNumber($number)
-    {
-        return str_pad($number, 2, '0', STR_PAD_LEFT);
-    }
-
     public function updateDistrictJson($district)
     {
-        $filename = 'area-' . $this->formatNumber($district->area) . '-district-' . $this->formatNumber($district->district) . '.json';
+        $filename = 'area-' . $district->area() . '-district-' . $district->district() . '.json';
         Storage::disk('public')->put($filename, $district->toJson(env('APP_DEBUG', false) ? JSON_PRETTY_PRINT : 0));
     }
 

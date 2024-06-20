@@ -18,16 +18,16 @@
 
         @include('common.table', [
             'empty' => 'No users yet.',
-            'headings' => ['Name', 'Admin', 'Districts', 'Last Seen'],
+            'headings' => ['Name', 'Admin', 'Entities', 'Last Seen'],
             'rows' => $users->map(function ($user) {
                 return [
                     'href' => route('users.edit', [$user->id]),
                     'values' => [
                         $user->name,
                         $user->admin ? 'Yes' : 'No',
-                        $user->districts->count() === 1
-                            ? $user->districts[0]->number() . ': ' . $user->districts[0]->name
-                            : $user->districts->count() . ' districts',
+                        $user->entities->count() === 1
+                            ? $user->entities[0]->name()
+                            : $user->entities->count() . ' entities',
                         $user->last_seen ? $user->last_seen->diffForHumans() : 'Never',
                     ],
                 ];

@@ -51,15 +51,15 @@
                 </label>
 
                 <div class="grid gap-1 w-full">
-                    <label for="districts" class="block">
-                        Districts
+                    <label for="entities" class="block">
+                        Entities
                     </label>
-                    <div class="grid gap-2">
-                        @foreach ($districts as $district)
+                    <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                        @foreach ($entities as $entity)
                             <label class="flex items-center">
-                                <input type="checkbox" name="districts[]" value="{{ $district->id }}"
-                                    @if (isset($user) && $user->districts->contains($district)) checked @endif>
-                                <span class="ml-2">{{ $district->name }}</span>
+                                <input type="checkbox" name="entities[]" value="{{ $entity->id }}"
+                                    @if (isset($user) && $user->entities->contains($entity)) checked @endif>
+                                <span class="ml-2">{{ $entity->name() }}</span>
                             </label>
                         @endforeach
                     </div>

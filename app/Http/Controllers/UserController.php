@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use App\Models\District;
+use App\Models\Entity;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
@@ -45,14 +45,14 @@ class UserController extends Controller
     public function index()
     {
         return view('users', [
-            'users' => User::all()
+            'users' => User::with('entities')->get()
         ]);
     }
 
     public function create()
     {
         return view('user', [
-            'districts' => District::all()
+            'entities' => Entity::orderBy('area')->orderBy('district')->get()
         ]);
     }
 
@@ -65,8 +65,8 @@ class UserController extends Controller
         $user->admin = request('admin') === 'on';
         $user->save();
 
-        foreach ($request->input('districts') as $district) {
-            $user->districts()->attach($district);
+        foreach ($request->input('entities') as $district) {
+            $user->entities()->attach($district);
         }
 
         return redirect()->route('users.index')->with('success', 'User created');
@@ -76,7 +76,7 @@ class UserController extends Controller
     {
         return view('user', [
             'user' => User::find($id),
-            'districts' => District::all()
+            'entities' => Entity::orderBy('area')->orderBy('district')->get()
         ]);
     }
 
@@ -90,8 +90,8 @@ class UserController extends Controller
 
         $user->save();
 
-        //save districts
-        $user->districts()->sync(request('districts'));
+        // save entities
+        $user->entities()->sync(request('entities'));
 
         return redirect()->route('users.index')->with('success', 'User updated');
     }
@@ -100,7 +100,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
 
-        $user->districts()->detach();
+        $user->entities()->detach();
 
         $user->delete();
 

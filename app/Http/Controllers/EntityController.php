@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Area;
-use App\Models\District;
+use App\Models\Entity;
 
 class EntityController extends Controller
 {
@@ -13,8 +12,8 @@ class EntityController extends Controller
      */
     public function index()
     {
-        $areas = Area::with('districts')->orderBy('id')->get();
-        return view('entities', ['areas' => $areas]);
+        $entities = Entity::orderBy('area')->orderBy('district')->get();
+        return view('entities', ['entities' => $entities]);
     }
 
     /**
@@ -42,15 +41,11 @@ class EntityController extends Controller
             $query->orderBy('order', 'asc');
         }])->first();
 
-        $area = request('area');
-        $district = request('district');
-
         if ($user->admin) {
             $entity = Entity::with(['stories' => function ($query) {
                 $query->orderBy('order', 'asc');
-            }, 'area'])
-                ->where('area', $areaId)
-                ->where('number', $district)
+            }])
+                ->where('id', request('entityId'))
                 ->first();
         } else {
             $entity = $user->entities->where('id', request('entityId'))->first();

@@ -34,7 +34,7 @@
                 </a>
             </div>
             <h3 class="mt-4 font-bold">
-                Participating Districts
+                Participating Service Entities
             </h3>
             <ol class="list-decimal pl-5 pt-3">
                 @foreach ($entities as $entity)

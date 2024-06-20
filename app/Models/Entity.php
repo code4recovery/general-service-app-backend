@@ -28,11 +28,27 @@ class Entity extends Model
         }
         if (!$this->district) {
             // area
-            return 'Area ' . str_pad($this->area, 2, '0', STR_PAD_LEFT) . ': ' . $this->name;
+            return 'Area ' . $this->area() . ': ' . $this->name;
         }
         // district
-        return 'Area ' . str_pad($this->area, 2, '0', STR_PAD_LEFT) . ' - District ' .
-            str_pad($this->district, 2, '0', STR_PAD_LEFT) . ': ' . $this->name;
+        return 'Area ' . $this->area() . ' - District ' .
+            $this->district() . ': ' . $this->name;
+    }
+
+
+    public function area(): string
+    {
+        return $this->area ? $this->format($this->area) : '';
+    }
+
+    public function district(): string
+    {
+        return $this->district ? $this->format($this->district) : '';
+    }
+
+    private function format($number): string
+    {
+        return str_pad($number, 2, '0', STR_PAD_LEFT);
     }
 
     public function stories(): HasMany
