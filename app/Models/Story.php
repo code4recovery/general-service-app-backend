@@ -27,8 +27,8 @@ class Story extends Model
     protected function casts(): array
     {
         return [
-            'start_at' => 'datetime',
-            'end_at' => 'datetime',
+            'start_at' => 'datetime:Y-m-d',
+            'end_at' => 'datetime:Y-m-d',
         ];
     }
 
