@@ -64,7 +64,7 @@ abstract class Controller
 
     public function updateGsoJson($gso)
     {
-        Entity::with($this->relations)->select($this->select)->whereNotNull('area')->whereNull('district')->get()->each(function ($area) use ($gso) {
+        Entity::with($this->relations())->select($this->select())->whereNotNull('area')->whereNull('district')->get()->each(function ($area) use ($gso) {
             $this->updateAreaJson($area, $gso);
         });
     }
