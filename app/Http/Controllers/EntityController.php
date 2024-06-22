@@ -7,77 +7,105 @@ use App\Models\Entity;
 
 class EntityController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $entities = Entity::with(['stories', 'users'])->orderBy('area')->orderBy('district')->get();
         return view('entities', ['entities' => $entities]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('entity', ['languages' => $this->languages]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $validated = request()->validate([
+            'name' => ['required', 'max:255'],
+            'area' => ['integer'],
+            'district' => ['integer'],
+            'website' => ['max:255'],
+            'language' => ['max:2'],
+            'banner' => ['max:255'],
+            'banner_dark' => ['max:255'],
+        ]);
+
+        $entity = Entity::create([
+            'name' => $validated['name'],
+            'area' => $validated['area'],
+            'district' => $validated['district'],
+            'website' => $validated['website'],
+            'language' => $validated['language'],
+            'banner' => $validated['banner'],
+            'banner_dark' => $validated['banner_dark'],
+        ]);
+
+        $this->updateJson($entity->id);
+
+        return redirect()
+            ->route('entities.index')
+            ->with('success', 'Entity created.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show()
-    {
-        $user = auth()->user()->with(['entities', 'entities.stories' => function ($query) {
-            $query->orderBy('order', 'asc');
-        }])->first();
 
-        if ($user->admin) {
-            $entity = Entity::with(['stories' => function ($query) {
-                $query->orderBy('order', 'asc');
-            }])
-                ->where('id', request('entityId'))
-                ->first();
-        } else {
-            $entity = $user->entities->where('id', request('entityId'))->first();
-            if (!$entity) {
-                return redirect()->route('home');
-            }
-        }
-
-        return view('entity', ['entity' => $entity]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
-        //
+        $entity = $this->getEntity(request('entity'));
+        if (!$entity) {
+            return redirect()->route('home');
+        }
+        return view('entity', ['entity' => $entity, 'languages' => $this->languages]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
-        //
+        $entity = $this->getEntity(request('entity'));
+        if (!$entity) {
+            return redirect()->route('home');
+        }
+
+        $validated = request()->validate([
+            'name' => ['required', 'max:255'],
+            'area' => ['integer'],
+            'district' => ['integer'],
+            'website' => ['max:255'],
+            'language' => ['max:2'],
+            'banner' => ['max:255'],
+            'banner_dark' => ['max:255'],
+        ]);
+
+        $entity->update([
+            'name' => $validated['name'],
+            'area' => $validated['area'],
+            'district' => $validated['district'],
+            'website' => $validated['website'],
+            'banner' => $validated['banner'],
+            'banner_dark' => $validated['banner_dark'],
+        ]);
+
+        $this->updateJson($entity->id);
+
+        return redirect()
+            ->route('entities.index')
+            ->with('success', 'Entity updated.');
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        //
+        $entity = $this->getEntity(request('entity'));
+
+        if (!$entity) {
+            return redirect()->route('entities.index');
+        }
+
+        $entity->delete();
+
+        $this->deleteJson($entity->area, $entity->district);
+
+        return redirect()
+            ->route('entities.index', $entity->id)
+            ->with('success', 'Entity deleted.');
+
     }
 }

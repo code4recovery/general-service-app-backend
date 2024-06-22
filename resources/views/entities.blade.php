@@ -12,6 +12,10 @@
 
         @include('common.heading', [
             'title' => 'Service Entities',
+            'button' => [
+                'href' => route('entities.create'),
+                'label' => 'Create Entity',
+            ],
         ])
 
         @include('common.table', [
@@ -19,7 +23,7 @@
             'headings' => ['Name', 'Type', 'Users', 'Stories'],
             'rows' => $entities->map(function ($entity) {
                 return [
-                    'href' => route('entity', $entity->id),
+                    'href' => route('entities.edit', $entity),
                     'values' => [
                         $entity->name(),
                         $entity->type(),

@@ -12,7 +12,7 @@
             'title' => 'Users',
             'button' => [
                 'href' => route('users.create'),
-                'label' => 'Create',
+                'label' => 'Create User',
             ],
         ])
 
@@ -21,7 +21,7 @@
             'headings' => ['Name', 'Admin', 'Entities', 'Last Seen'],
             'rows' => $users->map(function ($user) {
                 return [
-                    'href' => route('users.edit', [$user->id]),
+                    'href' => route('users.edit', $user),
                     'values' => [
                         $user->name,
                         $user->admin ? 'Yes' : 'No',

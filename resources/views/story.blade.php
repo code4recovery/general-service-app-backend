@@ -8,7 +8,8 @@
 
         @include('common.alerts')
 
-        <form method="post" class="grid gap-8">
+        <form method="post" class="grid gap-8"
+            action="{{ isset($story) ? route('entities.stories.update', [$entity, $story]) : route('entities.stories.store', $entity) }}">
             @csrf
             @isset($story)
                 @method('put')
@@ -113,8 +114,8 @@
             @endforeach
 
             @include('common.submit', [
-                'cancel' => route('entity', $entity->id),
-                'delete' => isset($story) ? route('delete-story', [$story->id]) : null,
+                'cancel' => route('entities.stories.index', $entity),
+                'delete' => isset($story) ? route('delete-story', $story) : null,
             ])
 
         </form>

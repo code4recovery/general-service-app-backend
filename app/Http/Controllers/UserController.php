@@ -25,7 +25,7 @@ class UserController extends Controller
             $user->save();
 
             $entity = Auth::user()->entities()->first();
-            return redirect()->route('entity', $entity->id);
+            return redirect()->route('entities.stories.index', $entity);
         }
 
         return back()->with('error', 'Invalid credentials');

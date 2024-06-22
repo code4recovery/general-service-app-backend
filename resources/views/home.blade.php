@@ -31,10 +31,10 @@
             'eye-slash' => 'No Tracking',
             'moon' => 'Light / Dark Modes',
             'language' => 'English, French, and Spanish',
-        ] as $icon => $text)
+        ] as $navicon => $navtext)
                     <li class="p-10 border border-gray-300 dark:border-gray-600 grid gap-2 justify-items-center">
-                        @include('common.icon', ['icon' => $icon, 'size' => 'size-12'])
-                        {{ $text }}
+                        @include('common.icon', ['icon' => $navicon, 'size' => 'size-12'])
+                        {{ $navtext }}
                     </li>
                 @endforeach
             </ul>

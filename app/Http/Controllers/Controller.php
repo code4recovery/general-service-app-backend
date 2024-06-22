@@ -7,6 +7,15 @@ use Illuminate\Support\Facades\Storage;
 
 abstract class Controller
 {
+    public function getEntity($entityId)
+    {
+        $user = auth()->user()->with('entities')->first();
+
+        return ($user->admin)
+            ? Entity::where('id', $entityId)->first()
+            : $user->entities->where('id', $entityId)->first();
+    }
+
     public function select()
     {
         return [
@@ -20,6 +29,12 @@ abstract class Controller
         ];
     }
 
+    public $languages = [
+        'en' => 'English',
+        'es' => 'Español',
+        'fr' => 'Français',
+    ];
+
     public function relations()
     {
         return [
@@ -28,8 +43,19 @@ abstract class Controller
             },
             'stories.buttons' => function ($query) {
                 $query->select('id', 'story_id', 'title', 'link');
-            }
+            },
+            'links' => function ($query) {
+                $query->select('id', 'entity_id', 'title', 'target', 'language')->orderBy('order');
+            },
         ];
+    }
+
+    public function deleteJson($areaId, $districtId)
+    {
+        $filename = $areaId . '-' . $districtId . '.json';
+        if (Storage::disk('public')->exists($filename)) {
+            Storage::disk('public')->delete($filename);
+        }
     }
 
     public function updateJson($entity_id)

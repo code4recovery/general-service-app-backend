@@ -11,21 +11,6 @@ class StoryController extends Controller
     private $buttons = [0, 1, 2];
     private $types = ['announcement', 'event'];
 
-    private function getEntity($entityId)
-    {
-        $user = auth()->user()->with('entities')->first();
-
-        $entity = ($user->admin)
-            ? Entity::where('id', $entityId)->first()
-            : $user->entities->where('id', $entityId)->first();
-
-        if (!$entity) {
-            return redirect()->route('home');
-        }
-
-        return $entity;
-    }
-
     private function getStory($storyId)
     {
         $user = auth()->user()->with('entities', 'entities.stories', 'entities.stories.buttons')->first();
@@ -52,10 +37,35 @@ class StoryController extends Controller
         return $story;
     }
 
+    public function index()
+    {
+        $user = auth()->user()->with(['entities', 'entities.stories' => function ($query) {
+            $query->orderBy('order', 'asc');
+        }])->first();
+
+        if ($user->admin) {
+            $entity = Entity::with(['stories' => function ($query) {
+                $query->orderBy('order', 'asc');
+            }])
+                ->where('id', request('entity'))
+                ->first();
+        } else {
+            $entity = $user->entities->where('id', request('entity'))->first();
+            if (!$entity) {
+                return redirect()->route('home');
+            }
+        }
+
+        return view('stories', ['entity' => $entity]);
+    }
+
     public function create()
     {
 
-        $entity = $this->getEntity(request('entityId'));
+        $entity = $this->getEntity(request('entity'));
+        if (!$entity) {
+            return redirect()->route('home');
+        }
 
         return view('story', [
             'entity' => $entity,
@@ -67,7 +77,10 @@ class StoryController extends Controller
 
     public function store()
     {
-        $entity = $this->getEntity(request('entityId'));
+        $entity = $this->getEntity(request('entity'));
+        if (!$entity) {
+            return redirect()->route('home');
+        }
 
         $validated = request()->validate([
             'title' => ['required', 'max:255'],
@@ -106,7 +119,7 @@ class StoryController extends Controller
         $this->updateJson($entity->id);
 
         return redirect()
-            ->route('entity', $entity->id)
+            ->route('entities.stories.index', $entity)
             ->with('success', 'Story created.');
     }
 
@@ -170,7 +183,7 @@ class StoryController extends Controller
         $this->updateJson($story->entity_id);
 
         return redirect()
-            ->route('entity', $story->entity_id)
+            ->route('entities.stories.index', $story->entity_id)
             ->with('success', 'Story updated.');
     }
 
@@ -187,7 +200,7 @@ class StoryController extends Controller
         $this->updateJson($story->entity_id);
 
         return redirect()
-            ->route('entity', $story->entity_id)
+            ->route('entities.stories.index', $story->entity_id)
             ->with('success', 'Story deleted.');
     }
 
@@ -202,7 +215,10 @@ class StoryController extends Controller
 
     public function reorder()
     {
-        $entity = $this->getEntity(request('entityId'));
+        $entity = $this->getEntity(request('entity'));
+        if (!$entity) {
+            return redirect()->route('home');
+        }
 
         $validated = request()->validate([
             'order' => ['array'],

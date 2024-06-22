@@ -53,7 +53,7 @@
                                 class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg">
                                 <div class="rounded bg-white text-black shadow-xs">
                                     @foreach (auth()->user()->entities as $entity)
-                                        <a href="{{ route('entity', $entity->id) }}"
+                                        <a href="{{ route('entities.stories.index', $entity) }}"
                                             class="flex p-3 border-b gap-2 align-center">
                                             @include ('common.icon', ['icon' => 'home'])
                                             {{ $entity->name() }}

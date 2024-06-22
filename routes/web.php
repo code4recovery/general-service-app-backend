@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EntityController;
+use App\Http\Controllers\LinkController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\StoryController;
 use App\Http\Controllers\UserController;
@@ -35,18 +36,19 @@ Route::post('/register', [RegistrationController::class, 'store']);
 # Authenticated Routes
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/entity/{entityId?}', [EntityController::class, 'show'])->name('entity');
-    Route::get('/create-story/{entityId?}', [StoryController::class, 'create'])->name('create-story');
-    Route::post('/create-story/{entityId?}', [StoryController::class, 'store']);
-    Route::get('/edit-story/{story}', [StoryController::class, 'edit'])->name('edit-story');
-    Route::put('/edit-story/{story}', [StoryController::class, 'update']);
+    Route::resource('entities', EntityController::class);
+    Route::resource('entities.stories', StoryController::class);
+    Route::resource('entities.links', LinkController::class);
+
+    Route::get('/delete-entity/{entity}', [EntityController::class, 'destroy'])->name('delete-entity');
+    Route::get('/delete-link/{link}', [LinkController::class, 'destroy'])->name('delete-link');
     Route::get('/delete-story/{story}', [StoryController::class, 'destroy'])->name('delete-story');
-    Route::post('/reorder-stories/{entityId?}', [StoryController::class, 'reorder'])->name('reorder-stories');
+
+    Route::post('/reorder-links/{entity}', [LinkController::class, 'reorder'])->name('reorder-links');
+    Route::post('/reorder-stories/{entity}', [StoryController::class, 'reorder'])->name('reorder-stories');
 
     Route::middleware(UserIsAdmin::class)->group(function () {
-        Route::resource('entities', EntityController::class);
         Route::resource('users', UserController::class);
-        Route::get('/gso', [StoryController::class, 'gso'])->name('gso');
         Route::get('/delete-user/{user}', [UserController::class, 'destroy'])->name('delete-user');
     });
 });
