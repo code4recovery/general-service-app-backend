@@ -16,6 +16,7 @@ class Entity extends Model
         'district',
         'name',
         'banner',
+        'banner_dark',
         'website',
         'language',
     ];
