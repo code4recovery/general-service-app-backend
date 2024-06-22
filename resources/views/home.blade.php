@@ -15,14 +15,11 @@
                     news and event information to General Service Representatives.</p>
             </div>
             <div class="flex gap-4">
-                <a href="https://apps.apple.com/us/app/aa-general-service/id1580190136"
-                    class="block dark:ring-gray-600 dark:hover:ring-gray-400 ring-1 rounded-md">
-                    <img src="{{ asset('download-apple-new.svg') }}" alt="App Store" class="h-14 block pointer-events-none">
+                <a href="https://apps.apple.com/us/app/aa-general-service/id1580190136">
+                    <img src="{{ asset('download-apple.svg') }}" alt="App Store" class="h-14 block pointer-events-none">
                 </a>
-                <a href="https://play.google.com/store/apps/details?id=com.aa.generalservice"
-                    class="block dark:ring-gray-600 dark:hover:ring-gray-400 ring-1 rounded-md">
-                    <img src="{{ asset('download-google-new.svg') }}" alt="Google Play"
-                        class="h-14 block pointer-events-none">
+                <a href="https://play.google.com/store/apps/details?id=com.aa.generalservice">
+                    <img src="{{ asset('download-google.svg') }}" alt="Google Play" class="h-14 block pointer-events-none">
                 </a>
             </div>
             <ul class="grid grid-cols-2">
@@ -32,7 +29,8 @@
             'moon' => 'Light / Dark Modes',
             'language' => 'English, French, and Spanish',
         ] as $navicon => $navtext)
-                    <li class="p-10 border border-gray-300 dark:border-gray-600 grid gap-2 justify-items-center">
+                    <li
+                        class="py-10 px-3 border border-gray-300 dark:border-gray-600 grid gap-2 justify-items-center text-center">
                         @include('common.icon', ['icon' => $navicon, 'size' => 'size-12'])
                         {{ $navtext }}
                     </li>
@@ -59,7 +57,8 @@
             </div>
         </div>
         <div class="lg:-mr-3">
-            <img src="{{ asset('screenshot.png') }}" alt="Hero" class="h-auto max-w-full">
+            <img src="{{ asset('screenshot-light.png') }}" alt="Hero" class="h-auto max-w-full block dark:hidden">
+            <img src="{{ asset('screenshot-dark.png') }}" alt="Hero" class="h-auto max-w-full hidden dark:block">
         </div>
     </div>
 
