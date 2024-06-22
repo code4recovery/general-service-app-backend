@@ -24,6 +24,7 @@ abstract class Controller
             'district',
             'name',
             'banner',
+            'banner_dark',
             'website',
             'language'
         ];
