@@ -59,7 +59,7 @@ class LinkController extends Controller
             'target' => $validated['target'],
             'language' => 'en',
             'user_id' => auth()->user()->id,
-            'order' => $entity->stories->count(),
+            'order' => $entity->links->max('order') + 1,
         ]);
 
         $this->updateJson($entity->id);

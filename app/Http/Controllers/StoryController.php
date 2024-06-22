@@ -102,7 +102,7 @@ class StoryController extends Controller
             'end_at' => $validated['end_at'],
             'language' => 'en',
             'user_id' => auth()->user()->id,
-            'order' => $entity->stories->count(),
+            'order' => $entity->stories->max('order') + 1,
         ]);
 
         foreach ($validated['buttons'] as $button) {
