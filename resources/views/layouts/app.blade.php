@@ -83,10 +83,6 @@
                         @if (!Request::is('login'))
                             @include('common.button', ['href' => route('login'), 'label' => 'Log in'])
                         @endif
-
-                        @if (!Request::is('register'))
-                            @include('common.button', ['href' => route('register'), 'label' => 'Register'])
-                        @endif
                     @endguest
                 </div>
             </div>

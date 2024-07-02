@@ -24,14 +24,7 @@ Route::post('/login', [UserController::class, 'login']);
 
 Route::get('/logout', [UserController::class, 'logout']);
 
-Route::get('/register', function () {
-    return view('register', [
-        'areas' => Entity::orderBy('area')->whereNotNull('area')->whereNull('district')->get()
-    ]);
-})->name('register');
-
-Route::post('/register', [RegistrationController::class, 'store']);
-
+Route::view('/map', 'map')->name('map');
 
 # Authenticated Routes
 
