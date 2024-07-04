@@ -18,7 +18,7 @@ class UserIsAdmin
         $user = auth()->user()->first();
 
         if (!$user) {
-            return redirect('login')->with('error', 'You must be logged in to access this page.');
+            return redirect('login')->with('error', __('You must be logged in to access this page.'));
         }
 
         if (!$user->admin) {

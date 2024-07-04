@@ -44,7 +44,7 @@ class EntityController extends Controller
 
         return redirect()
             ->route('entities.index')
-            ->with('success', 'Entity created.');
+            ->with('success', __('Entity created.'));
     }
 
 
@@ -87,7 +87,7 @@ class EntityController extends Controller
 
         return redirect()
             ->route('entities.index')
-            ->with('success', 'Entity updated.');
+            ->with('success', __('Entity updated.'));
 
     }
 
@@ -105,7 +105,7 @@ class EntityController extends Controller
 
         return redirect()
             ->route('entities.index', $entity->id)
-            ->with('success', 'Entity deleted.');
+            ->with('success', __('Entity deleted.'));
 
     }
 }

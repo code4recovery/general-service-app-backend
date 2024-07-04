@@ -16,20 +16,20 @@
 
         @include('common.nav', [
             'links' => [
-                route('entities.stories.index', $entity) => ['newspaper', 'Stories'],
-                route('entities.links.index', $entity) => ['chat-bubble-oval-left', 'Links'],
-                route('entities.edit', $entity) => ['cog', 'Settings'],
+                route('entities.stories.index', $entity) => ['newspaper', __('Stories')],
+                route('entities.links.index', $entity) => ['chat-bubble-oval-left', __('Links')],
+                route('entities.edit', $entity) => ['cog', __('Settings')],
             ],
             'button' => [
                 'href' => route('entities.stories.create', $entity),
-                'label' => 'Create Story',
+                'label' => __('Create Story'),
                 'icon' => 'newspaper',
             ],
         ])
 
         @include('common.table', [
             'empty' => 'No stories yet.',
-            'headings' => ['Title', 'Type', 'Effective', 'Expires'],
+            'headings' => [__('Title'), __('Type'), __('Effective'), __('Expires')],
             'reorder' => $entity->stories->count() > 1 ? route('reorder-stories', $entity) : null,
             'rows' => $entity->stories->map(function ($story) use ($entity) {
                 return [
@@ -37,7 +37,7 @@
                     'id' => $story->id,
                     'values' => [
                         $story->title,
-                        ucfirst($story->type),
+                        __(ucfirst($story->type)),
                         $story->start_at->format('M j'),
                         $story->end_at->format('M j'),
                     ],

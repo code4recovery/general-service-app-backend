@@ -24,7 +24,7 @@ class MagicLoginLink extends Mailable
     public function build()
     {
         return $this->subject(
-            config('app.name') . ' Login Verification'
+            __(':app Login', ['app' => __(config('app.name'))])
         )->markdown('emails.magic-login-link', [
           'url' => URL::temporarySignedRoute('verify-login', $this->expiresAt, [
             'token' => $this->plaintextToken,

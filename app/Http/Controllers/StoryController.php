@@ -27,11 +27,11 @@ class StoryController extends Controller
         $story = $entity->stories->where('id', request('story'))->first();
 
         if (!$story) {
-            return redirect()->back()->with('error', 'Story to edit was not found.');
+            return redirect()->back()->with('error', __('Story to edit was not found.'));
         }
 
         if ($story->entity->users->where('id', $user->id)->isEmpty()) {
-            return redirect()->back()->with('error', 'You do not have permission to edit this story.');
+            return redirect()->back()->with('error', __('You do not have permission to edit this story.'));
         }
 
         return $story;
@@ -120,7 +120,7 @@ class StoryController extends Controller
 
         return redirect()
             ->route('entities.stories.index', $entity)
-            ->with('success', 'Story created.');
+            ->with('success', __('Story created.'));
     }
 
     public function edit()
@@ -184,7 +184,7 @@ class StoryController extends Controller
 
         return redirect()
             ->route('entities.stories.index', $story->entity_id)
-            ->with('success', 'Story updated.');
+            ->with('success', __('Story updated.'));
     }
 
     public function destroy()
@@ -201,7 +201,7 @@ class StoryController extends Controller
 
         return redirect()
             ->route('entities.stories.index', $story->entity_id)
-            ->with('success', 'Story deleted.');
+            ->with('success', __('Story deleted.'));
     }
 
     private function reference()

@@ -22,10 +22,10 @@ class UserController extends Controller
 
         if ($user) {
             $user->sendLoginLink();
-            return redirect()->back()->with('success', 'Login link sent');
+            return redirect()->back()->with('success', __('Login link sent'));
         }
 
-        return back()->with('error', 'Invalid credentials');
+        return back()->with('error', __('Could not find that email address in our records.'));
     }
 
 
@@ -34,7 +34,7 @@ class UserController extends Controller
         $token = LoginToken::whereToken(hash('sha256', $token))->firstOrFail();
         abort_unless($request->hasValidSignature() && $token->isValid(), 401);
         $token->consume();
-        Auth::login($token->user);
+        Auth::login($token->user, true);
 
         $entity = Auth::user()->entities()->first();
         return redirect()->route('entities.stories.index', $entity);
@@ -78,7 +78,7 @@ class UserController extends Controller
             $user->entities()->attach($district);
         }
 
-        return redirect()->route('users.index')->with('success', 'User created');
+        return redirect()->route('users.index')->with('success', __('User created.'));
     }
 
     public function edit(string $id)
@@ -102,7 +102,7 @@ class UserController extends Controller
         // save entities
         $user->entities()->sync(request('entities'));
 
-        return redirect()->route('users.index')->with('success', 'User updated');
+        return redirect()->route('users.index')->with('success', __('User updated.'));
     }
 
     public function destroy(string $id): RedirectResponse
@@ -113,8 +113,7 @@ class UserController extends Controller
 
         $user->delete();
 
-
-        return redirect()->route('users.index')->with('success', 'User deleted');
+        return redirect()->route('users.index')->with('success', __('User deleted.'));
     }
 
 }

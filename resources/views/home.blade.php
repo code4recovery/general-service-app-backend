@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'General Service App')
+@section('title', __('General Service App'))
 
-@section('description', 'An app designed for A.A. General Service')
+@section('description', __('An app designed for A.A. General Service'))
 
 @section('content')
 

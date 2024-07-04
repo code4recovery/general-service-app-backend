@@ -16,20 +16,20 @@
 
         @include('common.nav', [
             'links' => [
-                route('entities.stories.index', $entity) => ['newspaper', 'Stories'],
-                route('entities.links.index', $entity) => ['chat-bubble-oval-left', 'Links'],
-                route('entities.edit', $entity) => ['cog', 'Settings'],
+                route('entities.stories.index', $entity) => ['newspaper', __('Stories')],
+                route('entities.links.index', $entity) => ['chat-bubble-oval-left', __('Links')],
+                route('entities.edit', $entity) => ['cog', __('Settings')],
             ],
             'button' => [
                 'href' => route('entities.links.create', $entity),
-                'label' => 'Create Link',
+                'label' => __('Create Link'),
                 'icon' => 'chat-bubble-oval-left',
             ],
         ])
 
         @include('common.table', [
             'empty' => 'No links yet.',
-            'headings' => ['Title', 'Target', 'Created', 'Updated'],
+            'headings' => [__('Title'), __('Target'), __('Created'), __('Updated')],
             'reorder' => $entity->links->count() > 1 ? route('reorder-links', $entity) : null,
             'rows' => $entity->links->map(function ($link) use ($entity) {
                 return [

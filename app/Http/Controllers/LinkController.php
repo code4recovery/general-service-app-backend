@@ -66,7 +66,7 @@ class LinkController extends Controller
 
         return redirect()
             ->route('entities.links.index', $entity)
-            ->with('success', 'Link created.');
+            ->with('success', __('Link created.'));
     }
 
     public function edit(string $id)
@@ -97,7 +97,7 @@ class LinkController extends Controller
 
         return redirect()
             ->route('entities.links.index', $link->entity_id)
-            ->with('success', 'Link updated.');
+            ->with('success', __('Link updated.'));
     }
 
     public function destroy()
@@ -110,7 +110,7 @@ class LinkController extends Controller
 
         return redirect()
             ->route('entities.links.index', $link->entity_id)
-            ->with('success', 'Link deleted.');
+            ->with('success', __('Link deleted.'));
     }
 
     public function reorder()
@@ -151,11 +151,11 @@ class LinkController extends Controller
         $link = $entity->links->where('id', request('link'))->first();
 
         if (!$link) {
-            return redirect()->back()->with('error', 'Link to edit was not found.');
+            return redirect()->back()->with('error', __('Link to edit was not found.'));
         }
 
         if ($link->entity->users->where('id', $user->id)->isEmpty()) {
-            return redirect()->back()->with('error', 'You do not have permission to edit this link.');
+            return redirect()->back()->with('error', __('You do not have permission to edit this link.'));
         }
 
         return $link;

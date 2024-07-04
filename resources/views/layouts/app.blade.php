@@ -33,7 +33,7 @@
                         </svg>
                     </a>
                     <a href="/" class="text-2xl font-light">
-                        <h1>General Service App</h1>
+                        <h1>{{ __('General Service App') }}</h1>
                     </a>
                 </div>
                 <div>
@@ -62,16 +62,16 @@
                                         <a href="{{ route('entities.index') }}"
                                             class="flex p-3 border-b gap-2 align-center">
                                             @include ('common.icon', ['icon' => 'cog'])
-                                            Service Entities
+                                            {{ __('Service Entities') }}
                                         </a>
                                         <a href="{{ route('users.index') }}" class="flex p-3 border-b gap-2 align-center">
                                             @include ('common.icon', ['icon' => 'cog'])
-                                            Users
+                                            {{ __('Users') }}
                                         </a>
                                     @endif
                                     <a href="/logout" class="flex p-3 border-b gap-2 align-center">
                                         @include ('common.icon', ['icon' => 'x'])
-                                        Log out
+                                        {{ __('Log Out') }}
                                     </a>
                                 </div>
                             </div>
@@ -96,7 +96,9 @@
 
     <footer class="pb-8 text-center text-sm">
         <p>
-            <a href="{{ route('privacy') }}" class="text-black/70 dark:text-white/70 hover:underline">Privacy Policy</a>
+            <a href="{{ route('privacy') }}" class="text-black/70 dark:text-white/70 hover:underline">
+                {{ __('Privacy Policy') }}
+            </a>
         </p>
     </footer>
 </body>

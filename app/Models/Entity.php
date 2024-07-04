@@ -25,15 +25,22 @@ class Entity extends Model
     {
         if (!$this->area) {
             // gso
-            return $this->name;
+            return __($this->name);
         }
         if (!$this->district) {
             // area
-            return 'Area ' . $this->area() . ': ' . $this->name;
+            return __('Area :area: :name', [
+                'area' => $this->area(),
+                'name' => $this->name
+            ]);
         }
         // district
-        return 'Area ' . $this->area() . ' - District ' .
-            $this->district() . ': ' . $this->name;
+        return __('Area :area - District :district: :name', [
+            'area' => $this->area(),
+            'district' => $this->district(),
+            'name' => $this->name
+        ]);
+
     }
 
 

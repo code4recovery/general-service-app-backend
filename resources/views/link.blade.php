@@ -16,9 +16,9 @@
 
         @include('common.nav', [
             'links' => [
-                route('entities.stories.index', $entity) => ['newspaper', 'Stories'],
-                route('entities.links.index', $entity) => ['chat-bubble-oval-left', 'Links'],
-                route('entities.edit', $entity) => ['cog', 'Settings'],
+                route('entities.stories.index', $entity) => ['newspaper', __('Stories')],
+                route('entities.links.index', $entity) => ['chat-bubble-oval-left', __('Links')],
+                route('entities.edit', $entity) => ['cog', __('Settings')],
             ],
         ])
 
@@ -31,29 +31,29 @@
 
             <div class="grid lg:grid-cols-2 gap-3 lg:gap-8">
                 @include('common.input', [
-                    'label' => 'Title',
+                    'label' => __('Title'),
                     'name' => 'title',
                     'type' => 'text',
                     'required' => true,
-                    'placeholder' => 'e.g. District Chair',
+                    'placeholder' => __('e.g. District Chair'),
                     'value' => isset($link) ? $link['title'] : '',
                 ])
                 <div class="text-sm lg:pt-6">
-                    This is the link text.
+                    {{ __('This is the link text.') }}
                 </div>
             </div>
 
             <div class="grid lg:grid-cols-2 gap-3 lg:gap-8">
                 @include('common.input', [
-                    'label' => 'Target',
+                    'label' => __('Target'),
                     'name' => 'target',
                     'type' => 'text',
                     'required' => true,
-                    'placeholder' => 'e.g. mailto:chair@district.org',
+                    'placeholder' => __('e.g. mailto:chair@district.org'),
                     'value' => isset($link) ? $link['target'] : '',
                 ])
                 <div class="text-sm lg:pt-6">
-                    This is the link URL.
+                    {{ __('This is the link URL.') }}
                 </div>
             </div>
 

@@ -11,10 +11,10 @@
         @include('common.alerts')
 
         @include('common.heading', [
-            'title' => 'Service Entities',
+            'title' => __('Service Entities'),
             'button' => [
                 'href' => route('entities.create'),
-                'label' => 'Create Entity',
+                'label' => __('Create Entity'),
             ],
         ])
 

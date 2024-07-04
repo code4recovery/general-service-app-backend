@@ -1,6 +1,6 @@
 <div class="grid gap-1 w-full">
     <label for="{{ $name }}" class="block">{{ $label }} @if (empty($required))
-            <span class="text-gray-400">• optional</span>
+            <span class="text-gray-400">• {{ __('optional') }}</span>
         @endif
     </label>
     @if ($type === 'textarea')

@@ -15,19 +15,23 @@
         <form class="grid gap-4 bg-white dark:bg-gray-800 rounded shadow p-8" method="post">
             @csrf
 
-            <h1 class="text-2xl font-bold">Log in</h1>
+            <h1 class="text-2xl font-bold">{{ __('Log in') }}</h1>
 
-            <p>Are you a District Chair registered with GSO in <a href="https://fc.aa.org/"
-                    class="underline text-blue-600 dark:text-blue-400" target="_blank">Fellowship
-                    Connection</a>?</p>
+            <p>{!! __('Are you a District Chair registered with GSO in :link', [
+                'link' =>
+                    '<a href="https://fc.aa.org/" class="underline text-blue-600 dark:text-blue-400" target="_blank">' .
+                    __('Fellowship Connection') .
+                    '</a>',
+            ]) !!}
+            </p>
 
             <fieldset class="grid gap-4 mb-4">
                 @include('common.input', [
                     'name' => 'email',
-                    'label' => 'Email',
+                    'label' => __('Email'),
                     'type' => 'email',
                     'required' => true,
-                    'placeholder' => 'address@email.com',
+                    'placeholder' => __('address@example.com'),
                 ])
             </fieldset>
 
