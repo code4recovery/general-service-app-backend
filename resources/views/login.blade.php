@@ -12,10 +12,14 @@
 
         @include('common.alerts')
 
-        <form class="grid gap-4 bg-white dark:bg-gray-800 rounded-lg shadow p-8" method="post">
+        <form class="grid gap-4 bg-white dark:bg-gray-800 rounded shadow p-8" method="post">
             @csrf
 
-            <legend class="text-2xl font-bold">Log in</legend>
+            <h1 class="text-2xl font-bold">Log in</h1>
+
+            <p>Are you a District Chair registered with GSO in <a href="https://fc.aa.org/"
+                    class="underline text-blue-600 dark:text-blue-400" target="_blank">Fellowship
+                    Connection</a>?</p>
 
             <fieldset class="grid gap-4 mb-4">
                 @include('common.input', [
@@ -23,13 +27,7 @@
                     'label' => 'Email',
                     'type' => 'email',
                     'required' => true,
-                ])
-
-                @include('common.input', [
-                    'name' => 'password',
-                    'label' => 'Password',
-                    'type' => 'password',
-                    'required' => true,
+                    'placeholder' => 'address@email.com',
                 ])
             </fieldset>
 

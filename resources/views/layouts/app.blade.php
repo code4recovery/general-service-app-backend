@@ -17,7 +17,7 @@
 <body class="bg-gray-200 dark:bg-gray-700 dark:text-white min-h-screen flex flex-col gap-6">
     <header>
         <div class="container max-w-6xl mx-auto px-4 py-6">
-            <div class="flex justify-between items-center">
+            <div class="flex justify-between items-center flex-col sm:flex-row gap-8">
                 <div class="flex gap-4 items-center">
                     <a href="{{ route('home') }}" class="text-2xl font-bold">
                         <svg fill="currentColor" viewBox="0 0.02 431.99 431.99" class="h-20">
@@ -36,8 +36,7 @@
                         <h1>General Service App</h1>
                     </a>
                 </div>
-                <div class="flex gap-2 flex-col sm:flex-row sm:gap-5 items-stretch sm:items-center">
-
+                <div>
                     @auth
                         <div x-data="{ isOpen: false }" class="relative">
                             @include('common.button', [
@@ -81,7 +80,7 @@
 
                     @guest
                         @if (!Request::is('login'))
-                            @include('common.button', ['href' => route('login'), 'label' => 'Log in'])
+                            @include('common.button', ['href' => route('login'), 'label' => __('Log in')])
                         @endif
                     @endguest
                 </div>

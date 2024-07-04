@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Entity;
 use App\Models\User;
+use App\Models\LoginToken;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -15,20 +16,28 @@ class UserController extends Controller
     {
         $credentials = $request->validate([
             'email' => ['required', 'email', 'max:255'],
-            'password' => ['required', 'max:255'],
         ]);
 
-        if (Auth::attempt($credentials, true)) {
-            $user = Auth::user();
+        $user = User::whereEmail($credentials['email'])->first();
 
-            $user->last_seen = now();
-            $user->save();
-
-            $entity = Auth::user()->entities()->first();
-            return redirect()->route('entities.stories.index', $entity);
+        if ($user) {
+            $user->sendLoginLink();
+            return redirect()->back()->with('success', 'Login link sent');
         }
 
         return back()->with('error', 'Invalid credentials');
+    }
+
+
+    public function verifyLogin(Request $request, $token)
+    {
+        $token = LoginToken::whereToken(hash('sha256', $token))->firstOrFail();
+        abort_unless($request->hasValidSignature() && $token->isValid(), 401);
+        $token->consume();
+        Auth::login($token->user);
+
+        $entity = Auth::user()->entities()->first();
+        return redirect()->route('entities.stories.index', $entity);
     }
 
     public function logout(Request $request): RedirectResponse
