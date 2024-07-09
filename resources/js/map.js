@@ -1,19 +1,7 @@
 let districts;
 let map;
 
-const defaultPolygonStyle = {
-    fillOpacity: 0.1,
-    strokeOpacity: 0.3,
-    strokeWeight: 1,
-    zIndex: 1,
-};
-
-const selectedPolygonStyle = {
-    fillOpacity: 0.35,
-    strokeOpacity: 1,
-    strokeWeight: 4,
-    zIndex: 1000,
-};
+import { defaultPolygonStyle, selectedPolygonStyle } from "./helpers.js";
 
 async function initMap() {
     const [{ Map }] = await Promise.all([
