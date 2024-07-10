@@ -32,7 +32,7 @@ class ImportKmz extends Command
     public function handle()
     {
         // fetch file with latest polygons
-        $file = Http::get('https://www.google.com/maps/d/kml?mid=' . env('GOOGLE_MY_MAP_ID'));
+        $file = Http::get('https://www.google.com/maps/d/kml?mid=1JdcfPyEvnTAAWgT-ksw0JIc14FAnIgQ');
         $this->info('fetched map ' . env('GOOGLE_MY_MAP_ID'));
 
         // save file locally
@@ -63,7 +63,7 @@ class ImportKmz extends Command
         // load styles
         $styles = [];
         foreach ($xml->Document->Style as $style) {
-            $styles['#' . $style->attributes()['id']] = '#' . substr($style->PolyStyle->color->__toString(), 0, 6);
+            $styles['#' . $style->attributes()['id']] = '#' . substr($style->PolyStyle->color->__toString(), 6, 2). substr($style->PolyStyle->color->__toString(), 4, 2). substr($style->PolyStyle->color->__toString(), 2, 2);
         }
 
         $colors = [];
@@ -74,13 +74,14 @@ class ImportKmz extends Command
         // parse file
         $districts = [];
         foreach ($xml->Document->Folder as $folder) {
-            $area = explode(' ', $folder->name)[0];
+            list($area, $name, $language) = explode(' ', $folder->name);
             foreach ($folder->Placemark as $placemark) {
-                list($district, $name) = explode(' ', $placemark->name);
+                list($district, $name) = explode(' ', $placemark->name, 2);
                 $districts[] = [
-                    'area' => $area,
-                    'district' => $district,
-                    'name' => $name,
+                    'area' => intval($area),
+                    'district' => intval($district),
+                    'name' => trim($name),
+                    'language' => strtolower($language),
                     'color' => $colors[$placemark->styleUrl->__toString()],
                     'boundary' => 'POLYGON((' . join(',', array_map(
                         function ($coordinates) {
@@ -106,10 +107,22 @@ class ImportKmz extends Command
                 ->first();
             if ($entity) {
                 $entity->update([
+                    'name' => $district['name'],
                     'color' => $district['color'],
+                    'language' => $district['language'],
                     'boundary' => DB::raw("ST_GeomFromText('" . $district['boundary'] . "')")
                 ]);
                 $this->info('updated ' . $entity->name());
+            } else {
+                Entity::create([
+                    'area' => $district['area'],
+                    'district' => $district['district'],
+                    'name' => $district['name'],
+                    'language' => $district['language'],
+                    'color' => $district['color'],
+                    'boundary' => DB::raw("ST_GeomFromText('" . $district['boundary'] . "')")
+                ]);
+                $this->info('created ' . $district['name']);
             }
         }
 
