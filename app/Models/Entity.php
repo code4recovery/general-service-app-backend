@@ -19,6 +19,8 @@ class Entity extends Model
         'banner_dark',
         'website',
         'language',
+        'color',
+        'boundary',
     ];
 
     public function name(): string

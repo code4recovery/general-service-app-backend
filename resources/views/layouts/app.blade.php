@@ -49,7 +49,7 @@
                                 x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
                                 x-transition:leave="transition ease-in duration-75 transform"
                                 x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
-                                class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg">
+                                class="-ml-28 left-[50%] md:left-auto md:origin-top-right absolute md:right-0 mt-2 w-56 rounded-md shadow-lg">
                                 <div class="rounded bg-white text-black shadow-xs">
                                     @foreach (auth()->user()->entities as $entity)
                                         <a href="{{ route('entities.stories.index', $entity) }}"

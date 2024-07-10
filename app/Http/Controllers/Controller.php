@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Entity;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 abstract class Controller
@@ -94,5 +95,29 @@ abstract class Controller
         Entity::with($this->relations())->select($this->select())->whereNotNull('area')->whereNull('district')->get()->each(function ($area) use ($gso) {
             $this->updateAreaJson($area, $gso);
         });
+    }
+
+    public static function updateMapJson()
+    {
+        $districts = Entity::whereNotNull('boundary')->select(DB::raw('(ST_AsGeoJSON(boundary)) AS `boundary`, name, area, website, language, color'))->get();
+        $areas = Entity::whereNotNull('area')->whereNull('district')->get()->map(function ($area) use ($districts) {
+            return [
+                'area' => $area->area,
+                'name' => $area->name,
+                'website' => $area->website,
+                'districts' => $districts->where('area', $area->area)->map(function ($district) {
+                    return [
+                        'name' => $district->name,
+                        'website' => $district->website,
+                        'language' => $district->language,
+                        'color' => $district->color,
+                        'boundary' => json_decode($district->boundary)->coordinates[0],
+                    ];
+                })->values()->toArray()
+            ];
+        })->filter(function ($area) {
+            return count($area['districts']) > 0;
+        })->values();
+        Storage::put('public/map.json', $areas->toJson(env('APP_DEBUG', false) ? JSON_PRETTY_PRINT : 0));
     }
 }

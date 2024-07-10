@@ -85,6 +85,8 @@ class EntityController extends Controller
 
         $this->updateJson($entity->id);
 
+        self::updateMapJson();
+
         return redirect()
             ->route('entities.index')
             ->with('success', __('Entity updated.'));
