@@ -13,7 +13,7 @@ async function initMap() {
 
     const map = new Map(document.getElementById("map"), {
         disableDefaultUI: true,
-        zoomControl: true,
+        zoomControl: window.innerWidth > 500,
     });
 
     const { areas, userPosition } = await initData();
