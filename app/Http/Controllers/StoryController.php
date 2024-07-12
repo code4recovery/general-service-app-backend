@@ -204,7 +204,7 @@ class StoryController extends Controller
             ->with('success', __('Story deleted.'));
     }
 
-    private function reference()
+    public function reference()
     {
         $reference = substr(bin2hex(random_bytes(7)), 0, 7);
         if (Story::where('reference', $reference)->exists()) {

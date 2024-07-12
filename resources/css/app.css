@@ -16,3 +16,7 @@
     max-width: calc(100vw - 1.5rem);
     width: 25rem;
 }
+
+.gm-style iframe + div {
+    border: none !important;
+}

@@ -21,7 +21,8 @@ class Story extends Model
         'language',
         'user_id',
         'order',
-        'reference'
+        'reference',
+        'created_at',
     ];
 
     protected function casts(): array

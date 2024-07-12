@@ -41,7 +41,11 @@ abstract class Controller
     {
         return [
             'stories' => function ($query) {
-                $query->select('id', 'entity_id', 'title', 'description', 'type', 'reference', 'language', 'start_at', 'end_at')->orderBy('order');
+                $query->select('id', 'entity_id', 'title', 'description', 'type', 'reference', 'language', 'start_at', 'end_at')
+                    ->where('start_at', '<=', now())
+                    ->where('end_at', '>=', now())
+                    ->orderBy('order')
+                    ->orderBy('created_at', 'desc');
             },
             'stories.buttons' => function ($query) {
                 $query->select('id', 'story_id', 'title', 'link');
