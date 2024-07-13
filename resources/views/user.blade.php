@@ -34,17 +34,6 @@
                     'required' => true,
                 ])
 
-                @isset($user)
-                @else
-                    @include('common.input', [
-                        'label' => 'Password',
-                        'name' => 'password',
-                        'type' => 'password',
-                        'value' => old('password', ''),
-                        'required' => true,
-                    ])
-                @endisset
-
                 <label class="flex items-center">
                     <input type="checkbox" name="admin" @if (old('admin', isset($user) && $user->admin ? 'on' : '') === 'on') checked @endif>
                     <span class="ml-2">Admin</span>
