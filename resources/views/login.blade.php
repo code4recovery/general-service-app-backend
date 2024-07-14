@@ -17,18 +17,10 @@
 
             <h1 class="text-2xl font-bold">{{ __('Log in') }}</h1>
 
-            <p>{!! __('Are you a District Chair registered with GSO in :link', [
-                'link' =>
-                    '<a href="https://fc.aa.org/" class="underline text-blue-600 dark:text-blue-400" target="_blank">' .
-                    __('Fellowship Connection') .
-                    '</a>',
-            ]) !!}
-            </p>
-
             <fieldset class="grid gap-4 mb-4">
                 @include('common.input', [
                     'name' => 'email',
-                    'label' => __('Email'),
+                    'label' => __('DCM/C, Area Chair, Delegate, or GSO email'),
                     'type' => 'email',
                     'required' => true,
                     'placeholder' => __('address@example.com'),
