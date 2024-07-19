@@ -23,7 +23,7 @@ class EntityController extends Controller
         $validated = request()->validate([
             'name' => ['required', 'max:255'],
             'area' => ['integer'],
-            'district' => ['integer'],
+            'district' => ['max:5'],
             'website' => ['max:255'],
             'language' => ['max:2'],
             'banner' => ['max:255'],
@@ -67,7 +67,7 @@ class EntityController extends Controller
         $validated = request()->validate([
             'name' => ['required', 'max:255'],
             'area' => ['integer'],
-            'district' => ['integer'],
+            'district' => ['max:5'],
             'website' => ['max:255'],
             'language' => ['max:2'],
             'banner' => ['max:255'],
@@ -79,6 +79,7 @@ class EntityController extends Controller
             'area' => $validated['area'],
             'district' => $validated['district'],
             'website' => $validated['website'],
+            'language' => $validated['language'],
             'banner' => $validated['banner'],
             'banner_dark' => $validated['banner_dark'],
         ]);

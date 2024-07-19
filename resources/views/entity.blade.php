@@ -55,7 +55,7 @@
                     @include('common.input', [
                         'label' => __('District Number'),
                         'name' => 'district',
-                        'type' => 'number',
+                        'type' => 'text',
                         'value' => isset($entity) ? $entity['district'] : '',
                     ])
                 </div>
@@ -103,7 +103,7 @@
                         @foreach ($languages as $lang => $language)
                             <label class="flex items-center gap-2">
                                 <input type="radio" name="language" value="{{ $lang }}" required
-                                    @if (old('language', isset($entity) ? $entity['language'] : 'en') === $lang) checked @endif />
+                                    @if (old('language', isset($entity) ? $entity['language'] : 'en') === $lang) checked @endif>
                                 {{ $language }}
                             </label>
                         @endforeach
