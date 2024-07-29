@@ -22,9 +22,11 @@ export function initMenu(map, areas, districts, userDistrict) {
                 .sort((a, b) => a.district - b.district)
                 .forEach(({ district, name }) => {
                     const option = document.createElement("option");
-                    const districtNumber = district.toString().padStart(2, "0");
+                    const districtNumber = district.toString();
                     option.value = `${area}-${district}`;
-                    option.innerText = `${districtNumber} ${name}`;
+                    option.innerText = name
+                        ? `${districtNumber} ${name}`
+                        : `District ${districtNumber}`;
                     if (userDistrict?.index === option.value) {
                         option.selected = true;
                     }

@@ -37,9 +37,18 @@ class Entity extends Model
             ]);
         }
         // district
+        if (!$this->name) {
+            // area
+            return __('Area :area - District :district', [
+                'area' => $this->area(),
+                'district' => $this->district,
+                'name' => $this->name
+            ]);
+        }
+
         return __('Area :area - District :district: :name', [
             'area' => $this->area(),
-            'district' => $this->district(),
+            'district' => $this->district,
             'name' => $this->name
         ]);
 
@@ -49,11 +58,6 @@ class Entity extends Model
     public function area(): string
     {
         return $this->area ? $this->format($this->area) : '';
-    }
-
-    public function district(): string
-    {
-        return $this->district ? $this->format($this->district) : '';
     }
 
     private function format($number): string
@@ -79,12 +83,12 @@ class Entity extends Model
     public function type(): string
     {
         if ($this->area && $this->district) {
-            return 'District';
+            return __('District');
         }
         if ($this->area) {
-            return 'Area';
+            return __('Area');
         }
-        return 'GSO';
+        return __('GSO');
     }
 
 }

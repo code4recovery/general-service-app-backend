@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Service Entities')
+@section('title', 'Entities')
 
 @section('description', 'View all service entities.')
 
@@ -11,11 +11,7 @@
         @include('common.alerts')
 
         @include('common.heading', [
-            'title' => __('Service Entities'),
-            'button' => [
-                'href' => route('entities.create'),
-                'label' => __('Create Entity'),
-            ],
+            'title' => __('Entities'),
         ])
 
         @include('common.table', [

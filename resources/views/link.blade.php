@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', isset($link) ? 'Edit Link' : 'Create Link')
+@section('title', isset($link) ? __('Edit Link') : __('Create Link'))
 
 @section('description', 'Create or edit a link.')
 
@@ -11,7 +11,15 @@
         @include('common.alerts')
 
         @include('common.heading', [
-            'title' => $entity->name(),
+            'title' => isset($link) ? __('Edit Link') : __('Create Link'),
+            'breadcrumbs' => auth()->user()->admin
+                ? [
+                    route('entities.index') => __('Entities'),
+                    route('entities.links.index', $entity) => $entity->name(),
+                ]
+                : [
+                    route('entities.links.index', $entity) => $entity->name(),
+                ],
         ])
 
         @include('common.nav', [

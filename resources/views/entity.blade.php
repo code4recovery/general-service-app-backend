@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', isset($entity) ? $entity->name() : 'New Service Entity')
+@section('title', isset($entity) ? $entity->name() : __('Create Entity'))
 
 @section('content')
 
@@ -8,11 +8,16 @@
 
         @include('common.alerts')
 
-        @isset($entity)
-            @include('common.heading', [
-                'title' => $entity->name(),
-            ])
+        @include('common.heading', [
+            'title' => isset($entity) ? $entity->name() : __('Create Entity'),
+            'breadcrumbs' => auth()->user()->admin
+                ? [
+                    route('entities.index') => __('Entities'),
+                ]
+                : [],
+        ])
 
+        @isset($entity)
             @include('common.nav', [
                 'links' => [
                     route('entities.stories.index', $entity) => ['newspaper', __('Stories')],
@@ -32,7 +37,7 @@
 
             <div class="grid lg:grid-cols-2 gap-3 lg:gap-8">
                 @include('common.input', [
-                    'label' => __('Location'),
+                    'label' => __('Name'),
                     'name' => 'name',
                     'type' => 'text',
                     'required' => true,
@@ -40,20 +45,20 @@
                     'value' => isset($entity) ? $entity['name'] : '',
                 ])
                 <div class="text-sm lg:pt-6">
-                    {{ __('This is the geographic location of the Area / District. Don’t include the number or any information about the parent.') }}
+                    {!! __('For example, <code>District 06: San Francisco</code>') !!}
                 </div>
             </div>
 
             <div class="grid lg:grid-cols-2 gap-3 lg:gap-8">
                 <div class="flex gap-5">
                     @include('common.input', [
-                        'label' => __('Area Number'),
+                        'label' => __('Area'),
                         'name' => 'area',
                         'type' => 'number',
                         'value' => isset($entity) ? $entity['area'] : '',
                     ])
                     @include('common.input', [
-                        'label' => __('District Number'),
+                        'label' => __('District'),
                         'name' => 'district',
                         'type' => 'text',
                         'value' => isset($entity) ? $entity['district'] : '',
@@ -67,20 +72,20 @@
             <div class="grid lg:grid-cols-2 gap-3 lg:gap-8">
                 <div class="flex gap-5">
                     @include('common.input', [
-                        'label' => __('Banner (Light)'),
+                        'label' => __('App Banner (Light)'),
                         'name' => 'banner',
                         'type' => 'url',
                         'value' => isset($entity) ? $entity['banner'] : '',
                     ])
                     @include('common.input', [
-                        'label' => __('Banner (Dark)'),
+                        'label' => __('App Banner (Dark)'),
                         'name' => 'banner_dark',
                         'type' => 'url',
                         'value' => isset($entity) ? $entity['banner_dark'] : '',
                     ])
                 </div>
                 <div class="text-sm lg:pt-6">
-                    {{ __('The banner image for the app. Ideally this should be a JPG 1200×300 pixels.') }}
+                    {{ __('These should be 1200×300 JPGs, under 100kb. Black text should be legible above the light version, and white text above the dark version.') }}
                 </div>
             </div>
 
@@ -91,9 +96,6 @@
                     'type' => 'url',
                     'value' => isset($entity) ? $entity['website'] : '',
                 ])
-                <div class="text-sm lg:pt-6">
-                    {{ __('The service entity’s website home page.') }}
-                </div>
             </div>
 
             <div class="grid lg:grid-cols-2 gap-3 lg:gap-8">
@@ -113,10 +115,6 @@
 
             @include('common.submit', [
                 'cancel' => auth()->user()->admin ? route('entities.index') : null,
-                'delete' =>
-                    auth()->user()->admin && isset($entity) && $entity->district
-                        ? route('delete-entity', $entity)
-                        : null,
             ])
 
         </form>

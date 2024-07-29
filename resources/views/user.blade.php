@@ -8,6 +8,14 @@
 
         @include('common.alerts')
 
+        @include('common.heading', [
+            'title' => isset($user) ? $user->name : 'Create User',
+            'breadcrumbs' => [
+                route('users.index') => __('Users'),
+            ],
+        ])
+
+
         <form class="grid gap-10" method="post"
             action={{ isset($user) ? route('users.update', $user) : route('users.store') }}>
 
@@ -48,7 +56,7 @@
                             <label class="flex items-center">
                                 <input type="checkbox" name="entities[]" value="{{ $entity->id }}"
                                     @if (isset($user) && $user->entities->contains($entity)) checked @endif>
-                                <span class="ml-2">{{ $entity->name() }}</span>
+                                <span class="ml-2">{{ $entity->name }}</span>
                             </label>
                         @endforeach
                     </div>

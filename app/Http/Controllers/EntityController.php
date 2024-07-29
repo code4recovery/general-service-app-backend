@@ -13,6 +13,7 @@ class EntityController extends Controller
         return view('entities', ['entities' => $entities]);
     }
 
+    /*
     public function create()
     {
         return view('entity', ['languages' => $this->languages]);
@@ -46,7 +47,7 @@ class EntityController extends Controller
             ->route('entities.index')
             ->with('success', __('Entity created.'));
     }
-
+    */
 
     public function edit(string $id)
     {
@@ -67,7 +68,7 @@ class EntityController extends Controller
         $validated = request()->validate([
             'name' => ['required', 'max:255'],
             'area' => ['integer'],
-            'district' => ['max:5'],
+            'district' => ['max:255'],
             'website' => ['max:255'],
             'language' => ['max:2'],
             'banner' => ['max:255'],

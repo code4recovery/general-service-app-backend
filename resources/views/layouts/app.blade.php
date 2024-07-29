@@ -42,7 +42,7 @@
                         <div x-data="{ isOpen: false }" class="relative">
                             @include('common.button', [
                                 'click' => 'isOpen = !isOpen',
-                                'icon' => 'caret-down',
+                                'icon' => 'chevron-down',
                                 'highlighted' => 'isOpen',
                             ])
 
@@ -63,7 +63,7 @@
                                         <a href="{{ route('entities.index') }}"
                                             class="flex p-3 border-b gap-2 align-center">
                                             @include ('common.icon', ['icon' => 'cog'])
-                                            {{ __('Service Entities') }}
+                                            {{ __('Entities') }}
                                         </a>
                                         <a href="{{ route('users.index') }}" class="flex p-3 border-b gap-2 align-center">
                                             @include ('common.icon', ['icon' => 'cog'])

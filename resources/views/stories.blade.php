@@ -12,6 +12,11 @@
 
         @include('common.heading', [
             'title' => $entity->name(),
+            'breadcrumbs' => auth()->user()->admin
+                ? [
+                    route('entities.index', $entity) => __('Entities'),
+                ]
+                : [],
         ])
 
         @include('common.nav', [

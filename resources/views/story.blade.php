@@ -8,6 +8,18 @@
 
         @include('common.alerts')
 
+        @include('common.heading', [
+            'title' => isset($story) ? __('Edit Story') : __('Create Story'),
+            'breadcrumbs' => auth()->user()->admin
+                ? [
+                    route('entities.index') => __('Entities'),
+                    route('entities.stories.index', $entity->id) => $entity->name(),
+                ]
+                : [
+                    route('entities.stories.index', $entity->id) => $entity->name(),
+                ],
+        ])
+
         <form method="post" class="grid gap-8"
             action="{{ isset($story) ? route('entities.stories.update', [$entity, $story]) : route('entities.stories.store', $entity) }}">
             @csrf
@@ -78,6 +90,21 @@
                 ])
                 <div class="lg:col-span-2 text-sm lg:pt-6">
                     {{ __('First and last dates to display the story.') }}
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-3 lg:gap-8">
+                <div class="grid gap-1 w-full">
+                    <label for="type" class="block">{{ __('Language') }}</label>
+                    <div class="grid grid-cols-4 gap-8">
+                        @foreach ($languages as $lang => $language)
+                            <label class="flex items-center gap-2">
+                                <input type="radio" name="language" value="{{ $lang }}" required
+                                    @if (old('language', isset($entity) ? $entity['language'] : 'en') === $lang) checked @endif>
+                                {{ $language }}
+                            </label>
+                        @endforeach
+                    </div>
                 </div>
             </div>
 

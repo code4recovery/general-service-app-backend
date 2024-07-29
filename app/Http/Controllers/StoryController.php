@@ -71,7 +71,9 @@ class StoryController extends Controller
             'entity' => $entity,
             'now' => now()->setTimezone('America/Chicago'),
             'buttons' => $this->buttons,
-            'types' => $this->types
+            'types' => $this->types,
+            'language' => $entity->language,
+            'languages' => $this->languages,
         ]);
     }
 
@@ -84,7 +86,7 @@ class StoryController extends Controller
 
         $validated = request()->validate([
             'title' => ['required', 'max:255'],
-            'description' => ['required', 'max:255'],
+            'description' => ['required'],
             'start_at' => ['required', 'date'],
             'end_at' => ['required', 'date'],
             'type' => ['required', 'in:' . implode(',', $this->types)],
@@ -100,7 +102,7 @@ class StoryController extends Controller
             'type' => $validated['type'],
             'start_at' => $validated['start_at'],
             'end_at' => $validated['end_at'],
-            'language' => 'en',
+            'language' => ['required', 'in:' . implode(',', $this->languages)],
             'user_id' => auth()->user()->id,
             'order' => $entity->stories->max('order') + 1,
         ]);
@@ -131,7 +133,8 @@ class StoryController extends Controller
             'entity' => $story->entity,
             'story' => $story,
             'buttons' => $this->buttons,
-            'types' => $this->types
+            'types' => $this->types,
+            'languages' => $this->languages,
         ]);
     }
 
@@ -141,10 +144,11 @@ class StoryController extends Controller
 
         $validated = request()->validate([
             'title' => ['required', 'max:255'],
-            'description' => ['required', 'max:255'],
+            'description' => ['required'],
             'type' => ['required', 'in:' . implode(',', $this->types)],
             'start_at' => ['required', 'date'],
             'end_at' => ['required', 'date'],
+            'language' => ['required', 'in:' . implode(',', $this->languages)],
             'buttons' => ['array'],
             'buttons.*.id' => ['max:255'],
             'buttons.*.title' => ['max:255'],

@@ -33,7 +33,7 @@ class ImportKmz extends Command
     {
         // fetch file with latest polygons
         $file = Http::get('https://www.google.com/maps/d/kml?mid=1JdcfPyEvnTAAWgT-ksw0JIc14FAnIgQ');
-        $this->info('fetched map ' . env('GOOGLE_MY_MAP_ID'));
+        $this->info('fetched map');
 
         // save file locally
         Storage::put('temp.kmz', $file->body());
@@ -74,14 +74,28 @@ class ImportKmz extends Command
         // parse file
         $districts = [];
         foreach ($xml->Document->Folder as $folder) {
-            list($area, $name, $language) = explode(' ', $folder->name);
+            $areaParts = explode(' ', strtolower($folder->name));
+            $control = array_shift($areaParts);
+            $area = intval(array_shift($areaParts));
+            $language = array_pop($areaParts);
+
+            if (!in_array($control, ['area', 'région']) || !in_array($language, ['fr', 'en', 'es'])) {
+                continue;
+            }
+
             foreach ($folder->Placemark as $placemark) {
-                list($district, $name) = explode(' ', $placemark->name, 2);
+                $districtParts = array_map('trim', explode(':', $placemark->name, 2));
+                if (count($districtParts) === 1) {
+                    $district = $districtParts[0];
+                    $name = null;
+                } else {
+                    list($district, $name) = $districtParts;
+                }
                 $districts[] = [
-                    'area' => intval($area),
-                    'district' => intval($district),
-                    'name' => trim($name),
-                    'language' => strtolower($language),
+                    'area' => $area,
+                    'district' => $district,
+                    'name' => $name,
+                    'language' => $language,
                     'color' => $colors[$placemark->styleUrl->__toString()],
                     'boundary' => 'POLYGON((' . join(',', array_map(
                         function ($coordinates) {
