@@ -128,7 +128,7 @@ class ImportKmz extends Command
                 ]);
                 $this->info('updated ' . $entity->name());
             } else {
-                Entity::create([
+                $entity = Entity::create([
                     'area' => $district['area'],
                     'district' => $district['district'],
                     'name' => $district['name'],
@@ -138,6 +138,7 @@ class ImportKmz extends Command
                 ]);
                 $this->info('created ' . $district['name']);
             }
+            Controller::updateJson($entity->id);
         }
 
         // update json files

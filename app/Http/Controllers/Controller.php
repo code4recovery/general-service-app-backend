@@ -17,7 +17,7 @@ abstract class Controller
             : $user->entities->where('id', $entityId)->first();
     }
 
-    public function select()
+    public static function select()
     {
         return [
             'id',
@@ -37,12 +37,11 @@ abstract class Controller
         'fr' => 'Français',
     ];
 
-    public function relations()
+    public static function relations()
     {
         return [
             'stories' => function ($query) {
                 $query->select('id', 'entity_id', 'title', 'description', 'type', 'reference', 'language', 'start_at', 'end_at')
-                    ->where('start_at', '<=', now())
                     ->where('end_at', '>=', now())
                     ->orderBy('order')
                     ->orderBy('created_at', 'desc');
@@ -56,7 +55,7 @@ abstract class Controller
         ];
     }
 
-    public function deleteJson($areaId, $districtId)
+    public static function deleteJson($areaId, $districtId)
     {
         $filename = $areaId . '-' . $districtId . '.json';
         if (Storage::disk('public')->exists($filename)) {
@@ -64,46 +63,58 @@ abstract class Controller
         }
     }
 
-    public function updateJson($entity_id)
+    public static function updateJson($entity_id)
     {
-        $entity = Entity::where('id', $entity_id)->with($this->relations())->select($this->select())->first();
+        $entity = Entity::where('id', $entity_id)->with(self::relations())->select(self::select())->first();
 
         if ($entity->district) {
-            $area = Entity::with($this->relations())->select($this->select())->where('area', $entity->area)->whereNull('district')->first();
-            $gso = Entity::with($this->relations())->select($this->select())->whereNull('area')->whereNull('district')->first();
-            $this->updateDistrictJson($entity, $area, $gso);
+            $area = Entity::with(self::relations())->select(self::select())->where('area', $entity->area)->whereNull('district')->first();
+            $gso = Entity::with(self::relations())->select(self::select())->whereNull('area')->whereNull('district')->first();
+            self::updateDistrictJson($entity, $area, $gso);
         } elseif ($entity->area) {
-            $gso = Entity::with($this->relations())->select($this->select())->whereNull('area')->whereNull('district')->first();
-            $this->updateAreaJson($entity, $gso);
+            $gso = Entity::with(self::relations())->select(self::select())->whereNull('area')->whereNull('district')->first();
+            self::updateAreaJson($entity, $gso);
         } else {
-            $this->updateGsoJson($entity);
+            self::updateGsoJson($entity);
         }
     }
 
-    public function updateDistrictJson($district, $area, $gso)
+    public static function updateDistrictJson($district, $area, $gso)
     {
-        $filename = $district->area . '-' . $district->district . '.json';
-        $content = collect([$district, $area, $gso])->toJson(env('APP_DEBUG', false) ? JSON_PRETTY_PRINT : 0);
-        Storage::disk('public')->put($filename, $content);
+        $filename = $district->id . '.json';
+
+        $entities = [$district->toArray(), $area->toArray(), $gso->toArray()];
+
+        $content = array_map(function ($entity) use ($district) {
+            $entity['stories'] = array_filter($entity['stories'], function ($story) use ($district) {
+                return $story['language'] === $district->language;
+            });
+            return $entity;
+        }, $entities);
+
+
+        $json = json_encode($content, env('APP_DEBUG', false) ? JSON_PRETTY_PRINT : 0);
+
+        Storage::disk('public')->put($filename, $json);
     }
 
-    public function updateAreaJson($area, $gso)
+    public static function updateAreaJson($area, $gso)
     {
-        Entity::with($this->relations())->select($this->select())->where('area', $area->area)->whereNotNull('district')->get()->each(function ($district) use ($area, $gso) {
-            $this->updateDistrictJson($district, $area, $gso);
+        Entity::with(self::relations())->select(self::select())->where('area', $area->area)->whereNotNull('district')->get()->each(function ($district) use ($area, $gso) {
+            self::updateDistrictJson($district, $area, $gso);
         });
     }
 
-    public function updateGsoJson($gso)
+    public static function updateGsoJson($gso)
     {
-        Entity::with($this->relations())->select($this->select())->whereNotNull('area')->whereNull('district')->get()->each(function ($area) use ($gso) {
-            $this->updateAreaJson($area, $gso);
+        Entity::with(self::relations())->select(self::select())->whereNotNull('area')->whereNull('district')->get()->each(function ($area) use ($gso) {
+            self::updateAreaJson($area, $gso);
         });
     }
 
     public static function updateMapJson()
     {
-        $districts = Entity::whereNotNull('boundary')->select(DB::raw('(ST_AsGeoJSON(boundary)) AS `boundary`, name, area, district, website, language, color'))->get();
+        $districts = Entity::whereNotNull('boundary')->select(DB::raw('(ST_AsGeoJSON(boundary)) AS `boundary`, id, name, area, district, website, language, color'))->get();
         $areas = Entity::whereNotNull('area')->whereNull('district')->get()->map(function ($area) use ($districts) {
             return [
                 'area' => $area->area,
@@ -111,6 +122,7 @@ abstract class Controller
                 'website' => $area->website,
                 'districts' => $districts->where('area', $area->area)->map(function ($district) {
                     return [
+                        'id' => $district->id,
                         'district' => $district->district,
                         'name' => $district->name,
                         'website' => $district->website,

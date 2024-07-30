@@ -1,5 +1,5 @@
 <div class="flex items-center justify-between min-h-10 w-full">
-    <h1 class="text-2xl font-bold flex gap-3 items-center">
+    <h1 class="text-2xl font-bold flex flex-wrap gap-3 items-center">
         @isset($breadcrumbs)
             @foreach ($breadcrumbs as $url => $breadcrumb)
                 <a href="{{ $url }}" class="underline">

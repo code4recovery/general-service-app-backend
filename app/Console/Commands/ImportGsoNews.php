@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use App\Models\Story;
 use App\Models\Button;
 use Carbon\Carbon;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\StoryController;
 
 class ImportGsoNews extends Command
@@ -30,37 +31,37 @@ class ImportGsoNews extends Command
      */
     public function handle()
     {
-        //
 
         $storyController = new StoryController();
         $local_stories = Story::where('entity_id', 1)->get();
 
-        $languages = ['en', 'es', 'fr'];
         $see_more = [
             'en' => 'See More',
             'es' => 'Ver Más',
             'fr' => 'Voir Plus',
         ];
-        $changed = false;
+        $languages = array_keys($see_more);
+        $count = 0;
 
         foreach ($languages as $language) {
             $response = Http::get(env('MEETING_GUIDE_API_BASE') . $language)->json();
 
             foreach ($response['news'] as $remote_story) {
+                $count++;
 
                 $datetime = new Carbon($remote_story['datetime']);
 
                 if ($story = $local_stories->where('created_at', $datetime)->first()) {
                     $this->info('Updating ' . $remote_story['title']);
 
-                    if ($story->title != $remote_story['title'] || $story->description != $remote_story['content'] || $story->language != $language) {
-                        $story->update([
-                            'description' => $remote_story['content'],
-                            'language' => $language,
-                        ]);
-                        $changed = true;
-                    }
-
+                    $story->update([
+                         'title' => $remote_story['title'],
+                         'description' => $remote_story['content'],
+                         'language' => $language,
+                         'start_at' => $datetime,
+                         'end_at' => $datetime->copy()->addMonths(1),
+                         'count' => $count,
+                     ]);
 
                     $button = $story->buttons->first();
 
@@ -85,9 +86,10 @@ class ImportGsoNews extends Command
                         'reference' => $storyController->reference(),
                         'language' => $language,
                         'start_at' => $datetime,
-                        'end_at' => $datetime->copy()->addMonths(2),
+                        'end_at' => $datetime->copy()->addMonths(1),
                         'created_at' => $datetime,
                         'user_id' => 1,
+                        'count' => $count,
                     ]);
 
                     if ($remote_story['button_url']) {
@@ -97,16 +99,12 @@ class ImportGsoNews extends Command
                             'style' => 'primary',
                         ]);
                     }
-
-                    $changed = true;
                 }
 
             }
         }
 
-        //if ($changed) {
-        $storyController->updateJson(1);
-        //}
+        Controller::updateJson(1);
 
     }
 }

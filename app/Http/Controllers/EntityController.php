@@ -41,7 +41,7 @@ class EntityController extends Controller
             'banner_dark' => $validated['banner_dark'],
         ]);
 
-        $this->updateJson($entity->id);
+        self::updateJson($entity->id);
 
         return redirect()
             ->route('entities.index')
@@ -85,7 +85,7 @@ class EntityController extends Controller
             'banner_dark' => $validated['banner_dark'],
         ]);
 
-        $this->updateJson($entity->id);
+        self::updateJson($entity->id);
 
         self::updateMapJson();
 

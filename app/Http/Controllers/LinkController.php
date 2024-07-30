@@ -62,7 +62,7 @@ class LinkController extends Controller
             'order' => $entity->links->max('order') + 1,
         ]);
 
-        $this->updateJson($entity->id);
+        self::updateJson($entity->id);
 
         return redirect()
             ->route('entities.links.index', $entity)
@@ -93,7 +93,7 @@ class LinkController extends Controller
             'target' => $validated['target'],
         ]);
 
-        $this->updateJson($link->entity_id);
+        self::updateJson($link->entity_id);
 
         return redirect()
             ->route('entities.links.index', $link->entity_id)
@@ -106,7 +106,7 @@ class LinkController extends Controller
 
         $link->delete();
 
-        $this->updateJson($link->entity_id);
+        self::updateJson($link->entity_id);
 
         return redirect()
             ->route('entities.links.index', $link->entity_id)
@@ -132,7 +132,7 @@ class LinkController extends Controller
             ]);
         }
 
-        $this->updateJson($entity->id);
+        self::updateJson($entity->id);
     }
 
     public function getLink($linkId)

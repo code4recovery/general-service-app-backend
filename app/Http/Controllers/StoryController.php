@@ -102,7 +102,7 @@ class StoryController extends Controller
             'type' => $validated['type'],
             'start_at' => $validated['start_at'],
             'end_at' => $validated['end_at'],
-            'language' => ['required', 'in:' . implode(',', $this->languages)],
+            'language' => ['required', 'in:' . implode(',', array_keys($this->languages))],
             'user_id' => auth()->user()->id,
             'order' => $entity->stories->max('order') + 1,
         ]);
@@ -118,7 +118,7 @@ class StoryController extends Controller
             ]);
         }
 
-        $this->updateJson($entity->id);
+        self::updateJson($entity->id);
 
         return redirect()
             ->route('entities.stories.index', $entity)
@@ -148,7 +148,7 @@ class StoryController extends Controller
             'type' => ['required', 'in:' . implode(',', $this->types)],
             'start_at' => ['required', 'date'],
             'end_at' => ['required', 'date'],
-            'language' => ['required', 'in:' . implode(',', $this->languages)],
+            'language' => ['required', 'in:' . implode(',', array_keys($this->languages))],
             'buttons' => ['array'],
             'buttons.*.id' => ['max:255'],
             'buttons.*.title' => ['max:255'],
@@ -184,7 +184,7 @@ class StoryController extends Controller
             }
         }
 
-        $this->updateJson($story->entity_id);
+        self::updateJson($story->entity_id);
 
         return redirect()
             ->route('entities.stories.index', $story->entity_id)
@@ -201,7 +201,7 @@ class StoryController extends Controller
 
         $story->delete();
 
-        $this->updateJson($story->entity_id);
+        self::updateJson($story->entity_id);
 
         return redirect()
             ->route('entities.stories.index', $story->entity_id)
@@ -236,7 +236,7 @@ class StoryController extends Controller
             ]);
         }
 
-        $this->updateJson($entity->id);
+        self::updateJson($entity->id);
     }
 
 }
