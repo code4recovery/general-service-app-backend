@@ -86,12 +86,11 @@ abstract class Controller
         $entities = [$district->toArray(), $area->toArray(), $gso->toArray()];
 
         $content = array_map(function ($entity) use ($district) {
-            $entity['stories'] = array_filter($entity['stories'], function ($story) use ($district) {
+            $entity['stories'] = array_values(array_filter($entity['stories'], function ($story) use ($district) {
                 return $story['language'] === $district->language;
-            });
+            }));
             return $entity;
         }, $entities);
-
 
         $json = json_encode($content, env('APP_DEBUG', false) ? JSON_PRETTY_PRINT : 0);
 
