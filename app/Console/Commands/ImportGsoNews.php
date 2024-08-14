@@ -51,10 +51,11 @@ class ImportGsoNews extends Command
 
                 $datetime = new Carbon($remote_story['datetime']);
 
-                if ($story = $local_stories->where([
-                    ['created_at','=', $datetime],
-                    ['language', '=', $language]
-                ])->first()) {
+                if ($story = $local_stories
+                    ->where('created_at', $datetime)
+                    ->where('language', $language)
+                    ->first()
+                ) {
                     $this->info('Updating ' . $remote_story['title']);
 
                     $story->update([
