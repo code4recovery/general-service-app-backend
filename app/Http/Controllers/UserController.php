@@ -32,7 +32,12 @@ class UserController extends Controller
     public function verifyLogin(Request $request, $token)
     {
         $token = LoginToken::whereToken(hash('sha256', $token))->firstOrFail();
-        abort_unless($request->hasValidSignature() && $token->isValid(), 401);
+        if (!$request->hasValidSignature()) {
+            return redirect()->route('login')->with('error', __('Login token is invalid, please try again.'));
+        }
+        if (!$token->isValid()) {
+            return redirect()->route('login')->with('error', __('Login token has expired, please try again.'));
+        }
         $token->consume();
         Auth::login($token->user, true);
 

@@ -58,6 +58,8 @@
     "Log in": "Iniciar",
     "Log Out": "Cerrar sesión",
     "Login link sent": "Enlace de inicio de sesión enviado",
+    "Login token has expired, please try again.": "El token de inicio de sesión ha caducado, inténtalo de nuevo.",
+    "Login token is invalid, please try again.": "El token de inicio de sesión no es válido, inténtalo de nuevo.",
     "Name": "Nombre",
     "No Tracking": "Sin seguimiento",
     "Optional “call-to-action” buttons to go below your story. Buttons need both a title and a link.": "Botones de “llamada a la acción” opcionales para colocar debajo de tu historia. Los botones necesitan tanto un título como un enlace.",

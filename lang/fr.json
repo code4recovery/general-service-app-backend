@@ -58,6 +58,8 @@
     "Log in": "S'identifier",
     "Log Out": "Se déconnecter",
     "Login link sent": "Lien de connexion envoyé",
+    "Login token has expired, please try again.": "Le jeton de connexion a expiré, veuillez réessayer.",
+    "Login token is invalid, please try again.": "Le jeton de connexion n'est pas valide, veuillez réessayer.",
     "Name": "Nom",
     "No Tracking": "Pas de suivi",
     "Optional “call-to-action” buttons to go below your story. Buttons need both a title and a link.": "Boutons d'appel à l'action facultatifs à placer sous votre histoire. Les boutons nécessitent à la fois un titre et un lien.",
