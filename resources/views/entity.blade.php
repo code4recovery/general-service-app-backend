@@ -98,6 +98,17 @@
                 ])
             </div>
 
+            @if (!empty($entity->area) && empty($entity->district))
+                <div class="grid lg:grid-cols-2 gap-3 lg:gap-8">
+                    @include('common.input', [
+                        'label' => __('Map ID'),
+                        'name' => 'map_id',
+                        'type' => 'text',
+                        'value' => isset($entity) ? $entity['map_id'] : '',
+                    ])
+                </div>
+            @endif
+
             <div class="grid lg:grid-cols-2 gap-3 lg:gap-8">
                 <div class="grid gap-1 w-full">
                     <label for="type" class="block">{{ __('Language') }}</label>

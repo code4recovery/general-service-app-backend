@@ -21,6 +21,7 @@ class Entity extends Model
         'language',
         'color',
         'boundary',
+        'map_id',
     ];
 
     public function name(): string

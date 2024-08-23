@@ -108,35 +108,24 @@
                 </div>
             </div>
 
-            @foreach ($buttons as $button)
-                @isset($story['buttons'][$button])
-                    <input type="hidden" name="buttons[{{ $button }}][id]"
-                        value="{{ $story['buttons'][$button]['id'] }}" />
-                @endisset
-                <div class="grid lg:grid-cols-4 gap-3 lg:gap-8">
-                    @include('common.input', [
-                        'label' => __('Button Title'),
-                        'name' => "buttons[$button][title]",
-                        'type' => 'text',
-                        'placeholder' => __('View Flyer'),
-                        'value' => $story['buttons'][$button]['title'] ?? '',
-                    ])
-                    @include('common.input', [
-                        'label' => __('Button Link'),
-                        'name' => "buttons[$button][link]",
-                        'type' => 'url',
-                        'placeholder' => "https://district.org/img/flyer-$button.pdf",
-                        'value' => $story['buttons'][$button]['link'] ?? '',
-                    ])
-                    <div class="lg:col-span-2 text-sm lg:pt-6">
-                        @if ($loop->first)
-                            <p>
-                                {{ __('Optional “call-to-action” buttons to go below your story. Buttons need both a title and a link.') }}
-                            </p>
-                        @endif
-                    </div>
+            <div class="grid lg:grid-cols-2 gap-3 lg:gap-8">
+                <div x-data='{ buttons: @json($story['buttons']) }''>
+                    <template x-for="(button, index) in buttons">
+                        <div class="grid grid-cols-2 gap-8">
+                            <input class="w-full p-2 border border-gray-300 rounded text-black" type="text"
+                                :name="'buttons[' + index + '][title]'" :value="button.title" placeholder="View Flyer" />
+                            <input class="w-full p-2 border border-gray-300 rounded text-black" type="url"
+                                :name="'buttons[' + index + '][link]'" :value="button.link"
+                                :placeholder="'https://district.org/img/flyer=' + index + '.pdf'" />
+                        </div>
+                    </template>
                 </div>
-            @endforeach
+                <div>
+                    <p>
+                        {{ __('Optional “call-to-action” buttons to go below your story. Buttons need both a title and a link.') }}
+                    </p>
+                </div>
+            </div>
 
             @include('common.submit', [
                 'cancel' => route('entities.stories.index', $entity),

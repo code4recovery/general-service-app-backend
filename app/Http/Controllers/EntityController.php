@@ -73,6 +73,7 @@ class EntityController extends Controller
             'language' => ['max:2'],
             'banner' => ['max:255'],
             'banner_dark' => ['max:255'],
+            'map_id' => ['max:255'],
         ]);
 
         $entity->update([
@@ -83,6 +84,7 @@ class EntityController extends Controller
             'language' => $validated['language'],
             'banner' => $validated['banner'],
             'banner_dark' => $validated['banner_dark'],
+            'map_id' => $validated['map_id'],
         ]);
 
         self::updateJson($entity->id);
