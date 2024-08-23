@@ -22,7 +22,7 @@ Route::view('/', 'home')->name('home');
 
 Route::view('/privacy', 'privacy')->name('privacy');
 
-Route::view('/login', 'login')->name('login');
+Route::get('/login', [UserController::class, 'login_form'])->name('login');
 
 Route::post('/login', [UserController::class, 'login']);
 

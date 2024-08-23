@@ -12,6 +12,17 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    public function login_form()
+    {
+        // redirect if already logged in
+        if (auth()->check()) {
+            $entity = Auth::user()->entities()->first();
+            return redirect()->route('entities.stories.index', $entity);
+        }
+
+        return view('login');
+    }
+
     public function login(Request $request)
     {
         $credentials = $request->validate([
