@@ -90,6 +90,7 @@ class StoryController extends Controller
             'start_at' => ['required', 'date'],
             'end_at' => ['required', 'date'],
             'type' => ['required', 'in:' . implode(',', $this->types)],
+            'language' => ['required', 'in:' . implode(',', array_keys($this->languages))],
             'buttons' => ['array'],
             'buttons.*.title' => ['max:255'],
             'buttons.*.link' => ['max:255'],
@@ -102,7 +103,7 @@ class StoryController extends Controller
             'type' => $validated['type'],
             'start_at' => $validated['start_at'],
             'end_at' => $validated['end_at'],
-            'language' => ['required', 'in:' . implode(',', array_keys($this->languages))],
+            'language' => $validated['language'],
             'user_id' => auth()->user()->id,
             'order' => $entity->stories->max('order') + 1,
         ]);
@@ -159,6 +160,7 @@ class StoryController extends Controller
             'title' => $validated['title'],
             'description' => $validated['description'],
             'type' => $validated['type'],
+            'language' => $validated['language'],
             'start_at' => $validated['start_at'],
             'end_at' => $validated['end_at'],
         ]);
