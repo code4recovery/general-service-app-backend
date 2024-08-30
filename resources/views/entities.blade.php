@@ -15,8 +15,8 @@
         ])
 
         @include('common.table', [
-            'empty' => 'No entities yet.',
-            'headings' => ['Name', 'Type', 'Users', 'Stories'],
+            'columns' => [__('Name'), __('Type'), __('Users'), __('Stories')],
+            'empty' => __('No entities yet.'),
             'rows' => $entities->map(function ($entity) {
                 return [
                     'href' => route('entities.edit', $entity),

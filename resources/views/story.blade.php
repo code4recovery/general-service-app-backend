@@ -108,31 +108,42 @@
                 </div>
             </div>
 
-            <div class="grid lg:grid-cols-2 gap-3 lg:gap-8">
-                <div x-data='{ buttons: @json($story['buttons']) }''>
-                    <template x-for="(button, index) in buttons">
-                        <div class="grid grid-cols-2 gap-8">
-                            <input class="w-full p-2 border border-gray-300 rounded text-black" type="text"
-                                :name="'buttons[' + index + '][title]'" :value="button.title" placeholder="View Flyer" />
-                            <input class="w-full p-2 border border-gray-300 rounded text-black" type="url"
-                                :name="'buttons[' + index + '][link]'" :value="button.link"
-                                :placeholder="'https://district.org/img/flyer=' + index + '.pdf'" />
-                        </div>
-                    </template>
-                </div>
-                <div>
-                    <p>
-                        {{ __('Optional “call-to-action” buttons to go below your story. Buttons need both a title and a link.') }}
-                    </p>
-                </div>
-            </div>
-
             @include('common.submit', [
                 'cancel' => route('entities.stories.index', $entity),
                 'delete' => isset($story) ? route('delete-story', $story) : null,
             ])
 
         </form>
+
+        @isset($story)
+            <hr class="my-8 border-gray-500 border-dashed">
+
+            <div class="flex justify-end items-center">
+                @include('common.link-button', [
+                    'label' => __('Create Button'),
+                    'icon' => 'plus',
+                    'href' => '#buttons',
+                ])
+            </div>
+
+            @include('common.table', [
+                'columns' => [__('Title'), __('Type'), __('Target'), __('Style')],
+                'empty' => __('No buttons yet.'),
+                'rows' => $story->buttons->map(function ($button) {
+                    return [
+                        'href' => '#',
+                        'id' => $button->id,
+                        'values' => [
+                            $button->title,
+                            $button->type,
+                            parse_url($button->link)['host'],
+                            $button->style,
+                        ],
+                    ];
+                }),
+            ])
+        @endisset
+
 
     </div>
 

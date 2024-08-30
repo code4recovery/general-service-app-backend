@@ -17,8 +17,8 @@
         ])
 
         @include('common.table', [
-            'empty' => 'No users yet.',
-            'headings' => ['Name', 'Admin', 'Entities', 'Last Seen'],
+            'columns' => [__('Name'), __('Admin'), __('Entities'), __('Last Seen')],
+            'empty' => __('No users yet.'),
             'rows' => $users->map(function ($user) {
                 return [
                     'href' => route('users.edit', $user),

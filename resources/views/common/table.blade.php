@@ -6,11 +6,11 @@
     <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
             <table class="table-fixed min-w-full border-collapse">
-                <thead x-data="{ headings: @js($headings) }">
+                <thead x-data="{ headings: @js($columns) }">
                     <tr>
-                        @isset($reorder)
+                        @if (isset($reorder) && count($rows) > 1)
                             <th class="border-b border-gray-300 dark:border-gray-600 font-light p-3"></th>
-                        @endisset
+                        @endif
                         <template x-for="(heading, index) in headings" :key="index">
                             <th class="border-b border-gray-300 dark:border-gray-600 font-light p-3"
                                 :class="{
@@ -25,7 +25,7 @@
                 </thead>
 
                 <tbody x-data="{ rows: @js($rows) }"
-                    @isset($reorder) x-sort="(item, position) => {
+                    @if (isset($reorder) && count($rows) > 1) x-sort="(item, position) => {
                         const order = [...document.querySelectorAll('tr[data-id]')].map((e) => parseInt(e.getAttribute('data-id')));
                         order.splice(position, 0, order.splice(order.indexOf(item), 1)[0]);
                         fetch('{{ $reorder }}', {
@@ -36,7 +36,7 @@
                             },
                             body: JSON.stringify({ order })
                         });
-                    }" @endisset>
+                    }" @endif>
                     <template x-for="(row, index) in rows" :key="index">
                         <tr class="hover:bg-gray-300 dark:hover:bg-gray-600 select-none table-row"
                             @isset($reorder) x-sort:item="row.id" x-bind:data-id="row.id">

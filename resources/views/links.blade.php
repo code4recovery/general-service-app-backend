@@ -33,9 +33,9 @@
         ])
 
         @include('common.table', [
-            'empty' => 'No links yet.',
-            'headings' => [__('Title'), __('Target'), __('Created'), __('Updated')],
-            'reorder' => $entity->links->count() > 1 ? route('reorder-links', $entity) : null,
+            'columns' => [__('Title'), __('Target'), __('Created'), __('Updated')],
+            'empty' => __('No links yet.'),
+            'reorder' => route('reorder-links', $entity),
             'rows' => $entity->links->map(function ($link) use ($entity) {
                 return [
                     'href' => route('entities.links.edit', [$entity, $link]),
