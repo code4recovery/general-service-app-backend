@@ -40,6 +40,6 @@ class Story extends Model
 
     public function buttons(): HasMany
     {
-        return $this->hasMany(Button::class);
+        return $this->hasMany(Button::class)->orderBy('order');
     }
 }

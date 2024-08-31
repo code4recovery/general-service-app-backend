@@ -37,7 +37,7 @@
                 @method('put')
             @endisset
 
-            <div class="grid lg:grid-cols-2 gap-3 lg:gap-8">
+            <div class="grid lg:grid-cols-2 gap-3 lg:gap-8 items-center">
                 @include('common.input', [
                     'label' => __('Title'),
                     'name' => 'title',
@@ -51,7 +51,7 @@
                 </div>
             </div>
 
-            <div class="grid lg:grid-cols-2 gap-3 lg:gap-8">
+            <div class="grid lg:grid-cols-2 gap-3 lg:gap-8 items-center">
                 @include('common.input', [
                     'label' => __('Target'),
                     'name' => 'target',

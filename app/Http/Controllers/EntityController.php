@@ -67,12 +67,14 @@ class EntityController extends Controller
 
         $validated = request()->validate([
             'name' => ['required', 'max:255'],
-            'area' => ['integer'],
+            'area' => ['nullable', 'integer'],
             'district' => ['max:255'],
             'website' => ['max:255'],
             'language' => ['max:2'],
             'banner' => ['max:255'],
             'banner_dark' => ['max:255'],
+            'map_id' => ['nullable', 'max:255'],
+            'timezone' => ['required', 'timezone:all'],
         ]);
 
         $entity->update([
@@ -83,6 +85,8 @@ class EntityController extends Controller
             'language' => $validated['language'],
             'banner' => $validated['banner'],
             'banner_dark' => $validated['banner_dark'],
+            'map_id' => !empty($validated['map_id']) ? $validated['map_id'] : null,
+            'timezone' => $validated['timezone'],
         ]);
 
         self::updateJson($entity->id);

@@ -24,8 +24,6 @@ class StoryController extends Controller
             return $story;
         }
 
-        $story = $entity->stories->where('id', request('story'))->first();
-
         if (!$story) {
             return redirect()->back()->with('error', __('Story to edit was not found.'));
         }
@@ -39,14 +37,19 @@ class StoryController extends Controller
 
     public function index()
     {
-        $user = auth()->user()->with(['entities', 'entities.stories' => function ($query) {
-            $query->orderBy('order', 'asc');
-        }])->first();
+        $user = auth()->user()->with([
+            'entities',
+            'entities.stories' => function ($query) {
+                $query->orderBy('order', 'asc');
+            }
+        ])->first();
 
         if ($user->admin) {
-            $entity = Entity::with(['stories' => function ($query) {
-                $query->orderBy('order', 'asc');
-            }])
+            $entity = Entity::with([
+                'stories' => function ($query) {
+                    $query->orderBy('order', 'asc');
+                }
+            ])
                 ->where('id', request('entity'))
                 ->first();
         } else {
@@ -61,7 +64,6 @@ class StoryController extends Controller
 
     public function create()
     {
-
         $entity = $this->getEntity(request('entity'));
         if (!$entity) {
             return redirect()->route('home');
@@ -91,9 +93,6 @@ class StoryController extends Controller
             'end_at' => ['required', 'date'],
             'type' => ['required', 'in:' . implode(',', $this->types)],
             'language' => ['required', 'in:' . implode(',', array_keys($this->languages))],
-            'buttons' => ['array'],
-            'buttons.*.title' => ['max:255'],
-            'buttons.*.link' => ['max:255'],
         ]);
 
         $story = $entity->stories()->create([
@@ -108,21 +107,10 @@ class StoryController extends Controller
             'order' => $entity->stories->max('order') + 1,
         ]);
 
-        foreach ($validated['buttons'] as $button) {
-            if (empty($button['title']) || empty($button['link'])) {
-                continue;
-            }
-            $story->buttons()->create([
-                'title' => $button['title'],
-                'link' => $button['link'],
-                'style' => 'primary',
-            ]);
-        }
-
         self::updateJson($entity->id);
 
         return redirect()
-            ->route('entities.stories.index', $entity)
+            ->route('entities.stories.edit', ['entity' => $entity, 'story' => $story])
             ->with('success', __('Story created.'));
     }
 
@@ -150,10 +138,6 @@ class StoryController extends Controller
             'start_at' => ['required', 'date'],
             'end_at' => ['required', 'date'],
             'language' => ['required', 'in:' . implode(',', array_keys($this->languages))],
-            'buttons' => ['array'],
-            'buttons.*.id' => ['max:255'],
-            'buttons.*.title' => ['max:255'],
-            'buttons.*.link' => ['max:255'],
         ]);
 
         $story->update([
@@ -165,31 +149,10 @@ class StoryController extends Controller
             'end_at' => $validated['end_at'],
         ]);
 
-        foreach ($this->buttons as $index) {
-            if (empty($validated['buttons'][$index]['title']) || empty($validated['buttons'][$index]['link'])) {
-                if (!empty($validated['buttons'][$index]['id'])) {
-                    $story->buttons()->where('id', $validated['buttons'][$index]['id'])->delete();
-                }
-            } else {
-                if (empty($validated['buttons'][$index]['id'])) {
-                    $story->buttons()->create([
-                        'title' => $validated['buttons'][$index]['title'],
-                        'link' => $validated['buttons'][$index]['link'],
-                        'style' => 'primary',
-                    ]);
-                } else {
-                    $story->buttons()->where('id', $validated['buttons'][$index]['id'])->update([
-                        'title' => $validated['buttons'][$index]['title'],
-                        'link' => $validated['buttons'][$index]['link'],
-                    ]);
-                }
-            }
-        }
-
         self::updateJson($story->entity_id);
 
         return redirect()
-            ->route('entities.stories.index', $story->entity_id)
+            ->back()
             ->with('success', __('Story updated.'));
     }
 

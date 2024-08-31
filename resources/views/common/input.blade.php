@@ -11,7 +11,10 @@
         @isset($placeholder) placeholder="{{ $placeholder }}" @endisset
         @if (!empty($required)) required="{{ $required }}" @endif
         @isset($min) min="{{ $min }}" @endisset
-        class="w-full p-2 border border-gray-300 rounded text-black"
+        @class([
+            'w-full p-2 border border-gray-300 rounded text-black',
+            'h-11' => $type !== 'textarea',
+        ])
         @if ($type === 'textarea') >{{ old($name, $value ?? null) }}</textarea>
     @else
         /> @endif

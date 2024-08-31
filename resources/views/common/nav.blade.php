@@ -12,12 +12,6 @@
         @endforeach
     </nav>
     @isset($button)
-        <a href="{{ $button['href'] }}"
-            class="border border-gray-300 dark:border-gray-500 rounded overflow-hidden px-6 py-3 flex gap-3 items-center hover:bg-white/50 hover:dark:bg-white/15">
-            @isset($button['icon'])
-                @include('common.icon', ['icon' => $button['icon']])
-            @endisset
-            {{ $button['label'] }}
-        </a>
+        @include('common.link-button', $button)
     @endisset
 </div>

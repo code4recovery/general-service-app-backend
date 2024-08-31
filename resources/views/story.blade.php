@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <div class="container max-w-6xl mx-auto px-4 grid gap-4">
+    <div class="container max-w-6xl mx-auto px-4 grid gap-8">
 
         @include('common.alerts')
 
@@ -13,21 +13,25 @@
             'breadcrumbs' => auth()->user()->admin
                 ? [
                     route('entities.index') => __('Entities'),
-                    route('entities.stories.index', $entity->id) => $entity->name(),
+                    route('entities.stories.index', $entity) => $entity->name(),
                 ]
                 : [
-                    route('entities.stories.index', $entity->id) => $entity->name(),
+                    route('entities.stories.index', $entity) => $entity->name(),
                 ],
         ])
 
         <form method="post" class="grid gap-8"
-            action="{{ isset($story) ? route('entities.stories.update', [$entity, $story]) : route('entities.stories.store', $entity) }}">
+            action="{{ isset($story) ? route('entities.stories.update', [$entity, $story]) : route('entities.stories.store', $entity) }}"
+            x-data="{{ Js::from([
+                'language' => old('language', isset($story) ? $story['language'] : $entity['language']),
+                'type' => old('type', isset($story) ? $story['type'] : 'announcement'),
+            ]) }}">
             @csrf
             @isset($story)
                 @method('put')
             @endisset
 
-            <div class="grid lg:grid-cols-2 gap-3 lg:gap-8">
+            <div class="grid lg:grid-cols-2 gap-3 lg:gap-8 items-center">
                 @include('common.input', [
                     'label' => __('Title'),
                     'name' => 'title',
@@ -40,7 +44,7 @@
                 </div>
             </div>
 
-            <div class="grid lg:grid-cols-2 gap-3 lg:gap-8">
+            <div class="grid lg:grid-cols-2 gap-3 lg:gap-8 items-center">
                 @include('common.input', [
                     'label' => __('Description'),
                     'name' => 'description',
@@ -53,25 +57,24 @@
                 </div>
             </div>
 
-            <div class="grid lg:grid-cols-2 gap-3 lg:gap-8">
+            <div class="grid lg:grid-cols-2 gap-3 lg:gap-8 items-center">
                 <div class="grid gap-1 w-full">
-                    <label for="type" class="block">{{ __('Type') }}</label>
-                    <div class="grid grid-cols-2 gap-8">
-                        @foreach ($types as $type)
-                            <label class="flex items-center gap-2">
-                                <input type="radio" name="type" value="{{ $type }}" required
-                                    @if (old('type', isset($story) ? $story['type'] : '') === $type) checked @endif />
-                                {{ __(ucfirst($type)) }}
-                            </label>
-                        @endforeach
-                    </div>
+                    @include('common.radio', [
+                        'label' => __('Type'),
+                        'name' => 'type',
+                        'required' => true,
+                        'options' => [
+                            'announcement' => __('Announcement'),
+                            'event' => __('Event'),
+                        ],
+                    ])
                 </div>
                 <div class="text-sm lg:pt-6">
                     {{ __('Announcements are for general news and updates. Events are for a specific date and time.') }}
                 </div>
             </div>
 
-            <div class="grid lg:grid-cols-4 gap-3 lg:gap-8">
+            <div class="grid lg:grid-cols-4 gap-3 lg:gap-5 items-center">
                 @include('common.input', [
                     'label' => __('Start Date'),
                     'name' => 'start_at',
@@ -94,49 +97,14 @@
             </div>
 
             <div class="grid lg:grid-cols-2 gap-3 lg:gap-8">
-                <div class="grid gap-1 w-full">
-                    <label for="type" class="block">{{ __('Language') }}</label>
-                    <div class="grid grid-cols-4 gap-8">
-                        @foreach ($languages as $lang => $language)
-                            <label class="flex items-center gap-2">
-                                <input type="radio" name="language" value="{{ $lang }}" required
-                                    @if (old('language', isset($entity) ? $entity['language'] : 'en') === $lang) checked @endif>
-                                {{ $language }}
-                            </label>
-                        @endforeach
-                    </div>
-                </div>
+                @include('common.radio', [
+                    'label' => __('Language'),
+                    'name' => 'language',
+                    'required' => true,
+                    'value' => old('language', isset($story) ? $story['language'] : $entity['language']),
+                    'options' => $languages,
+                ])
             </div>
-
-            @foreach ($buttons as $button)
-                @isset($story['buttons'][$button])
-                    <input type="hidden" name="buttons[{{ $button }}][id]"
-                        value="{{ $story['buttons'][$button]['id'] }}" />
-                @endisset
-                <div class="grid lg:grid-cols-4 gap-3 lg:gap-8">
-                    @include('common.input', [
-                        'label' => __('Button Title'),
-                        'name' => "buttons[$button][title]",
-                        'type' => 'text',
-                        'placeholder' => __('View Flyer'),
-                        'value' => $story['buttons'][$button]['title'] ?? '',
-                    ])
-                    @include('common.input', [
-                        'label' => __('Button Link'),
-                        'name' => "buttons[$button][link]",
-                        'type' => 'url',
-                        'placeholder' => "https://district.org/img/flyer-$button.pdf",
-                        'value' => $story['buttons'][$button]['link'] ?? '',
-                    ])
-                    <div class="lg:col-span-2 text-sm lg:pt-6">
-                        @if ($loop->first)
-                            <p>
-                                {{ __('Optional “call-to-action” buttons to go below your story. Buttons need both a title and a link.') }}
-                            </p>
-                        @endif
-                    </div>
-                </div>
-            @endforeach
 
             @include('common.submit', [
                 'cancel' => route('entities.stories.index', $entity),
@@ -144,6 +112,40 @@
             ])
 
         </form>
+
+        @isset($story)
+            <hr class="my-8 border-gray-500 border-dashed">
+
+            <div class="flex justify-end items-center">
+                @include('common.link-button', [
+                    'label' => __('Create Button'),
+                    'icon' => 'plus',
+                    'href' => route('entities.stories.buttons.create', [$entity, $story]),
+                ])
+            </div>
+
+            @include('common.table', [
+                'columns' => [__('Title'), __('Type'), __('Target'), __('Style')],
+                'empty' => __('No buttons yet.'),
+                'reorder' => route('reorder-buttons', $story),
+                'rows' => $story->buttons->map(function ($button) use ($entity, $story) {
+                    return [
+                        'href' => route('entities.stories.buttons.edit', [$entity, $story, $button]),
+                        'id' => $button->id,
+                        'values' => [
+                            $button->title,
+                            $button->type,
+                            (Str::startsWith($button->link, 'mailto:')
+                                    ? substr($button->link, 7)
+                                    : $button->link)
+                                ? parse_url($button->link)['host']
+                                : 'event',
+                            $button->style,
+                        ],
+                    ];
+                }),
+            ])
+        @endisset
 
     </div>
 

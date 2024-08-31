@@ -94,7 +94,7 @@
 
     </main>
 
-    <footer class="pb-8 text-center text-sm">
+    <footer class="py-8 text-center text-sm">
         <p>
             <a href="{{ route('privacy') }}" class="text-black/70 dark:text-white/70 hover:underline">
                 {{ __('Privacy Policy') }}
