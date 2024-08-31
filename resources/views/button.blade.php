@@ -120,6 +120,15 @@
                 </div>
             </div>
 
+            <div class="grid lg:grid-cols-2 gap-3 lg:gap-8 items-center" x-show="type === 'calendar'">
+                @include('common.input', [
+                    'label' => __('Notes'),
+                    'name' => 'notes',
+                    'type' => 'textarea',
+                    'value' => !empty($button['notes']) ? $button['notes'] : null,
+                ])
+            </div>
+
             @include('common.submit', [
                 'cancel' => route('entities.stories.edit', [$entity, $story]),
                 'delete' => isset($button) ? route('delete-button', $button) : null,

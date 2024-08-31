@@ -20,6 +20,7 @@ class Button extends Model
         'timezone',
         'formatted_address',
         'conference_url',
+        'notes',
         'style',
         'order',
     ];

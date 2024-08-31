@@ -45,6 +45,7 @@ class ButtonController extends Controller
                 'timezone' => ['required', 'timezone:all'],
                 'conference_url' => ['max:255'], //'url:https', 
                 'formatted_address' => ['max:255'],
+                'notes' => [],
             ]);
 
             $story->buttons()->create([
@@ -55,9 +56,12 @@ class ButtonController extends Controller
                 'timezone' => $validated['timezone'],
                 'conference_url' => $validated['conference_url'],
                 'formatted_address' => $validated['formatted_address'],
+                'notes' => $validated['notes'],
                 'style' => 'primary',
             ]);
         }
+
+        $this->updateJson($entity->id);
 
         return redirect()
             ->route('entities.stories.edit', ['entity' => $entity, 'story' => $story])
@@ -108,7 +112,9 @@ class ButtonController extends Controller
                 'timezone' => ['required', 'timezone:all'],
                 'conference_url' => ['max:255'], //'url',
                 'formatted_address' => ['max:255'],
+                'notes' => [],
             ]);
+
             $button->update([
                 'title' => $validated['title'],
                 'type' => 'calendar',
@@ -117,10 +123,14 @@ class ButtonController extends Controller
                 'timezone' => $validated['timezone'],
                 'conference_url' => $validated['conference_url'],
                 'formatted_address' => $validated['formatted_address'],
+                'notes' => $validated['notes'],
                 'link' => null,
                 'style' => 'primary',
             ]);
         }
+
+        $this->updateJson($entity->id);
+
         return redirect()
             ->route('entities.stories.edit', ['entity' => $entity, 'story' => $story])
             ->with('success', __('Button updated.'));
