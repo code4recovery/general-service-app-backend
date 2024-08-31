@@ -64,7 +64,6 @@ class StoryController extends Controller
 
     public function create()
     {
-
         $entity = $this->getEntity(request('entity'));
         if (!$entity) {
             return redirect()->route('home');

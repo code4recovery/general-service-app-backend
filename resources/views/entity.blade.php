@@ -29,13 +29,16 @@
 
 
         <form method="post" class="grid gap-8"
-            action="{{ isset($entity) ? route('entities.update', $entity) : route('entities.store') }}">
+            action="{{ isset($entity) ? route('entities.update', $entity) : route('entities.store') }}"
+            x-data="{{ Js::from([
+                'language' => old('language', isset($entity) ? $entity['language'] : 'en'),
+            ]) }}">
             @csrf
             @isset($entity)
                 @method('put')
             @endisset
 
-            <div class="grid lg:grid-cols-2 gap-3 lg:gap-8">
+            <div class="grid lg:grid-cols-2 gap-3 lg:gap-8 items-center">
                 @include('common.input', [
                     'label' => __('Name'),
                     'name' => 'name',
@@ -49,7 +52,7 @@
                 </div>
             </div>
 
-            <div class="grid lg:grid-cols-2 gap-3 lg:gap-8">
+            <div class="grid lg:grid-cols-2 gap-3 lg:gap-8 items-center">
                 <div class="flex gap-5">
                     @include('common.input', [
                         'label' => __('Area'),
@@ -69,7 +72,7 @@
                 </div>
             </div>
 
-            <div class="grid lg:grid-cols-2 gap-3 lg:gap-8">
+            <div class="grid lg:grid-cols-2 gap-3 lg:gap-8 items-center">
                 <div class="flex gap-5">
                     @include('common.input', [
                         'label' => __('App Banner (Light)'),
@@ -98,31 +101,30 @@
                 ])
             </div>
 
-            @if (!empty($entity->area) && empty($entity->district))
-                <div class="grid lg:grid-cols-2 gap-3 lg:gap-8">
+            <div class="grid lg:grid-cols-2 gap-3 lg:gap-8">
+                @include('common.radio', [
+                    'label' => __('Language'),
+                    'name' => 'language',
+                    'options' => $languages,
+                ])
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-3 lg:gap-8">
+                <div class="flex gap-5">
+                    @include('common.timezone', [
+                        'label' => __('Timezone'),
+                        'name' => 'timezone',
+                        'value' => old('timezone', isset($entity) ? $entity['timezone'] : null),
+                    ])
                     @include('common.input', [
                         'label' => __('Map ID'),
                         'name' => 'map_id',
                         'type' => 'text',
-                        'value' => isset($entity) ? $entity['map_id'] : '',
+                        'value' => old('map_id', isset($entity) ? $entity['map_id'] : null),
                     ])
                 </div>
-            @endif
-
-            <div class="grid lg:grid-cols-2 gap-3 lg:gap-8">
-                <div class="grid gap-1 w-full">
-                    <label for="type" class="block">{{ __('Language') }}</label>
-                    <div class="grid grid-cols-4 gap-8">
-                        @foreach ($languages as $lang => $language)
-                            <label class="flex items-center gap-2">
-                                <input type="radio" name="language" value="{{ $lang }}" required
-                                    @if (old('language', isset($entity) ? $entity['language'] : 'en') === $lang) checked @endif>
-                                {{ $language }}
-                            </label>
-                        @endforeach
-                    </div>
-                </div>
             </div>
+
 
             @include('common.submit', [
                 'cancel' => auth()->user()->admin ? route('entities.index') : null,

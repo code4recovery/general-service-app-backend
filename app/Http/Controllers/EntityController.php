@@ -74,6 +74,7 @@ class EntityController extends Controller
             'banner' => ['max:255'],
             'banner_dark' => ['max:255'],
             'map_id' => ['max:255'],
+            'timezone' => ['required', 'timezone:all'],
         ]);
 
         $entity->update([
@@ -85,6 +86,7 @@ class EntityController extends Controller
             'banner' => $validated['banner'],
             'banner_dark' => $validated['banner_dark'],
             'map_id' => $validated['map_id'],
+            'timezone' => $validated['timezone'],
         ]);
 
         self::updateJson($entity->id);

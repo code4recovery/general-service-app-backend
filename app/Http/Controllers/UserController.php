@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Entity;
 use App\Models\User;
 use App\Models\LoginToken;
-use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {

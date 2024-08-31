@@ -27,7 +27,8 @@ abstract class Controller
             'banner',
             'banner_dark',
             'website',
-            'language'
+            'language',
+            'timezone'
         ];
     }
 

@@ -3,9 +3,9 @@
         @isset($breadcrumbs)
             @foreach ($breadcrumbs as $url => $breadcrumb)
                 <a href="{{ $url }}" class="underline">
-                    {{ $breadcrumb }}
+                    {{ Str::limit($breadcrumb, 30, '…') }}
                 </a>
-                @include('common.icon', ['icon' => 'chevron-right'])
+                @include('common.icon', ['icon' => 'chevron-right', 'size' => 'size-3'])
             @endforeach
         @endisset
         {{ $title }}

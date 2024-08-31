@@ -22,6 +22,7 @@ class Entity extends Model
         'color',
         'boundary',
         'map_id',
+        'timezone',
     ];
 
     public function name(): string

@@ -10,14 +10,19 @@ class LinkController extends Controller
 {
     public function index()
     {
-        $user = auth()->user()->with(['entities', 'entities.links' => function ($query) {
-            $query->orderBy('order', 'asc');
-        }])->first();
+        $user = auth()->user()->with([
+            'entities',
+            'entities.links' => function ($query) {
+                $query->orderBy('order', 'asc');
+            }
+        ])->first();
 
         if ($user->admin) {
-            $entity = Entity::with(['links' => function ($query) {
-                $query->orderBy('order', 'asc');
-            }])
+            $entity = Entity::with([
+                'links' => function ($query) {
+                    $query->orderBy('order', 'asc');
+                }
+            ])
                 ->where('id', request('entity'))
                 ->first();
         } else {
@@ -147,8 +152,6 @@ class LinkController extends Controller
         if ($user->admin) {
             return $link;
         }
-
-        $link = $entity->links->where('id', request('link'))->first();
 
         if (!$link) {
             return redirect()->back()->with('error', __('Link to edit was not found.'));

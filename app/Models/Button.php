@@ -14,6 +14,12 @@ class Button extends Model
         'story_id',
         'title',
         'link',
+        'type',
+        'start',
+        'end',
+        'timezone',
+        'formatted_address',
+        'conference_url',
         'style',
     ];
 
