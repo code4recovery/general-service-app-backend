@@ -24,7 +24,7 @@
                     </tr>
                 </thead>
 
-                <tbody x-data="{ rows: @js($rows) }"
+                <tbody x-data="{ rows: @js($rows) }" x-sort:config="{ handle: '[x-sort\\:handle]' }"
                     @if (isset($reorder) && count($rows) > 1) x-sort="(item, position) => {
                         const order = [...document.querySelectorAll('tr[data-id]')].map((e) => parseInt(e.getAttribute('data-id')));
                         order.splice(position, 0, order.splice(order.indexOf(item), 1)[0]);

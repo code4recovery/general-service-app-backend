@@ -48,7 +48,7 @@ abstract class Controller
                     ->orderBy('created_at', 'desc');
             },
             'stories.buttons' => function ($query) {
-                $query->select('id', 'story_id', 'title', 'link');
+                $query->select('id', 'story_id', 'title', 'link')->orderBy('order');
             },
             'links' => function ($query) {
                 $query->select('id', 'entity_id', 'title', 'target', 'language')->orderBy('order');

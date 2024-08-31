@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Button;
 use App\Models\Entity;
+use App\Models\Story;
 
 class ButtonController extends Controller
 {
@@ -39,10 +40,10 @@ class ButtonController extends Controller
         } else {
             $validated = request()->validate([
                 'title' => ['required', 'max:255'],
-                'start' => ['required', 'date_format:Y-m-d H:i:s'],
-                'end' => ['required', 'date_format:Y-m-d H:i:s'],
+                'start' => ['required', 'date_format:Y-m-d\TH:i'],
+                'end' => ['required', 'date_format:Y-m-d\TH:i'],
                 'timezone' => ['required', 'timezone:all'],
-                'conference_url' => ['url:https', 'max:255'],
+                'conference_url' => ['max:255'], //'url:https', 
                 'formatted_address' => ['max:255'],
             ]);
 
@@ -127,13 +128,34 @@ class ButtonController extends Controller
 
     public function destroy()
     {
-        $entity = Entity::find(request('entity'));
-        $story = $entity->stories->where('id', request('story'))->first();
-        $button = $story->buttons->where('id', request('button'))->first();
+        $button = Button::where('id', request('button'))->first();
+        $story = $button->story;
+        $entity = $story->entity;
         $button->delete();
         return redirect()
             ->route('entities.stories.edit', ['entity' => $entity, 'story' => $story])
             ->with('success', __('Button deleted.'));
+    }
+
+    function reorder()
+    {
+        $story = Story::where('id', request('story'))->first();
+
+        $validated = request()->validate([
+            'order' => ['array'],
+        ]);
+
+        $buttons = $story->buttons->whereIn('id', $validated['order']);
+
+        foreach ($buttons as $button) {
+            $button->update([
+                'order' => array_search($button->id, $validated['order']),
+            ]);
+        }
+
+        print_r($validated['order']);
+
+        self::updateJson($story->entity->id);
     }
 
 }

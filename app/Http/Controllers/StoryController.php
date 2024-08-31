@@ -110,7 +110,7 @@ class StoryController extends Controller
         self::updateJson($entity->id);
 
         return redirect()
-            ->back()
+            ->route('entities.stories.edit', ['entity' => $entity, 'story' => $story])
             ->with('success', __('Story created.'));
     }
 

@@ -127,6 +127,7 @@
             @include('common.table', [
                 'columns' => [__('Title'), __('Type'), __('Target'), __('Style')],
                 'empty' => __('No buttons yet.'),
+                'reorder' => route('reorder-buttons', $story),
                 'rows' => $story->buttons->map(function ($button) use ($entity, $story) {
                     return [
                         'href' => route('entities.stories.buttons.edit', [$entity, $story, $button]),
