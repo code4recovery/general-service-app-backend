@@ -31,7 +31,7 @@
         <form method="post" class="grid gap-8"
             action="{{ isset($entity) ? route('entities.update', $entity) : route('entities.store') }}"
             x-data="{{ Js::from([
-                'language' => old('language', isset($entity) ? $entity['language'] : 'en'),
+                'language' => old('language', !empty($entity['language']) ? $entity['language'] : 'en'),
             ]) }}">
             @csrf
             @isset($entity)
@@ -114,14 +114,16 @@
                     @include('common.timezone', [
                         'label' => __('Timezone'),
                         'name' => 'timezone',
-                        'value' => old('timezone', isset($entity) ? $entity['timezone'] : null),
+                        'value' => old('timezone', isset($entity) ? $entity['timezone'] : 'America/Los_Angeles'),
                     ])
-                    @include('common.input', [
-                        'label' => __('Map ID'),
-                        'name' => 'map_id',
-                        'type' => 'text',
-                        'value' => old('map_id', isset($entity) ? $entity['map_id'] : null),
-                    ])
+                    @if (!empty($entity->area) && empty($entity->district))
+                        @include('common.input', [
+                            'label' => __('Map ID'),
+                            'name' => 'map_id',
+                            'type' => 'text',
+                            'value' => old('map_id', isset($entity) ? $entity['map_id'] : null),
+                        ])
+                    @endif
                 </div>
             </div>
 

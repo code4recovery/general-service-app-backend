@@ -87,7 +87,6 @@ class ButtonController extends Controller
         ]);
 
         if ($validated['type'] === 'link') {
-            dd('mm');
             $validated = request()->validate([
                 'title' => ['required', 'max:255'],
                 'link' => ['required', 'starts_with:http://,https://,mailto:', 'max:255'],
@@ -132,7 +131,7 @@ class ButtonController extends Controller
         $this->updateJson($entity->id);
 
         return redirect()
-            ->route('entities.stories.edit', ['entity' => $entity, 'story' => $story])
+            ->route('entities.stories.buttons.edit', compact('entity', 'story', 'button'))
             ->with('success', __('Button updated.'));
     }
 

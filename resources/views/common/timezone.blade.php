@@ -8,6 +8,7 @@
         'America/New_York' => 'Eastern Time',
         'America/Chicago' => 'Central Time',
         'America/Denver' => 'Mountain Time',
+        'America/Phoenix' => 'Arizona Time',
         'America/Los_Angeles' => 'Pacfic Time',
         'America/Anchorage' => 'Alaska Time',
         'Pacific/Honolulu' => 'Hawaii Time',
