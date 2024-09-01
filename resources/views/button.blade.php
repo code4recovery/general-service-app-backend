@@ -43,7 +43,6 @@
                     'value' => old('type', isset($button) ? $button['type'] : 'link'),
                 ])
                 <div class="text-sm lg:pt-6">
-                    {{ __('Links are the default type of button. Calendar is a special type that triggers an add-to-calendar function on the user’s phone.') }}
                 </div>
             </div>
 
@@ -74,7 +73,7 @@
             </div>
 
             <div class="grid lg:grid-cols-2 gap-3 lg:gap-8 items-center" x-show="type === 'calendar'">
-                <div class="grid lg:grid-cols-3 gap-3">
+                <div class="grid lg:grid-cols-2 gap-3">
                     @include('common.input', [
                         'label' => __('Start'),
                         'name' => 'start',
@@ -88,12 +87,6 @@
                         'type' => 'datetime-local',
                         'required' => true,
                         'value' => !empty($button['end']) ? $button['end'] : '2018-06-12T19:30',
-                    ])
-                    @include('common.timezone', [
-                        'label' => __('Timezone'),
-                        'name' => 'timezone',
-                        'required' => true,
-                        'value' => isset($button['timezone']) ? $button['timezone'] : $entity['timezone'],
                     ])
                 </div>
             </div>

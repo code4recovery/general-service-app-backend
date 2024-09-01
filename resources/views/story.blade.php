@@ -76,14 +76,14 @@
 
             <div class="grid lg:grid-cols-4 gap-3 lg:gap-5 items-center">
                 @include('common.input', [
-                    'label' => __('Start Date'),
+                    'label' => __('Start'),
                     'name' => 'start_at',
                     'type' => 'date',
                     'required' => true,
                     'value' => isset($story) ? $story['start_at']->format('Y-m-d') : $now->format('Y-m-d'),
                 ])
                 @include('common.input', [
-                    'label' => __('End Date'),
+                    'label' => __('End'),
                     'name' => 'end_at',
                     'type' => 'date',
                     'required' => true,

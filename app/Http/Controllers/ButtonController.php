@@ -42,8 +42,7 @@ class ButtonController extends Controller
                 'title' => ['required', 'max:255'],
                 'start' => ['required', 'date_format:Y-m-d\TH:i'],
                 'end' => ['required', 'date_format:Y-m-d\TH:i'],
-                'timezone' => ['required', 'timezone:all'],
-                'conference_url' => ['max:255'], //'url:https', 
+                'conference_url' => ['nullable', 'max:255', 'url'],
                 'formatted_address' => ['max:255'],
                 'notes' => [],
             ]);
@@ -53,7 +52,7 @@ class ButtonController extends Controller
                 'type' => 'calendar',
                 'start' => $validated['start'],
                 'end' => $validated['end'],
-                'timezone' => $validated['timezone'],
+                'timezone' => $entity->timezone,
                 'conference_url' => $validated['conference_url'],
                 'formatted_address' => $validated['formatted_address'],
                 'notes' => $validated['notes'],
@@ -103,13 +102,11 @@ class ButtonController extends Controller
                 'style' => 'primary',
             ]);
         } else {
-            // dd(request('start')); // 2018-06-12T19:30
             $validated = request()->validate([
                 'title' => ['required', 'max:255'],
                 'start' => ['required', 'date_format:Y-m-d\TH:i'],
                 'end' => ['required', 'date_format:Y-m-d\TH:i'],
-                'timezone' => ['required', 'timezone:all'],
-                'conference_url' => ['max:255'], //'url',
+                'conference_url' => ['nullable', 'max:255', 'url'],
                 'formatted_address' => ['max:255'],
                 'notes' => [],
             ]);
@@ -119,7 +116,7 @@ class ButtonController extends Controller
                 'type' => 'calendar',
                 'start' => $validated['start'],
                 'end' => $validated['end'],
-                'timezone' => $validated['timezone'],
+                'timezone' => $entity->timezone,
                 'conference_url' => $validated['conference_url'],
                 'formatted_address' => $validated['formatted_address'],
                 'notes' => $validated['notes'],
