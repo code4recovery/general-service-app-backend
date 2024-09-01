@@ -16,7 +16,7 @@
                                 :class="{
                                     'text-left': index < 2,
                                     'text-right': index > 1,
-                                    'w-1/2': index,
+                                    'w-1/2': !index,
                                     'w-1/6': index,
                                 }"
                                 x-text="column"></th>

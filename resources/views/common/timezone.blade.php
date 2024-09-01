@@ -6,14 +6,14 @@
             $focusClasses,
         ]) required>
             @foreach ([
-        'America/Halifax' => 'Atlantic Time',
-        'America/New_York' => 'Eastern Time',
-        'America/Chicago' => 'Central Time',
-        'America/Denver' => 'Mountain Time',
-        'America/Phoenix' => 'Arizona Time',
-        'America/Los_Angeles' => 'Pacfic Time',
-        'America/Anchorage' => 'Alaska Time',
-        'Pacific/Honolulu' => 'Hawaii Time',
+        'America/Halifax' => __('Atlantic Time'),
+        'America/New_York' => __('Eastern Time'),
+        'America/Chicago' => __('Central Time'),
+        'America/Denver' => __('Mountain Time'),
+        'America/Phoenix' => __('Arizona Time'),
+        'America/Los_Angeles' => __('Pacfic Time'),
+        'America/Anchorage' => __('Alaska Time'),
+        'Pacific/Honolulu' => __('Hawaii Time'),
     ] as $timezone => $description)
                 <option value="{{ $timezone }}" @if ($value === $timezone) selected @endif>
                     {{ $description }}

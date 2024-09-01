@@ -79,14 +79,18 @@
                         'name' => 'start',
                         'type' => 'datetime-local',
                         'required' => true,
-                        'value' => !empty($button['start']) ? $button['start'] : '2018-06-12T19:30',
+                        'value' => !empty($button['start'])
+                            ? $button['start']
+                            : Carbon\Carbon::now($entity->timezone)->format('Y-m-d\TH:i'),
                     ])
                     @include('common.input', [
                         'label' => __('End'),
                         'name' => 'end',
                         'type' => 'datetime-local',
                         'required' => true,
-                        'value' => !empty($button['end']) ? $button['end'] : '2018-06-12T19:30',
+                        'value' => !empty($button['end'])
+                            ? $button['end']
+                            : Carbon\Carbon::now($entity->timezone)->addHours(1)->format('Y-m-d\TH:i'),
                     ])
                 </div>
             </div>
