@@ -51,6 +51,9 @@ class UserController extends Controller
         $token->consume();
         Auth::login($token->user, true);
 
+        // todo this does not seem to work
+        Auth::user()->update(['last_seen' => now()]);
+
         $entity = Auth::user()->entities()->first();
         return redirect()->route('entities.stories.index', $entity);
     }

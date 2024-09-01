@@ -38,8 +38,10 @@
             </ul>
         </div>
         <div class="lg:-mr-3">
-            <img src="{{ asset('screenshot-light.png') }}" alt="Hero" class="h-auto max-w-full block dark:hidden">
-            <img src="{{ asset('screenshot-dark.png') }}" alt="Hero" class="h-auto max-w-full hidden dark:block">
+            <img src="{{ asset('screenshot-light.png') }}" width="800" height="1583" alt=""
+                class="h-auto max-w-full block dark:hidden">
+            <img src="{{ asset('screenshot-dark.png') }}" width="800" height="1583" alt=""
+                class="h-auto max-w-full hidden dark:block">
         </div>
     </div>
 
