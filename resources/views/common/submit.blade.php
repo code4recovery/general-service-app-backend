@@ -1,6 +1,8 @@
 <div class="flex flex-wrap gap-3 mt-4">
-    <input class="bg-blue-600 hover:bg-blue-700 py-2 px-6 rounded font-semibold text-white cursor-pointer" type="submit"
-        value="{{ __('Submit') }}">
+    <input @class([
+        'bg-blue-600 hover:bg-blue-700 py-2 px-6 rounded font-semibold text-white cursor-pointer',
+        $focusClasses,
+    ]) type="submit" value="{{ __('Submit') }}">
     @isset($cancel)
         @include('common.button', [
             'href' => $cancel,

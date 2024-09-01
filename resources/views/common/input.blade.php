@@ -13,6 +13,7 @@
         @isset($min) min="{{ $min }}" @endisset
         @class([
             'w-full p-2 border border-gray-300 rounded text-black',
+            $focusClasses,
             'h-11' => $type !== 'textarea',
         ])
         @if ($type === 'textarea') >{{ old($name, $value ?? null) }}</textarea>

@@ -6,20 +6,20 @@
     <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
             <table class="table-fixed min-w-full border-collapse">
-                <thead x-data="{ headings: @js($columns) }">
+                <thead x-data="{ columns: @js($columns) }">
                     <tr>
                         @if (isset($reorder) && count($rows) > 1)
-                            <th class="border-b border-gray-300 dark:border-gray-600 font-light p-3"></th>
+                            <th class="border-b border-gray-300 dark:border-gray-600 font-light p-3 w-0"></th>
                         @endif
-                        <template x-for="(heading, index) in headings" :key="index">
+                        <template x-for="(column, index) in columns" :key="index">
                             <th class="border-b border-gray-300 dark:border-gray-600 font-light p-3"
                                 :class="{
                                     'text-left': index < 2,
                                     'text-right': index > 1,
-                                    'w-1/2': !index,
+                                    'w-1/2': index,
                                     'w-1/6': index,
                                 }"
-                                x-text="heading"></th>
+                                x-text="column"></th>
                         </template>
                     </tr>
                 </thead>
@@ -38,25 +38,27 @@
                         });
                     }" @endif>
                     <template x-for="(row, index) in rows" :key="index">
-                        <tr class="hover:bg-gray-300 dark:hover:bg-gray-600 select-none table-row"
-                            @isset($reorder) x-sort:item="row.id" x-bind:data-id="row.id">
-                                <td x-sort:handle class="border border-gray-300 dark:border-gray-600 p-3 cursor-grab">
-                                    @include('common.icon', ['icon' => 'bars-3'])
-                                </td>
-                            @endisset>
-                            <template x-for="(value, index) in row.values" :key="index">
-                                <td class="border border-gray-300 dark:border-gray-600 table-cell"
-                                    :class="{
-                                        'text-left': index < 2,
-                                        'text-right': index > 1,
-                                    }">
-                                    <a x-bind:href="row.href" class="p-3 block" x-text="value"></a>
-                                </td>
-                            </template>
-                        </tr>
-                    </template>
-                </tbody>
-            </table>
-        </div>
+                        <tr class="hover:bg-gray-300 dark:hover:bg-gray-600 select-none table-row" @if (isset($reorder) && count($rows) > 1)
+                            x-sort:item="row.id">
+                            <td x-sort:handle class="border border-gray-300 dark:border-gray-600 p-3 cursor-grab">
+                                @include('common.icon', ['icon' => 'bars-3'])
+                            </td>
+                        @else
+                            >
+                        @endisset
+                        <template x-for="(value, index) in row.values" :key="index">
+                            <td class="border border-gray-300 dark:border-gray-600 table-cell"
+                                :class="{
+                                    'text-left': index < 2,
+                                    'text-right': index > 1,
+                                }">
+                                <a x-bind:href="row.href" class="p-3 block" x-text="value"></a>
+                            </td>
+                        </template>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
     </div>
+</div>
 @endif
