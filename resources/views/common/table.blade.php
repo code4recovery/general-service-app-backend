@@ -38,7 +38,7 @@
                         });
                     }" @endif>
                     <template x-for="(row, index) in rows" :key="index">
-                        <tr class="hover:bg-gray-300 dark:hover:bg-gray-600 select-none table-row" @if (isset($reorder) && count($rows) > 1)
+                        <tr class="hover:bg-white/50 hover:dark:bg-white/15 select-none table-row" @if (isset($reorder) && count($rows) > 1)
                             x-sort:item="row.id"
                             x-bind:data-id="row.id"
                             >
