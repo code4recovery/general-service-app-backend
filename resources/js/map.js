@@ -17,7 +17,7 @@ async function initMap() {
     });
 
     // get map data
-    const mapData = await fetch("/storage/map.json");
+    const mapData = await fetch(`/storage/map.json?${new Date().getTime()}`);
     const areas = await mapData.json();
 
     const marker = new AdvancedMarkerElement({

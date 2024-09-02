@@ -144,8 +144,6 @@ class MapImportController extends Controller
         Controller::updateMapJson();
 
         return response()->json($log);
-
-
     }
 
     private static function downloadKmz($map_id)

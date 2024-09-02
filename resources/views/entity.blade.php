@@ -45,20 +45,6 @@
             @endisset
 
             <div class="grid lg:grid-cols-2 gap-3 lg:gap-8 items-center">
-                @include('common.input', [
-                    'label' => __('Name'),
-                    'name' => 'name',
-                    'type' => 'text',
-                    'required' => true,
-                    'placeholder' => __('e.g. San Francisco'),
-                    'value' => isset($entity) ? $entity['name'] : '',
-                ])
-                <div class="text-sm lg:pt-6">
-                    {!! __('For example, <code>District 06: San Francisco</code>') !!}
-                </div>
-            </div>
-
-            <div class="grid lg:grid-cols-2 gap-3 lg:gap-8 items-center">
                 <div class="flex gap-5">
                     @include('common.input', [
                         'label' => __('Area'),
@@ -75,6 +61,19 @@
                 </div>
                 <div class="text-sm lg:pt-6">
                     {{ __('The area and district numbers. For example, Area 4, District 20.') }}
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-3 lg:gap-8 items-center">
+                @include('common.input', [
+                    'label' => __('Name'),
+                    'name' => 'name',
+                    'type' => 'text',
+                    'placeholder' => __('e.g. San Francisco'),
+                    'value' => isset($entity) ? $entity['name'] : '',
+                ])
+                <div class="text-sm lg:pt-6">
+                    {!! __('For example, <code>District 06: San Francisco</code>') !!}
                 </div>
             </div>
 

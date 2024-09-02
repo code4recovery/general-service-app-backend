@@ -78,7 +78,7 @@ class EntityController extends Controller
         }
 
         $validated = request()->validate([
-            'name' => ['required', 'max:255'],
+            'name' => ['max:255'],
             'area' => ['nullable', 'integer'],
             'district' => ['max:255'],
             'website' => ['max:255'],
@@ -106,7 +106,7 @@ class EntityController extends Controller
         self::updateMapJson();
 
         return redirect()
-            ->route('entities.index')
+            ->back()
             ->with('success', __('Entity updated.'));
 
     }
