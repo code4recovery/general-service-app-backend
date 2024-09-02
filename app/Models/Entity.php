@@ -38,18 +38,15 @@ class Entity extends Model
                 'name' => $this->name
             ]);
         }
-        // district
         if (!$this->name) {
-            // area
-            return __('Area :area - District :district', [
-                'area' => $this->area(),
+            // district
+            return __('District :district', [
                 'district' => $this->district,
                 'name' => $this->name
             ]);
         }
 
-        return __('Area :area - District :district: :name', [
-            'area' => $this->area(),
+        return __('District :district: :name', [
             'district' => $this->district,
             'name' => $this->name
         ]);

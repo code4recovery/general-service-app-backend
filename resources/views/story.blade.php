@@ -114,7 +114,7 @@
         </form>
 
         @isset($story)
-            <hr class="my-8 border-gray-500 border-dashed">
+            @include('common.separator')
 
             <div class="flex justify-end items-center">
                 @include('common.link-button', [

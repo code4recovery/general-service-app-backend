@@ -9,7 +9,7 @@ class EntityController extends Controller
 {
     public function index()
     {
-        $entities = Entity::with(['stories', 'users'])->orderBy('area')->orderBy('district')->get();
+        $entities = Entity::with(['stories', 'users'])->whereNull('district')->orderBy('area')->orderBy('district')->get();
         return view('entities', ['entities' => $entities]);
     }
 
@@ -49,16 +49,28 @@ class EntityController extends Controller
     }
     */
 
-    public function edit(string $id)
+    public function edit()
     {
         $entity = $this->getEntity(request('entity'));
+
+        $admin = auth()->user()->admin;
+
+        $districts = !$entity->district && $admin ? Entity::with(['stories', 'users'])
+            ->where('area', $entity->area)
+            ->whereNotNull('district')
+            ->orderBy('district')
+            ->get() : [];
+
+        $area = $entity->district && $admin ? Entity::where('area', $entity->area)->whereNull('district')->first() : null;
+
         if (!$entity) {
             return redirect()->route('home');
         }
-        return view('entity', ['entity' => $entity, 'languages' => $this->languages]);
+
+        return view('entity', ['entity' => $entity, 'languages' => $this->languages, 'districts' => $districts, 'area' => $area]);
     }
 
-    public function update(Request $request, string $id)
+    public function update()
     {
         $entity = $this->getEntity(request('entity'));
         if (!$entity) {
@@ -99,7 +111,7 @@ class EntityController extends Controller
 
     }
 
-    public function destroy(string $id)
+    public function destroy()
     {
         $entity = $this->getEntity(request('entity'));
 

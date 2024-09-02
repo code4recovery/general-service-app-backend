@@ -3,12 +3,13 @@
 use App\Http\Controllers\ButtonController;
 use App\Http\Controllers\EntityController;
 use App\Http\Controllers\LinkController;
+use App\Http\Controllers\MapImportController;
 use App\Http\Controllers\StoryController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\UserIsAdmin;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Route;
 
 // set the app locale based on the user's preferred language
 $lang = Request::getPreferredLanguage(['en', 'es', 'fr']);
@@ -51,4 +52,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('users', UserController::class);
         Route::get('/delete-user/{user}', [UserController::class, 'destroy'])->name('delete-user');
     });
+
+    Route::get('/import', [MapImportController::class, 'index']);
+    Route::get('/import/{area}', [MapImportController::class, 'import']);
 });

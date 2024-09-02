@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Users')
+@section('title', __('Users'))
 
 @section('content')
 
@@ -9,10 +9,10 @@
         @include('common.alerts')
 
         @include('common.heading', [
-            'title' => 'Users',
+            'title' => __('Users'),
             'button' => [
                 'href' => route('users.create'),
-                'label' => 'Create User',
+                'label' => __('Create User'),
             ],
         ])
 
@@ -24,11 +24,9 @@
                     'href' => route('users.edit', $user),
                     'values' => [
                         $user->name,
-                        $user->admin ? 'Yes' : 'No',
-                        $user->entities->count() === 1
-                            ? $user->entities[0]->name()
-                            : $user->entities->count() . ' entities',
-                        $user->last_seen ? $user->last_seen->diffForHumans() : 'Never',
+                        $user->admin ? __('Yes') : __('No'),
+                        $user->entities->count() === 1 ? $user->entities[0]->name() : $user->entities->count(),
+                        $user->last_seen ? $user->last_seen->diffForHumans() : __('Never'),
                     ],
                 ];
             }),

@@ -9,7 +9,7 @@
         @include('common.alerts')
 
         @include('common.heading', [
-            'title' => isset($user) ? $user->name : 'Create User',
+            'title' => isset($user) ? $user->name : __('Create User'),
             'breadcrumbs' => [
                 route('users.index') => __('Users'),
             ],
@@ -26,37 +26,41 @@
             @endisset
 
             <fieldset class="grid gap-5">
-                @include('common.input', [
-                    'label' => 'Name',
-                    'name' => 'name',
-                    'type' => 'text',
-                    'value' => old('name', $user->name ?? ''),
-                    'required' => true,
-                ])
 
-                @include('common.input', [
-                    'label' => 'Email',
-                    'name' => 'email',
-                    'type' => 'email',
-                    'value' => old('email', $user->email ?? ''),
-                    'required' => true,
-                ])
+                <div class="grid lg:grid-cols-4 gap-3 lg:gap-5 items-center">
+
+                    @include('common.input', [
+                        'label' => 'Name',
+                        'name' => 'name',
+                        'type' => 'text',
+                        'value' => old('name', $user->name ?? ''),
+                        'required' => true,
+                    ])
+
+                    @include('common.input', [
+                        'label' => 'Email',
+                        'name' => 'email',
+                        'type' => 'email',
+                        'value' => old('email', $user->email ?? ''),
+                        'required' => true,
+                    ])
+                </div>
 
                 <label class="flex items-center">
                     <input type="checkbox" name="admin" @if (old('admin', isset($user) && $user->admin ? 'on' : '') === 'on') checked @endif>
-                    <span class="ml-2">Admin</span>
+                    <span class="ml-2">{{ __('Admin') }}</span>
                 </label>
 
                 <div class="grid gap-1 w-full">
                     <label for="entities" class="block">
-                        Entities
+                        {{ __('Entities') }}
                     </label>
-                    <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                    <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
                         @foreach ($entities as $entity)
                             <label class="flex items-center">
                                 <input type="checkbox" name="entities[]" value="{{ $entity->id }}"
                                     @if (isset($user) && $user->entities->contains($entity)) checked @endif>
-                                <span class="ml-2">{{ $entity->name }}</span>
+                                <span class="ml-2">{{ $entity->name() }}</span>
                             </label>
                         @endforeach
                     </div>
