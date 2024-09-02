@@ -1,27 +1,25 @@
 import { defaultPolygonStyle, selectedPolygonStyle } from "./styles.js";
 
 export function selectMap(map, districts, district) {
-    if (district) {
-        districts.forEach((district) => {
-            district.polygon.setOptions(defaultPolygonStyle);
-        });
-        district.polygon.setOptions(selectedPolygonStyle);
+    const menu = document.getElementById("menu");
 
-        const menu = document.getElementById("menu");
+    if (!district) {
+        map.setCenter({ lat: 48, lng: -100 });
+        map.setZoom(4);
         if (menu) {
-            menu.value = district.index;
+            menu.value = "";
         }
 
-        map.fitBounds(district.bounds);
         return;
     }
+    districts.forEach((district) => {
+        district.polygon.setOptions(defaultPolygonStyle);
+    });
+    district.polygon.setOptions(selectedPolygonStyle);
 
-    districts.forEach(({ polygon }) => {
-        polygon.setOptions(defaultPolygonStyle);
-    });
-    const totalBounds = new google.maps.LatLngBounds();
-    districts.forEach(({ bounds }) => {
-        totalBounds.union(bounds);
-    });
-    map.fitBounds(totalBounds);
+    if (menu) {
+        menu.value = district.index;
+    }
+
+    map.fitBounds(district.bounds);
 }

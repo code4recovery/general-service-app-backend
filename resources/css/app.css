@@ -6,15 +6,35 @@
     @apply hidden;
 }
 
-#map select {
-    @apply appearance-none m-3 pl-4 pr-9 py-2 bg-white rounded shadow text-lg;
+#controls {
+    @apply m-3 flex flex-col gap-3;
+    max-width: calc(100vw - 1.5rem);
+    width: 25rem;
+}
+
+#controls #top-row {
+    @apply flex gap-3;
+}
+
+#controls select {
+    @apply appearance-none pl-4 pr-9 py-2 bg-white rounded shadow text-base w-auto w-3/4;
 
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
     background-position: right 0.5rem center;
     background-repeat: no-repeat;
     background-size: 1.5rem;
-    max-width: calc(100vw - 1.5rem);
-    width: 25rem;
+}
+
+#controls button {
+    @apply p-2 bg-white rounded shadow text-base text-nowrap w-1/4;
+}
+
+#controls button:hover {
+    @apply bg-gray-100;
+}
+
+#controls input {
+    @apply px-4 py-2 bg-white rounded shadow text-base w-full;
 }
 
 .gm-style iframe + div {
