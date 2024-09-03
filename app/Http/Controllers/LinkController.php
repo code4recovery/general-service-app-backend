@@ -32,7 +32,9 @@ class LinkController extends Controller
             }
         }
 
-        return view('links', ['entity' => $entity]);
+        $area = $entity->district && $user->admin ? Entity::where('area', $entity->area)->whereNull('district')->first() : null;
+
+        return view('links', ['entity' => $entity, 'area' => $area]);
     }
 
     public function create()

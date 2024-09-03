@@ -59,7 +59,9 @@ class StoryController extends Controller
             }
         }
 
-        return view('stories', ['entity' => $entity]);
+        $area = $entity->district && $user->admin ? Entity::where('area', $entity->area)->whereNull('district')->first() : null;
+
+        return view('stories', ['entity' => $entity, 'area' => $area]);
     }
 
     public function create()

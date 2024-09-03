@@ -40,6 +40,7 @@ class ButtonController extends Controller
         } else {
             $validated = request()->validate([
                 'title' => ['required', 'max:255'],
+                'event_title' => ['required', 'max:255'],
                 'start' => ['required', 'date_format:Y-m-d\TH:i'],
                 'end' => ['required', 'date_format:Y-m-d\TH:i'],
                 'conference_url' => ['nullable', 'max:255', 'url'],
@@ -50,6 +51,7 @@ class ButtonController extends Controller
             $story->buttons()->create([
                 'title' => $validated['title'],
                 'type' => 'calendar',
+                'event_title' => $validated['event_title'],
                 'start' => $validated['start'],
                 'end' => $validated['end'],
                 'timezone' => $entity->timezone,
@@ -104,6 +106,7 @@ class ButtonController extends Controller
         } else {
             $validated = request()->validate([
                 'title' => ['required', 'max:255'],
+                'event_title' => ['required', 'max:255'],
                 'start' => ['required', 'date_format:Y-m-d\TH:i'],
                 'end' => ['required', 'date_format:Y-m-d\TH:i'],
                 'conference_url' => ['nullable', 'max:255', 'url'],
@@ -114,6 +117,7 @@ class ButtonController extends Controller
             $button->update([
                 'title' => $validated['title'],
                 'type' => 'calendar',
+                'event_title' => $validated['event_title'],
                 'start' => $validated['start'],
                 'end' => $validated['end'],
                 'timezone' => $entity->timezone,

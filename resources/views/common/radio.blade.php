@@ -3,7 +3,7 @@
     <div class="flex rounded border divide-x border-neutral-300 divide-neutral-300">
         @foreach ($options as $key => $label)
             <label @class([
-                'flex items-center justify-center w-full hover:bg-neutral-300 hover:text-neutral-900 h-11 relative',
+                'flex items-center justify-center w-full hover:bg-neutral-300 hover:text-neutral-900 cursor-pointer h-11 relative',
                 'rounded-l' => $loop->first,
                 'rounded-r' => $loop->last,
             ])

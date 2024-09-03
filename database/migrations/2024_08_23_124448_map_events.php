@@ -26,8 +26,6 @@ return new class () extends Migration {
             $table->text('notes')->nullable();
             $table->unsignedSmallInteger('order')->default(0);
         });
-
-
     }
 
     /**
@@ -36,21 +34,19 @@ return new class () extends Migration {
     public function down(): void
     {
         Schema::table('entities', function (Blueprint $table) {
-            $table->dropIfExists('map_id');
-            $table->dropIfExists('timezone');
+            $table->dropColumn('map_id');
+            $table->dropColumn('timezone');
         });
 
         Schema::table('buttons', function (Blueprint $table) {
-            // $table->string('link', 255)->change();
-            $table->dropIfExists('type');
-            $table->dropIfExists('start');
-            $table->dropIfExists('end');
-            $table->dropIfExists('timezone');
-            $table->dropIfExists('formatted_address');
-            $table->dropIfExists('conference_url');
-            $table->dropIfExists('notes');
-            $table->dropIfExists('order');
+            $table->dropColumn('type');
+            $table->dropColumn('start');
+            $table->dropColumn('end');
+            $table->dropColumn('timezone');
+            $table->dropColumn('formatted_address');
+            $table->dropColumn('conference_url');
+            $table->dropColumn('notes');
+            $table->dropColumn('order');
         });
-
     }
 };

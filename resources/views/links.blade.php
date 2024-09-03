@@ -12,11 +12,17 @@
 
         @include('common.heading', [
             'title' => $entity->name(),
-            'breadcrumbs' => auth()->user()->admin
-                ? [
-                    route('entities.index', $entity) => __('Entities'),
-                ]
-                : [],
+            'breadcrumbs' => array_filter(
+                array_merge(auth()->user()->admin
+                        ? [
+                            route('entities.index') => __('Entities'),
+                        ]
+                        : [],
+                    isset($area)
+                        ? [
+                            route('entities.edit', $area->id) => $area->name(),
+                        ]
+                        : [])),
         ])
 
         @include('common.nav', [

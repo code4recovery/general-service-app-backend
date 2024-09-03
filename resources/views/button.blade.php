@@ -73,6 +73,15 @@
             </div>
 
             <div class="grid lg:grid-cols-2 gap-3 lg:gap-8 items-center" x-show="type === 'calendar'">
+                @include('common.input', [
+                    'label' => __('Event Title'),
+                    'name' => 'event_title',
+                    'type' => 'text',
+                    'value' => isset($button) ? $button['event_title'] : '',
+                ])
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-3 lg:gap-8 items-center" x-show="type === 'calendar'">
                 <div class="grid lg:grid-cols-2 gap-3">
                     @include('common.input', [
                         'label' => __('Start'),

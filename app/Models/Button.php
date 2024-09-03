@@ -15,6 +15,7 @@ class Button extends Model
         'title',
         'link',
         'type',
+        'event_title',
         'start',
         'end',
         'timezone',
