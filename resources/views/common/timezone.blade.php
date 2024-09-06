@@ -11,7 +11,7 @@
         'America/Chicago' => __('Central Time'),
         'America/Denver' => __('Mountain Time'),
         'America/Phoenix' => __('Arizona Time'),
-        'America/Los_Angeles' => __('Pacfic Time'),
+        'America/Los_Angeles' => __('Pacific Time'),
         'America/Anchorage' => __('Alaska Time'),
         'Pacific/Honolulu' => __('Hawaii Time'),
     ] as $timezone => $description)

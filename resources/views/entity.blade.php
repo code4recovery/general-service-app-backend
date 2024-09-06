@@ -143,24 +143,19 @@
             @include('common.separator')
 
             @include('common.table', [
-                'columns' => [
-                    'name' => __('Name'),
-                    'type' => __('Type'),
-                    'stories' => __('Stories'),
-                    'users' => __('Users'),
-                ],
-                'rows' => $districts->map(function ($district) {
-                        return [
-                            'href' => route('entities.edit', $district),
-                            'id' => $district->id,
-                            'values' => [
-                                $district->name(),
-                                __('District'),
-                                $district->stories->count() ?: '',
-                                $district->users->count() ?: '',
-                            ],
-                        ];
-                    })->toArray(),
+                'columns' => [__('Name'), __('Language'), __('Stories'), __('Users')],
+                'rows' => $districts->map(function ($district) use ($languages) {
+                    return [
+                        'href' => route('entities.edit', $district),
+                        'id' => $district->id,
+                        'values' => [
+                            $district->name(),
+                            $languages[$district->language],
+                            $district->stories->count() ?: '',
+                            $district->users->count() ?: '',
+                        ],
+                    ];
+                }),
             ])
         @endif
 
