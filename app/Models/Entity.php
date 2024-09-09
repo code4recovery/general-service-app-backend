@@ -23,6 +23,8 @@ class Entity extends Model
         'boundary',
         'map_id',
         'timezone',
+        'order',
+        'description',
     ];
 
     public function name(): string

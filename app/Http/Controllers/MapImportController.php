@@ -63,6 +63,8 @@ class MapImportController extends Controller
 
         // parse file
         $districts = [];
+        $counter = 0;
+
         foreach ($xml->Document->Folder as $layer) {
             $import = stristr($layer->name, 'district');
             $language = stristr($layer->name, 'French') ? 'fr' : (stristr($layer->name, 'Spanish') ? 'es' : 'en');
@@ -84,6 +86,8 @@ class MapImportController extends Controller
                 // parse district name
                 list($district, $name) = self::parseDistrictName($placemark->name);
 
+                list($description, $website) = self::parseDistrictDescription($placemark->description);
+
                 // add district
                 $districts[] = [
                     'area' => $area,
@@ -102,7 +106,10 @@ class MapImportController extends Controller
                                 explode("\n", $placemark->Polygon->outerBoundaryIs->LinearRing->coordinates)
                             )
                         )
-                    )) . '))'
+                    )) . '))',
+                    'order' => $counter++,
+                    'description' => $description,
+                    'website' => $website,
                 ];
             }
         }
@@ -121,7 +128,10 @@ class MapImportController extends Controller
                     // 'name' => $district['name'],
                     // 'language' => $district['language'],
                     'color' => $district['color'],
-                    'boundary' => DB::raw("ST_GeomFromText('" . $district['boundary'] . "')")
+                    'boundary' => DB::raw("ST_GeomFromText('" . $district['boundary'] . "')"),
+                    'order' => $district['order'],
+                    'description' => $district['description'],
+                    'website' => $district['website'],
                 ]);
                 $log[] = 'updated ' . $entity->name();
                 Controller::updateJson($entity->id);
@@ -132,7 +142,10 @@ class MapImportController extends Controller
                     'name' => $district['name'],
                     'language' => $district['language'],
                     'color' => $district['color'],
-                    'boundary' => DB::raw("ST_GeomFromText('" . $district['boundary'] . "')")
+                    'boundary' => DB::raw("ST_GeomFromText('" . $district['boundary'] . "')"),
+                    'order' => $district['order'],
+                    'description' => $district['description'],
+                    'website' => $district['website'],
                 ]);
                 $log[] = 'created area: ' . $area->area . ' district: ' . $district['district'] . ' name: ' . $district['name'];
                 Controller::updateJson($entity->id);
@@ -192,6 +205,31 @@ class MapImportController extends Controller
         }
 
         return $districtParts;
+    }
+
+    private static function parseDistrictDescription($placemarkDescription)
+    {
+        $description = null;
+        $website = null;
+
+        $description_lines = array_values(array_filter(array_map('trim', explode('<br>', $placemarkDescription))));
+        $number_of_lines = count($description_lines);
+
+        if ($number_of_lines) {
+
+            $lastRow = $description_lines[$number_of_lines - 1];
+
+            if (filter_var($lastRow, FILTER_VALIDATE_URL)) {
+                $website = array_pop($description_lines);
+            }
+
+            if (count($description_lines)) {
+                $description = implode("\n", $description_lines);
+            }
+        }
+
+
+        return [$description, $website];
     }
 
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Entity;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 abstract class Controller
 {
@@ -114,7 +115,7 @@ abstract class Controller
 
     public static function updateMapJson()
     {
-        $districts = Entity::whereNotNull('boundary')->select(DB::raw('(ST_AsGeoJSON(boundary)) AS `boundary`, id, name, area, district, website, language, color'))->get();
+        $districts = Entity::whereNotNull('boundary')->select(DB::raw('(ST_AsGeoJSON(boundary)) AS `boundary`, id, name, area, district, description, website, language, color'))->orderBy('order')->get();
         $areas = Entity::whereNotNull('area')->whereNull('district')->get()->map(function ($area) use ($districts) {
             return [
                 'area' => $area->area,
@@ -125,6 +126,7 @@ abstract class Controller
                         'id' => $district->id,
                         'district' => $district->district,
                         'name' => $district->name,
+                        'description' => Str::limit($district->description, 100, '…'),
                         'website' => $district->website,
                         'language' => $district->language,
                         'color' => $district->color,
