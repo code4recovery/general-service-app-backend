@@ -126,7 +126,7 @@ abstract class Controller
                         'id' => $district->id,
                         'district' => $district->district,
                         'name' => $district->name,
-                        'description' => Str::limit($district->description, 100, '…'),
+                        'description' => Str::limit($district->description, 200, '…'),
                         'website' => $district->website,
                         'language' => $district->language,
                         'color' => $district->color,
