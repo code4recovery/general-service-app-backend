@@ -86,7 +86,14 @@ class MapImportController extends Controller
                 // parse district name
                 list($district, $name) = self::parseDistrictName($placemark->name);
 
-                list($description, $website) = self::parseDistrictDescription($placemark->description);
+                // parse district description
+                $description = $placemark->description;
+                foreach ($placemark->ExtendedData->Data as $data) {
+                    if ($data['name'] == 'description') {
+                        $description = $data->value;
+                    }
+                }
+                list($description, $website) = self::parseDistrictDescription($description);
 
                 // add district
                 $districts[] = [
