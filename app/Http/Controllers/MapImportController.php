@@ -87,13 +87,15 @@ class MapImportController extends Controller
                 list($district, $name) = self::parseDistrictName($placemark->name);
 
                 // parse district description
-                $description = $placemark->description;
-                foreach ($placemark->ExtendedData->Data as $data) {
-                    if ($data['name'] == 'description') {
-                        $description = $data->value;
+                $description = $placemark->description->__toString();
+                if ($placemark->ExtendedData->Data) {
+                    foreach ($placemark->ExtendedData->Data as $data) {
+                        if ($data['name'] == 'description') {
+                            $description = $data->value->__toString();
+                        }
                     }
                 }
-                list($description, $website) = self::parseDistrictDescription($description);
+            list($description, $website) = self::parseDistrictDescription($description);
 
                 // add district
                 $districts[] = [
