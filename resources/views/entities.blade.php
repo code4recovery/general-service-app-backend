@@ -19,7 +19,7 @@
             'empty' => __('No entities yet.'),
             'rows' => $entities->map(function ($entity) {
                 return [
-                    'href' => route('entities.edit', $entity),
+                    'href' => route('entities.stories.index', $entity),
                     'values' => [
                         $entity->name(),
                         $entity->type(),

@@ -4,12 +4,12 @@
     </p>
 @else
     <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-        <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+        <div class="inline-block min-w-full align-middle sm:px-6 lg:px-8">
             <table class="table-fixed min-w-full border-collapse">
                 <thead x-data="{ columns: @js($columns) }">
                     <tr>
                         @if (isset($reorder) && count($rows) > 1)
-                            <th class="border-b border-gray-300 dark:border-gray-600 font-light p-3 w-0"></th>
+                            <th class="border-b border-gray-300 dark:border-gray-600 font-light p-3 w-3"></th>
                         @endif
                         <template x-for="(column, index) in columns" :key="index">
                             <th class="border-b border-gray-300 dark:border-gray-600 font-light p-3"
@@ -17,7 +17,8 @@
                                     'text-left': index < 2,
                                     'text-right': index > 1,
                                     'w-1/2': !index,
-                                    'w-1/6': index,
+                                    'w-1/6': index && columns.length === 4,
+                                    'w-1/4': index && columns.length === 3,
                                 }"
                                 x-text="column"></th>
                         </template>
@@ -42,7 +43,7 @@
                             x-sort:item="row.id"
                             x-bind:data-id="row.id"
                             >
-                            <td x-sort:handle class="border border-gray-300 dark:border-gray-600 p-3 cursor-grab">
+                            <td x-sort:handle class="border border-gray-300 dark:border-gray-600 p-3 cursor-grab w-5">
                                 @include('common.icon', ['icon' => 'bars-3'])
                             </td>
                         @else

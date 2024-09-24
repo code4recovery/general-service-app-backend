@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\ButtonController;
 use App\Http\Controllers\EntityController;
-use App\Http\Controllers\LinkController;
 use App\Http\Controllers\MapImportController;
 use App\Http\Controllers\StoryController;
 use App\Http\Controllers\UserController;
@@ -37,15 +36,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('entities', EntityController::class);
     Route::resource('entities.stories', StoryController::class);
     Route::resource('entities.stories.buttons', ButtonController::class);
-    Route::resource('entities.links', LinkController::class);
 
     Route::get('/delete-entity/{entity}', [EntityController::class, 'destroy'])->name('delete-entity');
-    Route::get('/delete-link/{link}', [LinkController::class, 'destroy'])->name('delete-link');
     Route::get('/delete-story/{story}', [StoryController::class, 'destroy'])->name('delete-story');
     Route::get('/delete-button/{button}', [ButtonController::class, 'destroy'])->name('delete-button');
 
     Route::post('/reorder-buttons/{story}', [ButtonController::class, 'reorder'])->name('reorder-buttons');
-    Route::post('/reorder-links/{entity}', [LinkController::class, 'reorder'])->name('reorder-links');
     Route::post('/reorder-stories/{entity}', [StoryController::class, 'reorder'])->name('reorder-stories');
 
     Route::middleware(UserIsAdmin::class)->group(function () {

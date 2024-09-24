@@ -28,7 +28,6 @@
         @include('common.nav', [
             'links' => [
                 route('entities.stories.index', $entity) => ['newspaper', __('Stories')],
-                route('entities.links.index', $entity) => ['chat-bubble-oval-left', __('Links')],
                 route('entities.edit', $entity) => ['cog', __('Settings')],
             ],
             'button' => [
@@ -38,23 +37,28 @@
             ],
         ])
 
-        @include('common.table', [
-            'columns' => [__('Title'), __('Type'), __('Effective'), __('Expires')],
-            'empty' => __('No stories yet.'),
-            'reorder' => route('reorder-stories', $entity),
-            'rows' => $entity->stories->map(function ($story) use ($entity) {
-                return [
-                    'href' => route('entities.stories.edit', [$entity, $story]),
-                    'id' => $story->id,
-                    'values' => [
-                        $story->title,
-                        __(ucfirst($story->type)),
-                        $story->start_at->format('M j'),
-                        $story->end_at->format('M j'),
-                    ],
-                ];
-            }),
-        ])
+
+        @foreach ($types as $type => $name)
+            <div class="grid gap-3">
+                <h2 class="text-xl font-semibold">{{ __($name) }}</h2>
+                @include('common.table', [
+                    'columns' => [__('Title'), __('Effective'), __('Expires')],
+                    'empty' => __("No $type yet."),
+                    'reorder' => route('reorder-stories', $entity),
+                    'rows' => $entity->stories->where('type', $type)->map(function ($story) use ($entity) {
+                        return [
+                            'href' => route('entities.stories.edit', [$entity, $story]),
+                            'id' => $story->id,
+                            'values' => [
+                                $story->title,
+                                $story->start_at->format('M j'),
+                                $story->end_at->format('M j'),
+                            ],
+                        ];
+                    }),
+                ])
+            </div>
+        @endforeach
 
     </div>
 

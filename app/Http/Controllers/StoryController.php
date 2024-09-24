@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Entity;
 use App\Models\Story;
 
 class StoryController extends Controller
 {
     private $buttons = [0, 1, 2];
-    private $types = ['announcement', 'event'];
+    private $types = [
+        'news' => 'News',
+        'business' => 'Business',
+        'resources' => 'Resources'
+    ];
 
     private function getStory($storyId)
     {
@@ -61,7 +64,7 @@ class StoryController extends Controller
 
         $area = $entity->district && $user->admin ? Entity::where('area', $entity->area)->whereNull('district')->first() : null;
 
-        return view('stories', ['entity' => $entity, 'area' => $area]);
+        return view('stories', ['entity' => $entity, 'area' => $area, 'types' => $this->types]);
     }
 
     public function create()
@@ -93,7 +96,7 @@ class StoryController extends Controller
             'description' => ['required'],
             'start_at' => ['required', 'date'],
             'end_at' => ['required', 'date'],
-            'type' => ['required', 'in:' . implode(',', $this->types)],
+            'type' => ['required', 'in:' . implode(',', array_keys($this->types))],
             'language' => ['required', 'in:' . implode(',', array_keys($this->languages))],
         ]);
 
@@ -136,7 +139,7 @@ class StoryController extends Controller
         $validated = request()->validate([
             'title' => ['required', 'max:255'],
             'description' => ['required'],
-            'type' => ['required', 'in:' . implode(',', $this->types)],
+            'type' => ['required', 'in:' . implode(',', array_keys($this->types))],
             'start_at' => ['required', 'date'],
             'end_at' => ['required', 'date'],
             'language' => ['required', 'in:' . implode(',', array_keys($this->languages))],

@@ -24,7 +24,7 @@
             action="{{ isset($story) ? route('entities.stories.update', [$entity, $story]) : route('entities.stories.store', $entity) }}"
             x-data="{{ Js::from([
                 'language' => old('language', isset($story) ? $story['language'] : $entity['language']),
-                'type' => old('type', isset($story) ? $story['type'] : 'announcement'),
+                'type' => old('type', isset($story) ? $story['type'] : array_keys($types)[0]),
             ]) }}">
             @csrf
             @isset($story)
@@ -63,14 +63,11 @@
                         'label' => __('Type'),
                         'name' => 'type',
                         'required' => true,
-                        'options' => [
-                            'announcement' => __('Announcement'),
-                            'event' => __('Event'),
-                        ],
+                        'options' => $types,
                     ])
                 </div>
                 <div class="text-sm lg:pt-6">
-                    {{ __('Announcements are for general news and updates. Events are for a specific date and time.') }}
+                    {{ __('Use news for announcements and events, business for motions, discussion topics, or items of deliberation, and resources for websites or special documents.') }}
                 </div>
             </div>
 

@@ -15,7 +15,7 @@
                     'rounded-r' => $loop->last,
                 ]) type="radio" name="{{ $name }}" value="{{ $key }}"
                     required x-model="{{ $name }}" :checked="{{ $name }} === '{{ $key }}'" />
-                {{ $label }}
+                {{ __($label) }}
             </label>
         @endforeach
     </div>

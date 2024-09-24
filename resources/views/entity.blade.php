@@ -27,7 +27,6 @@
             @include('common.nav', [
                 'links' => [
                     route('entities.stories.index', $entity) => ['newspaper', __('Stories')],
-                    route('entities.links.index', $entity) => ['chat-bubble-oval-left', __('Links')],
                     route('entities.edit', $entity) => ['cog', __('Settings')],
                 ],
             ])

@@ -66,11 +66,6 @@ class Entity extends Model
         return str_pad($number, 2, '0', STR_PAD_LEFT);
     }
 
-    public function links(): HasMany
-    {
-        return $this->hasMany(Link::class);
-    }
-
     public function stories(): HasMany
     {
         return $this->hasMany(Story::class);
