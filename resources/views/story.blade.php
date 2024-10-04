@@ -126,19 +126,18 @@
                 'empty' => __('No buttons yet.'),
                 'reorder' => route('reorder-buttons', $story),
                 'rows' => $story->buttons->map(function ($button) use ($entity, $story) {
+                    if (Str::startsWith($button->link, 'mailto:')) {
+                        $link = substr($button->link, 7);
+                    } elseif (Str::isUrl($button->link)) {
+                        $link = parse_url($button->link, PHP_URL_HOST);
+                    } else {
+                        $link = $button->link;
+                    }
+            
                     return [
                         'href' => route('entities.stories.buttons.edit', [$entity, $story, $button]),
                         'id' => $button->id,
-                        'values' => [
-                            $button->title,
-                            $button->type,
-                            (Str::startsWith($button->link, 'mailto:')
-                                    ? substr($button->link, 7)
-                                    : $button->link)
-                                ? parse_url($button->link)['host']
-                                : 'event',
-                            $button->style,
-                        ],
+                        'values' => [$button->title, $button->type, $link, $button->style],
                     ];
                 }),
             ])
