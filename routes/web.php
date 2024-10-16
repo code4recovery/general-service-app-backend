@@ -49,6 +49,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/delete-user/{user}', [UserController::class, 'destroy'])->name('delete-user');
     });
 
+    Route::post('/users/add/{entity?}', [UserController::class, 'add'])->name('add-user');
+    Route::get('/users/{user}/remove/{entity?}', [UserController::class, 'remove'])->name('remove-user');
+
     Route::get('/import', [MapImportController::class, 'index']);
     Route::get('/import/{area}', [MapImportController::class, 'import']);
 });

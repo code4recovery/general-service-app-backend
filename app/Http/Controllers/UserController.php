@@ -71,9 +71,50 @@ class UserController extends Controller
 
     public function index()
     {
-        return view('users', [
-            'users' => User::with('entities')->get()
+
+        $admins = User::where('admin', true)->get();
+
+        $districts = Entity::whereNotNull('district')->get();
+
+        $areas = Entity::whereNotNull('area')->whereNull('district')->with(['users'])->get()->map(function ($area) use ($districts) {
+            $area->districts = $districts->where('area', $area->area)->count();
+            return $area;
+        });
+
+        return view('users', compact('admins', 'areas'));
+    }
+
+    public function add()
+    {
+        $user = User::createOrFirst([
+            'email' => request('email'),
         ]);
+
+        if (!request('entity')) {
+            $user->admin = true;
+        } else {
+            $user->entities()->attach(request('entity'));
+        }
+
+        $user->save();
+
+        return redirect()->route('users.index')->with('success', __('User added.'));
+    }
+
+    public function remove()
+    {
+        $entity = Entity::find(request('entity'));
+
+        $user = User::find(request('user'));
+
+        if ($entity) {
+            $user->entities()->detach($entity);
+        } else {
+            $user->admin = false;
+        }
+        $user->save();
+
+        return redirect()->route('users.index')->with('success', __('User removed.'));
     }
 
     public function create()

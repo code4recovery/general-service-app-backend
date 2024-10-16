@@ -10,27 +10,38 @@
 
         @include('common.heading', [
             'title' => __('Users'),
-            'button' => [
-                'href' => route('users.create'),
-                'label' => __('Create User'),
-            ],
         ])
 
-        @include('common.table', [
-            'columns' => [__('Name'), __('Admin'), __('Entities'), __('Last Seen')],
-            'empty' => __('No users yet.'),
-            'rows' => $users->map(function ($user) {
-                return [
-                    'href' => route('users.edit', $user),
-                    'values' => [
-                        $user->name,
-                        $user->admin ? __('Yes') : __('No'),
-                        $user->entities->count() === 1 ? $user->entities[0]->name() : $user->entities->count(),
-                        $user->last_seen ? $user->last_seen->diffForHumans() : __('Never'),
-                    ],
-                ];
-            }),
-        ])
+
+        <section class="grid gap-3 mb-6">
+            <h2 class="font-bold text-xl">Site Admins</h2>
+
+            <div class="flex flex-wrap flex-row gap-4">
+                @foreach ($admins as $admin)
+                    @include('common.user-chiclet', ['user' => $admin])
+                @endforeach
+                @livewire('email-form')
+            </div>
+        </section>
+
+        <section>
+            <h2 class="font-bold text-xl">Area Chairs, Delegates, and Alternates</h2>
+
+            <div class="divide-y divide-gray-300 dark:divide-gray-600">
+                @foreach ($areas as $area)
+                    <div class="py-3 flex flex-wrap gap-3 items-center">
+                        <span>{{ $area->area }}</span>
+                        <span>{{ $area->name }}</span>
+                        @foreach ($area->users as $user)
+                            @include('common.user-chiclet', ['user' => $user, 'entity' => $area])
+                        @endforeach
+                        @if ($area->districts)
+                            @livewire('email-form', ['entity' => $area->id])
+                        @endif
+                    </div>
+                @endforeach
+            </div>
+        </section>
 
     </div>
 
