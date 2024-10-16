@@ -22,6 +22,25 @@
                     <img src="{{ asset('download-google.svg') }}" alt="Google Play" class="h-14 block pointer-events-none">
                 </a>
             </div>
+            <div class="grid gap-4">
+                <h3 class="text-xl font-bold">{{ __('What is General Service?') }}</h3>
+                <p>Alcoholics Anonymous is a worldwide group that started in 1935 with the sole purpose of alcoholics
+                    helping other alcoholics get and maintain sobriety. This General Service App is intended for usage in
+                    the AA U.S./Canada so that volunteers get the information they need to communicate what’s happening in
+                    AA.</p>
+
+                <p>The communication structure of Alcoholics Anonymous is represented by an upside-down triangle. The
+                    purpose of the structure is two-way communication. This app attempts to provide a unified communication
+                    structure by which District Officers, Area Officers and the General Service Office can communicate with
+                    Group General Service Representatives about what is happening in AA “as a whole”.</p>
+
+                <p>This website is the mechanism by which to upload user stories that are sorted by News (Announcements &
+                    Events); Business (service entity motions and items of discussion); and Resources (local resources where
+                    users can find more information).</p>
+
+                <p>Reach out to your Area Delegate for your Area to be <a href="/onboarding"
+                        class="text-blue-700 dark:text-blue-300 underline">onboarded into the App</a>.</p>
+            </div>
             <ul class="grid grid-cols-2">
                 @foreach ([
             'gift' => __('Free of Charge'),

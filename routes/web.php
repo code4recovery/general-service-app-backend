@@ -30,6 +30,8 @@ Route::get('/logout', [UserController::class, 'logout']);
 
 Route::view('/map', 'map')->name('map');
 
+Route::view('/onboarding', 'onboarding')->name('onboarding');
+
 # Authenticated Routes
 
 Route::middleware(['auth', 'verified'])->group(function () {

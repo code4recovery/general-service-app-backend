@@ -15,7 +15,6 @@
     @livewireScripts
 
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/sort@3.x.x/dist/cdn.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
 <body class="bg-gray-200 dark:bg-gray-700 dark:text-white min-h-screen flex flex-col gap-6">
@@ -23,7 +22,7 @@
         <div class="container max-w-6xl mx-auto px-4 py-6">
             <div class="flex justify-between items-center flex-col sm:flex-row gap-8">
                 <div class="flex gap-4 items-center">
-                    <a href="{{ route('home') }}" class="text-2xl font-bold">
+                    <a href="{{ route('home') }}" class="text-2xl font-bold" aria-hidden="true" tabindex="-1">
                         <svg fill="currentColor" stroke="currentColor" viewBox="0 0 888 888" class="h-20">
                             <path fill-rule="evenodd" clip-rule="evenodd"
                                 d="M444 868.5C678.445 868.5 868.5 678.445 868.5 444C868.5 209.555 678.445 19.5 444 19.5C209.555 19.5 19.5 209.555 19.5 444C19.5 678.445 209.555 868.5 444 868.5ZM444 888C689.214 888 888 689.214 888 444C888 198.786 689.214 0 444 0C198.786 0 0 198.786 0 444C0 689.214 198.786 888 444 888Z" />
@@ -46,6 +45,7 @@
                                 'click' => 'isOpen = !isOpen',
                                 'icon' => 'chevron-down',
                                 'highlighted' => 'isOpen',
+                                'aria_label' => 'Open navigation',
                             ])
 
                             <div x-show="isOpen" x-cloak x-transition:enter="transition ease-out duration-100 transform"
