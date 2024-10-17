@@ -8,40 +8,31 @@
 
     <div class="container max-w-6xl mx-auto px-4 grid lg:grid-cols-3 gap-8">
         <div class="lg:col-span-2 grid gap-10 content-start">
-            <div class="grid gap-4">
-                <h2 class="text-2xl font-light">{{ __('Carry the message to your groups.') }}</h2>
-                <p>
-                    {{ __('District Chairs are welcome to use this free service to provide local news and event information to General Service Representatives.') }}
-                </p>
-            </div>
-            <div class="flex gap-4">
+            <div class="flex gap-4 justify-center md:justify-start">
                 <a href="https://apps.apple.com/us/app/aa-general-service/id1580190136">
-                    <img src="{{ asset('download-apple.svg') }}" alt="App Store" class="h-14 block pointer-events-none">
+                    <img src="{{ asset('download-apple.svg') }}" alt="App Store" class="w-44 block pointer-events-none">
                 </a>
                 <a href="https://play.google.com/store/apps/details?id=com.aa.generalservice">
-                    <img src="{{ asset('download-google.svg') }}" alt="Google Play" class="h-14 block pointer-events-none">
+                    <img src="{{ asset('download-google.svg') }}" alt="Google Play" class="w-44 block pointer-events-none">
                 </a>
             </div>
-            <div class="grid gap-4">
-                <h3 class="text-xl font-bold">{{ __('What is General Service?') }}</h3>
-                <p>Alcoholics Anonymous is a worldwide group that started in 1935 with the sole purpose of alcoholics
+            <div class="grid gap-4 leading-7">
+                <h3 class="text-xl font-bold">{{ __('Carry the message to your groups.') }}</h3>
+                <p>Alcoholics Anonymous is a worldwide fellowship that started in 1935 with the sole purpose of alcoholics
                     helping other alcoholics get and maintain sobriety. This General Service App is intended for usage in
-                    the AA U.S./Canada so that volunteers get the information they need to communicate what’s happening in
-                    AA.</p>
+                    the A.A. U.S./Canada service structure so that volunteers get the information they need to communicate
+                    what’s happening in A.A.</p>
 
                 <p>The communication structure of Alcoholics Anonymous is represented by an upside-down triangle. The
-                    purpose of the structure is two-way communication. This app attempts to provide a unified communication
-                    structure by which District Officers, Area Officers and the General Service Office can communicate with
-                    Group General Service Representatives about what is happening in AA “as a whole”.</p>
+                    purpose of the structure is two-way communication. This app provides a unified communication
+                    system by which District Officers, Area Officers and the General Service Office can communicate with
+                    Group General Service Representatives about what is happening in A.A. “as a whole.”</p>
 
-                <p>This website is the mechanism by which to upload user stories that are sorted by News (Announcements &
-                    Events); Business (service entity motions and items of discussion); and Resources (local resources where
-                    users can find more information).</p>
-
-                <p>Reach out to your Area Delegate for your Area to be <a href="/onboarding"
-                        class="text-blue-700 dark:text-blue-300 underline">onboarded into the App</a>.</p>
+                <p>Reach out to your Area Delegate for your Area to be onboarded into the app. Once your area is added, you
+                    will receive an email for you to <a href="/get-started"
+                        class="text-blue-700 dark:text-blue-300 underline">get started</a>.</p>
             </div>
-            <ul class="grid grid-cols-2">
+            <ul class="grid grid-cols-2 gap-4 md:grid-cols-4">
                 @foreach ([
             'gift' => __('Free of Charge'),
             'eye-slash' => __('No Tracking'),
@@ -49,8 +40,8 @@
             'language' => __('English, French, and Spanish'),
         ] as $navicon => $navtext)
                     <li
-                        class="py-10 px-3 border border-gray-300 dark:border-gray-600 grid gap-2 justify-items-center text-center">
-                        @include('common.icon', ['icon' => $navicon, 'size' => 'size-12'])
+                        class="py-6 grid gap-2 rounded-xl justify-items-center text-center text-sm flex-grow basis-1 flex-1 bg-black/5 dark:bg-white/10">
+                        @include('common.icon', ['icon' => $navicon, 'size' => 'size-8'])
                         {{ $navtext }}
                     </li>
                 @endforeach

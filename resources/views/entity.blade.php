@@ -9,7 +9,7 @@
         @include('common.alerts')
 
         @include('common.heading', [
-            'title' => isset($entity) ? $entity->name() : __('Create Entity'),
+            'title' => $entity->name(),
             'breadcrumbs' => array_filter(
                 array_merge(auth()->user()->admin
                         ? [
@@ -23,15 +23,18 @@
                         : [])),
         ])
 
-        @isset($entity)
-            @include('common.nav', [
-                'links' => [
+        @include('common.nav', [
+            'links' => array_merge(
+                [
                     route('entities.stories.index', $entity) => ['newspaper', __('Stories')],
                     route('entities.edit', $entity) => ['cog', __('Settings')],
                 ],
-            ])
-        @endisset
-
+                isset($entity->area) && !isset($entity->district)
+                    ? [
+                        route('districts', $entity) => ['home', __('Districts')],
+                    ]
+                    : []),
+        ])
 
         <form method="post" class="grid gap-8"
             action="{{ isset($entity) ? route('entities.update', $entity) : route('entities.store') }}"

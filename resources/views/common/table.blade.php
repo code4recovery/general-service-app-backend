@@ -1,5 +1,5 @@
 @if (!count($rows))
-    <p class="h-48 bg-gray-300 dark:bg-gray-600 flex justify-center items-center rounded-md">
+    <p class="h-48 bg-black/10 dark:bg-white/10 flex justify-center items-center rounded-md">
         {{ $empty }}
     </p>
 @else
@@ -39,7 +39,7 @@
                         });
                     }" @endif>
                     <template x-for="(row, index) in rows" :key="index">
-                        <tr class="hover:bg-white/50 hover:dark:bg-white/15 select-none table-row" @if (isset($reorder) && count($rows) > 1)
+                        <tr class="hover:bg-white/50 hover:dark:bg-white/10 select-none table-row" @if (isset($reorder) && count($rows) > 1)
                             x-sort:item="row.id"
                             x-bind:data-id="row.id"
                             >

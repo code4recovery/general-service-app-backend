@@ -84,6 +84,13 @@ class StoryController extends Controller
         ]);
     }
 
+    public function districts()
+    {
+        $entity = Entity::where('id', request('entity'))->first();
+        $districts = Entity::where('area', $entity->area)->whereNotNull('district')->orderBy('district')->get();
+        return view('districts', compact('entity', 'districts'));
+    }
+
     public function store()
     {
         $entity = $this->getEntity(request('entity'));

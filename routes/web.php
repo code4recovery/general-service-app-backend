@@ -30,13 +30,14 @@ Route::get('/logout', [UserController::class, 'logout']);
 
 Route::view('/map', 'map')->name('map');
 
-Route::view('/onboarding', 'onboarding')->name('onboarding');
+Route::view('/get-started', 'get-started')->name('get-started');
 
 # Authenticated Routes
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('entities', EntityController::class);
     Route::resource('entities.stories', StoryController::class);
+    Route::get('/entities/{entity}/districts', [StoryController::class, 'districts'])->name('districts');
     Route::resource('entities.stories.buttons', ButtonController::class);
 
     Route::get('/delete-entity/{entity}', [EntityController::class, 'destroy'])->name('delete-entity');

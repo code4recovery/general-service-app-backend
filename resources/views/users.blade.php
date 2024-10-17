@@ -12,7 +12,6 @@
             'title' => __('Users'),
         ])
 
-
         <section class="grid gap-3 mb-6">
             <h2 class="font-bold text-xl">Site Admins</h2>
 
@@ -30,8 +29,9 @@
             <div class="divide-y divide-gray-300 dark:divide-gray-600">
                 @foreach ($areas as $area)
                     <div class="py-3 flex flex-wrap gap-3 items-center">
-                        <span>{{ $area->area }}</span>
-                        <span>{{ $area->name }}</span>
+                        <a href="{{ route('entities.stories.index', $area->id) }}" class="hover:underline">
+                            {{ $area->area() }}: {{ $area->name }}
+                        </a>
                         @foreach ($area->users as $user)
                             @include('common.user-chiclet', ['user' => $user, 'entity' => $area])
                         @endforeach
