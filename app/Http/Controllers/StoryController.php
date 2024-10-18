@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Entity;
 use App\Models\Story;
+use Illuminate\Support\Facades\DB;
 
 class StoryController extends Controller
 {
     private $buttons = [0, 1, 2];
-    private $types = [
+    public $types = [
         'news' => 'News',
         'business' => 'Business',
         'resources' => 'Resources'
@@ -44,6 +45,7 @@ class StoryController extends Controller
             'entities',
             'entities.stories' => function ($query) {
                 $query->orderBy('order', 'asc');
+                $query->where('end_at', '>', now());
             }
         ])->first();
 
@@ -51,6 +53,7 @@ class StoryController extends Controller
             $entity = Entity::with([
                 'stories' => function ($query) {
                     $query->orderBy('order', 'asc');
+                    $query->where('end_at', '>', now());
                 }
             ])
                 ->where('id', request('entity'))

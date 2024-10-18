@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use App\Models\Story;
-use App\Models\Button;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\StoryController;
@@ -51,21 +50,22 @@ class ImportGsoNews extends Command
 
                 $datetime = new Carbon($remote_story['datetime']);
 
-                if ($story = $local_stories
-                    ->where('created_at', $datetime)
-                    ->where('language', $language)
-                    ->first()
+                if (
+                    $story = $local_stories
+                        ->where('created_at', $datetime)
+                        ->where('language', $language)
+                        ->first()
                 ) {
                     $this->info('Updating ' . $remote_story['title']);
 
                     $story->update([
-                         'title' => $remote_story['title'],
-                         'description' => $remote_story['content'],
-                         'language' => $language,
-                         'start_at' => $datetime,
-                         'end_at' => $datetime->copy()->addMonths(1),
-                         'count' => $count,
-                     ]);
+                        'title' => $remote_story['title'],
+                        'description' => $remote_story['content'],
+                        'language' => $language,
+                        'start_at' => $datetime,
+                        'end_at' => $datetime->copy()->addMonths(1),
+                        'count' => $count,
+                    ]);
 
                     $button = $story->buttons->first();
 
@@ -86,7 +86,7 @@ class ImportGsoNews extends Command
                         'entity_id' => 1,
                         'title' => $remote_story['title'],
                         'description' => $remote_story['content'],
-                        'type' => 'announcement',
+                        'type' => 'news',
                         'reference' => $storyController->reference(),
                         'language' => $language,
                         'start_at' => $datetime,

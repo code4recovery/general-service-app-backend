@@ -22,42 +22,6 @@ class EntityController extends Controller
         return view('entities', compact('admins', 'areas'));
     }
 
-    /*
-    public function create()
-    {
-        return view('entity', ['languages' => $this->languages]);
-    }
-
-    public function store(Request $request)
-    {
-        $validated = request()->validate([
-            'name' => ['required', 'max:255'],
-            'area' => ['integer'],
-            'district' => ['max:5'],
-            'website' => ['max:255'],
-            'language' => ['max:2'],
-            'banner' => ['max:255'],
-            'banner_dark' => ['max:255'],
-        ]);
-
-        $entity = Entity::create([
-            'name' => $validated['name'],
-            'area' => $validated['area'],
-            'district' => $validated['district'],
-            'website' => $validated['website'],
-            'language' => $validated['language'],
-            'banner' => $validated['banner'],
-            'banner_dark' => $validated['banner_dark'],
-        ]);
-
-        self::updateJson($entity->id);
-
-        return redirect()
-            ->route('entities.index')
-            ->with('success', __('Entity created.'));
-    }
-    */
-
     public function edit()
     {
         $entity = $this->getEntity(request('entity'));
