@@ -69,11 +69,6 @@
                                             @include ('common.icon', ['icon' => 'cog'])
                                             {{ __('Entities') }}
                                         </a>
-                                        <a href="{{ route('users.index') }}"
-                                            class="flex p-3 border-b gap-2 align-center hover:bg-black/5">
-                                            @include ('common.icon', ['icon' => 'cog'])
-                                            {{ __('Users') }}
-                                        </a>
                                     @endif
                                     <a href="/logout" class="flex p-3 border-b gap-2 align-center hover:bg-black/5">
                                         @include ('common.icon', ['icon' => 'x'])

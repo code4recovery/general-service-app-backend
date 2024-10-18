@@ -2,15 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+
 use App\Models\Entity;
+use App\Models\User;
 
 class EntityController extends Controller
 {
     public function index()
     {
-        $entities = Entity::with(['stories', 'users'])->whereNull('district')->orderBy('area')->orderBy('district')->get();
-        return view('entities', ['entities' => $entities]);
+        $admins = User::where('admin', true)->get();
+
+        $districts = Entity::whereNotNull('district')->get();
+
+        $areas = Entity::whereNull('district')->with(['users'])->get()->map(function ($area) use ($districts) {
+            $area->districts = $districts->where('area', $area->area)->count();
+            return $area;
+        });
+
+        return view('entities', compact('admins', 'areas'));
     }
 
     /*

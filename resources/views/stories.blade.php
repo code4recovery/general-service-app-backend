@@ -20,7 +20,7 @@
                         : [],
                     isset($area)
                         ? [
-                            route('entities.edit', $area->id) => $area->name(),
+                            route('districts', $area->id) => $area->name(),
                         ]
                         : [])),
         ])

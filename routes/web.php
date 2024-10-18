@@ -47,11 +47,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/reorder-buttons/{story}', [ButtonController::class, 'reorder'])->name('reorder-buttons');
     Route::post('/reorder-stories/{entity}', [StoryController::class, 'reorder'])->name('reorder-stories');
 
-    Route::middleware(UserIsAdmin::class)->group(function () {
-        Route::resource('users', UserController::class);
-        Route::get('/delete-user/{user}', [UserController::class, 'destroy'])->name('delete-user');
-    });
-
     Route::post('/users/add/{entity?}', [UserController::class, 'add'])->name('add-user');
     Route::get('/users/{user}/remove/{entity?}', [UserController::class, 'remove'])->name('remove-user');
 

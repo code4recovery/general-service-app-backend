@@ -1,8 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Entities')
-
-@section('description', 'View all service entities.')
+@section('title', __('Users'))
 
 @section('content')
 
@@ -14,21 +12,21 @@
             'title' => __('Entities'),
         ])
 
-        @include('common.table', [
-            'columns' => [__('Name'), __('Type'), __('Users'), __('Stories')],
-            'empty' => __('No entities yet.'),
-            'rows' => $entities->map(function ($entity) {
-                return [
-                    'href' => route('entities.stories.index', $entity),
-                    'values' => [
-                        $entity->name(),
-                        $entity->type(),
-                        $entity->users->count() ? $entity->users->count() : '',
-                        $entity->stories->count() ? $entity->stories->count() : '',
-                    ],
-                ];
-            }),
-        ])
+        <div @class(['divide-y divide-gray-300 dark:divide-gray-600', $border_css])>
+            @foreach ($areas as $area)
+                <div class="py-3 flex flex-wrap gap-3 items-center p-3">
+                    <a href="{{ route('entities.stories.index', $area->id) }}" class="hover:underline">
+                        {{ $area->name() }}
+                    </a>
+                    @foreach ($area->users as $user)
+                        @include('common.user-chiclet', ['user' => $user, 'entity' => $area])
+                    @endforeach
+                    @if (count($area->users) < 3 && ($area->districts || !$area->area))
+                        @livewire('email-form', ['entity' => $area->id])
+                    @endif
+                </div>
+            @endforeach
+        </div>
 
     </div>
 

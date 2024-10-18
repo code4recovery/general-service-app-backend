@@ -69,21 +69,6 @@ class UserController extends Controller
         return redirect()->route('home');
     }
 
-    public function index()
-    {
-
-        $admins = User::where('admin', true)->get();
-
-        $districts = Entity::whereNotNull('district')->get();
-
-        $areas = Entity::whereNotNull('area')->whereNull('district')->with(['users'])->get()->map(function ($area) use ($districts) {
-            $area->districts = $districts->where('area', $area->area)->count();
-            return $area;
-        });
-
-        return view('users', compact('admins', 'areas'));
-    }
-
     public function add()
     {
         $user = User::createOrFirst([
@@ -98,7 +83,7 @@ class UserController extends Controller
 
         $user->save();
 
-        return redirect()->route('users.index')->with('success', __('User added.'));
+        return redirect()->route('entities.index')->with('success', __('User added.'));
     }
 
     public function remove()
@@ -114,7 +99,7 @@ class UserController extends Controller
         }
         $user->save();
 
-        return redirect()->route('users.index')->with('success', __('User removed.'));
+        return redirect()->route('entities.index')->with('success', __('User removed.'));
     }
 
 }

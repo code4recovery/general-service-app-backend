@@ -1,5 +1,6 @@
 {
     ":app Login": "Inicio de sesión :app",
+    "Add": "Añadir",
     "Add to Calendar": "Añadir al calendario",
     "address@example.com": "dirección@ejemplo.com",
     "Admin": "Administrador",
@@ -35,6 +36,7 @@
     "Description": "Descripción",
     "District Chairs are welcome to use this free service to provide local news and event information to General Service Representatives.": "Los presidentes de distrito pueden utilizar este servicio gratuito para proporcionar noticias locales e información sobre eventos a los Representantes de Servicio General.",
     "District": "Distrito",
+    "Districts": "Distritos",
     "e.g. District Chair": "por ejemplo, Presidente de Distrito",
     "e.g. mailto:chair@district.org": "por ejemplo, mailto:presidente@distrito.org",
     "e.g. San Francisco": "por ejemplo, San Francisco",

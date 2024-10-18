@@ -9,10 +9,10 @@
                 <thead x-data="{ columns: @js($columns) }">
                     <tr>
                         @if (isset($reorder) && count($rows) > 1)
-                            <th class="border-b border-gray-300 dark:border-gray-600 font-light p-3 w-3"></th>
+                            <th @class(['font-light p-3 border-x-0 border-t-0 w-3', $border_css])></th>
                         @endif
                         <template x-for="(column, index) in columns" :key="index">
-                            <th class="border-b border-gray-300 dark:border-gray-600 font-light p-3"
+                            <th @class(['font-light p-3 border-x-0 border-t-0', $border_css])
                                 :class="{
                                     'text-left': index < 2,
                                     'text-right': index > 1,
@@ -39,29 +39,27 @@
                         });
                     }" @endif>
                     <template x-for="(row, index) in rows" :key="index">
-                        <tr class="hover:bg-white/50 hover:dark:bg-white/10 select-none table-row" @if (isset($reorder) && count($rows) > 1)
-                            x-sort:item="row.id"
-                            x-bind:data-id="row.id"
-                            >
-                            <td x-sort:handle class="border border-gray-300 dark:border-gray-600 p-3 cursor-grab w-5">
-                                @include('common.icon', ['icon' => 'bars-3'])
-                            </td>
-                        @else
-                            >
-                        @endisset
-                        <template x-for="(value, index) in row.values" :key="index">
-                            <td class="border border-gray-300 dark:border-gray-600 table-cell"
-                                :class="{
-                                    'text-left': index < 2,
-                                    'text-right': index > 1,
-                                }">
-                                <a x-bind:href="row.href" class="p-3 block" x-text="value"></a>
-                            </td>
-                        </template>
-                    </tr>
-                </template>
-            </tbody>
-        </table>
+                        <tr @class(['select-none table-row', $hover_css])
+                            @if (isset($reorder) && count($rows) > 1) x-sort:item="row.id"
+                            x-bind:data-id="row.id" @endif>
+                            @if (isset($reorder) && count($rows) > 1)
+                                <td x-sort:handle @class(['p-3 cursor-grab w-5', $border_css])>
+                                    @include('common.icon', ['icon' => 'bars-3'])
+                                </td>
+                            @endif
+                            <template x-for="(value, index) in row.values" :key="index">
+                                <td @class(['table-cell', $border_css])
+                                    :class="{
+                                        'text-left': index < 2,
+                                        'text-right': index > 1,
+                                    }">
+                                    <a x-bind:href="row.href" class="p-3 block" x-text="value"></a>
+                                </td>
+                            </template>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 @endif

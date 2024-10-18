@@ -3,7 +3,7 @@
     <div>
         <select name="{{ $name }}" id="{{ $name }}" @class([
             'w-full p-2 border border-gray-300 rounded text-black appearance-none h-11',
-            $focusClasses,
+            $focus_css,
         ]) required>
             @foreach ([
         'America/Halifax' => __('Atlantic Time'),

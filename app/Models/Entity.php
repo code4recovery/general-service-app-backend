@@ -35,7 +35,7 @@ class Entity extends Model
         }
         if (!$this->district) {
             // area
-            return __('Area :area: :name', [
+            return __(':area: :name', [
                 'area' => $this->area(),
                 'name' => $this->name
             ]);

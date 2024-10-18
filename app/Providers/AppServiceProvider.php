@@ -21,6 +21,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
-        View::share('focusClasses', 'focus:ring focus:ring-pink-500 focus:outline-none');
+        View::share('bg_css', 'bg-black/5 dark:bg-white/10');
+        View::share('border_css', 'border border-gray-300 dark:border-white/20');
+        View::share('focus_css', 'focus:ring focus:ring-blue-500 focus:outline-none');
+        View::share('hover_css', 'hover:bg-black/5 dark:hover:bg-white/10');
     }
 }
