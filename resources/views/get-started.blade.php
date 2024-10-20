@@ -8,9 +8,11 @@
 
     <div class="max-w-3xl mx-auto px-4 grid gap-4">
 
-        <h3 class="font-bold text-xl mt-3">Login</h3>
+        <h1 class="font-bold text-4xl pb-3 border-b border-gray-500 mb-3">How to Get Started</h1>
+
+        <h3 class="font-bold text-xl mt-3">Log in</h3>
         <ol class="list-decimal pl-6 gap-2 grid">
-            <li>Click Login button.</li>
+            <li>Click Log in button.</li>
             <li>Enter email associated with your General Service position. Click Submit.</li>
             <li>Check your email account. Click login link.</li>
         </ol>
@@ -18,8 +20,8 @@
         <h3 class="font-bold text-xl mt-3">Create Story</h3>
         <ol class="list-decimal pl-6 gap-2 grid">
             <li>Click Create Story.</li>
-            <li>Enter Title e.g. “Bill & Bob Unity Day”</li>
-            <li>Enter Description e.g. “Come join General Service, Intergroup, H&I, and YPAA’s Annual Service Fair on
+            <li>Enter Title, e.g. “Bill & Bob Unity Day”</li>
+            <li>Enter Description, e.g. “Come join General Service, Intergroup, H&I, and YPAA’s Annual Service Fair on
                 Saturday, June 10, 2025 at the Cathedral of Doctor Bob of the Assumption at 1935 Stepping Stones Street.”
             </li>
             <li>Choose Content Type. Available options include News (Announcement or Event), Business (current motions or

@@ -12,7 +12,7 @@
 
         @include('common.alerts')
 
-        <form class="grid gap-4 bg-white dark:bg-gray-800 rounded shadow p-8" method="post">
+        <form class="grid gap-4 bg-gray-200 dark:bg-gray-900 rounded shadow p-8" method="post">
             @csrf
 
             <h1 class="text-2xl font-bold">{{ __('Log in') }}</h1>

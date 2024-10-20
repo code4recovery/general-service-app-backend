@@ -34,13 +34,16 @@ class EntityController extends Controller
             ->orderBy('district')
             ->get() : [];
 
-        $area = $entity->district && $admin ? Entity::where('area', $entity->area)->whereNull('district')->first() : null;
-
         if (!$entity) {
             return redirect()->route('home');
         }
 
-        return view('entity', ['entity' => $entity, 'languages' => $this->languages, 'districts' => $districts, 'area' => $area]);
+        return view('entity', [
+            'entity' => $entity,
+            'languages' => $this->languages,
+            'districts' => $districts,
+            'breadcrumbs' => self::breadcrumbs($entity)
+        ]);
     }
 
     public function update()
@@ -101,4 +104,14 @@ class EntityController extends Controller
             ->with('success', __('Entity deleted.'));
 
     }
+
+    public function districts()
+    {
+        $entity = Entity::where('id', request('entity'))->first();
+        $districts = Entity::where('area', $entity->area)->whereNotNull('district')->orderBy('district')->get();
+        $breadcrumbs = self::breadcrumbs($entity);
+        return view('districts', compact('entity', 'breadcrumbs', 'districts'));
+    }
+
+
 }

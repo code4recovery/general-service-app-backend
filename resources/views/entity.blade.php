@@ -10,17 +10,7 @@
 
         @include('common.heading', [
             'title' => $entity->name(),
-            'breadcrumbs' => array_filter(
-                array_merge(auth()->user()->admin
-                        ? [
-                            route('entities.index') => __('Entities'),
-                        ]
-                        : [],
-                    isset($area)
-                        ? [
-                            route('districts', $area->id) => $area->name(),
-                        ]
-                        : [])),
+            'breadcrumbs' => $breadcrumbs,
         ])
 
         @include('common.nav', [

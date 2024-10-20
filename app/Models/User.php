@@ -38,6 +38,16 @@ class User extends Authenticatable
     ];
 
     /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::created(function (User $user) {
+            $user->sendLoginLink();
+        });
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -63,9 +73,13 @@ class User extends Authenticatable
     public function sendLoginLink()
     {
         $plaintext = Str::random(32);
+
+        // consume all previous tokens
+        $this->loginTokens()->update(['consumed_at' => now()]);
+
         $token = $this->loginTokens()->create([
-          'token' => hash('sha256', $plaintext),
-          'expires_at' => now()->addMinutes(15),
+            'token' => hash('sha256', $plaintext),
+            'expires_at' => now()->addYears(2),
         ]);
         Mail::to($this->email)->send(new MagicLoginLink($plaintext, $token->expires_at));
     }

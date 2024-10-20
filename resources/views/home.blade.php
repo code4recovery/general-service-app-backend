@@ -17,7 +17,7 @@
                 </a>
             </div>
             <div class="grid gap-4 leading-7">
-                <h3 class="text-xl font-bold">{{ __('Carry the message to your groups.') }}</h3>
+                <h3 class="text-3xl font-bold mb-3">{{ __('Carry the message') }}</h3>
                 <p>
                     {{ __('Alcoholics Anonymous is a worldwide fellowship that started in 1935 with the sole purpose of alcoholics helping other alcoholics get and maintain sobriety. This General Service App is intended for usage in the A.A. U.S./Canada service structure so that volunteers get the information they need to communicate what’s happening in A.A.') }}
                 </p>
@@ -33,7 +33,7 @@
                     ) !!}
                 </p>
             </div>
-            <ul class="grid grid-cols-2 gap-4 md:grid-cols-4">
+            <ul class="grid grid-cols-2 gap-4 md:grid-cols-4 mt-3">
                 @foreach ([
             'gift' => __('Free of Charge'),
             'eye-slash' => __('No Tracking'),

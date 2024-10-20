@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Entity;
 use App\Models\Story;
-use Illuminate\Support\Facades\DB;
 
 class StoryController extends Controller
 {
@@ -65,9 +64,7 @@ class StoryController extends Controller
             }
         }
 
-        $area = $entity->district && $user->admin ? Entity::where('area', $entity->area)->whereNull('district')->first() : null;
-
-        return view('stories', ['entity' => $entity, 'area' => $area, 'types' => $this->types]);
+        return view('stories', ['entity' => $entity, 'breadcrumbs' => self::breadcrumbs($entity), 'types' => $this->types]);
     }
 
     public function create()
@@ -85,13 +82,6 @@ class StoryController extends Controller
             'language' => $entity->language,
             'languages' => $this->languages,
         ]);
-    }
-
-    public function districts()
-    {
-        $entity = Entity::where('id', request('entity'))->first();
-        $districts = Entity::where('area', $entity->area)->whereNotNull('district')->orderBy('district')->get();
-        return view('districts', compact('entity', 'districts'));
     }
 
     public function store()

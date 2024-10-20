@@ -47,7 +47,8 @@ class LoginController extends Controller
         if (!$token->isValid()) {
             return redirect()->route('login')->with('error', __('Login token has expired, please try again.'));
         }
-        $token->consume();
+        // don't expire a token when it is used, only when it's re-issued
+        // $token->consume();
         Auth::login($token->user, true);
 
         // todo this does not seem to work

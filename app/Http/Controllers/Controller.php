@@ -9,6 +9,24 @@ use Illuminate\Support\Str;
 
 abstract class Controller
 {
+
+    public static function breadcrumbs($entity)
+    {
+        if (!auth()->user()->admin) {
+            return [];
+        }
+
+        $area = $entity->district ? Entity::where('area', $entity->area)->whereNull('district')->first() : null;
+
+        $breadcrumbs = [];
+        $breadcrumbs[route('entities.index')] = __('Entities');
+
+        if (isset($area)) {
+            $breadcrumbs[route('districts', $area->id)] = $area->name();
+        }
+        return $breadcrumbs;
+    }
+
     public function getEntity($entityId)
     {
         $user = auth()->user()->with('entities')->first();
