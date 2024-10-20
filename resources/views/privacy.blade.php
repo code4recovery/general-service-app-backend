@@ -6,7 +6,7 @@
 
 @section('content')
 
-    <div class="container max-w-3xl mx-auto px-4 grid gap-4">
+    <div class="max-w-3xl mx-auto px-4 grid gap-4">
 
         @include('common.heading', [
             'title' => 'Privacy Policy',

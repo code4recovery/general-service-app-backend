@@ -8,7 +8,7 @@
 
 @section('content')
 
-    <div class="container max-w-md mx-auto px-4 grid gap-4 -mt-8">
+    <div class="max-w-md mx-auto px-4 grid gap-4 -mt-8">
 
         @include('common.alerts')
 

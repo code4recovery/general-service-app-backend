@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <div class="container max-w-6xl mx-auto px-4 grid gap-8">
+    <div class="max-w-6xl mx-auto px-4 grid gap-8">
 
         @include('common.alerts')
 
@@ -36,21 +36,11 @@
                     : []),
         ])
 
-        @include('common.table', [
-            'columns' => [__('Name'), __('Type'), __('Users'), __('Stories')],
-            'empty' => __('No districts yet.'),
-            'rows' => $districts->map(function ($entity) {
-                return [
-                    'href' => route('entities.stories.index', $entity),
-                    'values' => [
-                        $entity->name(),
-                        $entity->type(),
-                        $entity->users->count() ? $entity->users->count() : '',
-                        $entity->stories->count() ? $entity->stories->count() : '',
-                    ],
-                ];
-            }),
-        ])
+        <div class="divide-y divide-gray-300 dark:divide-gray-600">
+            @foreach ($districts as $district)
+                <livewire:entity-row :entity="$district" :active="true" />
+            @endforeach
+        </div>
 
     </div>
 

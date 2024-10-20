@@ -5,11 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Entity;
 use App\Models\User;
 use App\Models\LoginToken;
 
-class UserController extends Controller
+class LoginController extends Controller
 {
     public function login_form()
     {
@@ -67,39 +66,6 @@ class UserController extends Controller
         $request->session()->regenerateToken();
 
         return redirect()->route('home');
-    }
-
-    public function add()
-    {
-        $user = User::createOrFirst([
-            'email' => request('email'),
-        ]);
-
-        if (!request('entity')) {
-            $user->admin = true;
-        } else {
-            $user->entities()->attach(request('entity'));
-        }
-
-        $user->save();
-
-        return redirect()->route('entities.index')->with('success', __('User added.'));
-    }
-
-    public function remove()
-    {
-        $entity = Entity::find(request('entity'));
-
-        $user = User::find(request('user'));
-
-        if ($entity) {
-            $user->entities()->detach($entity);
-        } else {
-            $user->admin = false;
-        }
-        $user->save();
-
-        return redirect()->route('entities.index')->with('success', __('User removed.'));
     }
 
 }

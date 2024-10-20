@@ -6,7 +6,7 @@
 
 @section('content')
 
-    <div class="container max-w-3xl mx-auto px-4 grid gap-4">
+    <div class="max-w-3xl mx-auto px-4 grid gap-4">
 
         <h3 class="font-bold text-xl mt-3">Login</h3>
         <ol class="list-decimal pl-6 gap-2 grid">

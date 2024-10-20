@@ -6,7 +6,7 @@
 
 @section('content')
 
-    <div class="container max-w-6xl mx-auto px-4 grid lg:grid-cols-3 gap-8">
+    <div class="max-w-6xl mx-auto px-4 grid lg:grid-cols-3 gap-8">
         <div class="lg:col-span-2 grid gap-10 content-start">
             <div class="flex gap-4 justify-center md:justify-start">
                 <a href="https://apps.apple.com/us/app/aa-general-service/id1580190136">
@@ -18,19 +18,20 @@
             </div>
             <div class="grid gap-4 leading-7">
                 <h3 class="text-xl font-bold">{{ __('Carry the message to your groups.') }}</h3>
-                <p>Alcoholics Anonymous is a worldwide fellowship that started in 1935 with the sole purpose of alcoholics
-                    helping other alcoholics get and maintain sobriety. This General Service App is intended for usage in
-                    the A.A. U.S./Canada service structure so that volunteers get the information they need to communicate
-                    what’s happening in A.A.</p>
+                <p>
+                    {{ __('Alcoholics Anonymous is a worldwide fellowship that started in 1935 with the sole purpose of alcoholics helping other alcoholics get and maintain sobriety. This General Service App is intended for usage in the A.A. U.S./Canada service structure so that volunteers get the information they need to communicate what’s happening in A.A.') }}
+                </p>
 
-                <p>The communication structure of Alcoholics Anonymous is represented by an upside-down triangle. The
-                    purpose of the structure is two-way communication. This app provides a unified communication
-                    system by which District Officers, Area Officers and the General Service Office can communicate with
-                    Group General Service Representatives about what is happening in A.A. “as a whole.”</p>
+                <p>
+                    {{ __('The communication structure of Alcoholics Anonymous is represented by an upside-down triangle. The purpose of the structure is two-way communication. This app provides a unified communication system by which District Officers, Area Officers and the General Service Office can communicate with Group General Service Representatives about what is happening in A.A. as a whole.') }}
+                </p>
 
-                <p>Reach out to your Area Delegate for your Area to be onboarded into the app. Once your area is added, you
-                    will receive an email for you to <a href="/get-started"
-                        class="text-blue-700 dark:text-blue-300 underline">get started</a>.</p>
+                <p>
+                    {!! __(
+                        'Reach out to your Area Delegate for your Area to be onboarded into the app. Once your area is added, you will receive an email for you to <a :link>get started</a>.',
+                        ['link' => 'href="/get-started" class="txt-blue-700 dark:text-blue-300 underline"'],
+                    ) !!}
+                </p>
             </div>
             <ul class="grid grid-cols-2 gap-4 md:grid-cols-4">
                 @foreach ([

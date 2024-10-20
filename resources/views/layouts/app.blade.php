@@ -19,7 +19,7 @@
 
 <body class="bg-white dark:bg-gray-800 dark:text-white min-h-screen flex flex-col gap-6">
     <header>
-        <div class="container max-w-6xl mx-auto px-4 py-6">
+        <div class="max-w-6xl mx-auto px-4 py-6">
             <div class="flex justify-between items-center flex-col sm:flex-row gap-8">
                 <div class="flex gap-4 items-center">
                     <a href="{{ route('home') }}" class="text-2xl font-bold" aria-hidden="true" tabindex="-1">
@@ -56,6 +56,13 @@
                                 x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
                                 class="-ml-28 left-[50%] md:left-auto md:origin-top-right absolute md:right-0 mt-2 w-56 rounded-md shadow-lg">
                                 <div class="rounded bg-white text-black shadow-xs overflow-hidden">
+                                    @if (auth()->user()->admin)
+                                        <a href="{{ route('entities.index') }}"
+                                            class="flex p-3 border-b gap-2 align-center hover:bg-black/5">
+                                            @include ('common.icon', ['icon' => 'office'])
+                                            {{ __('Entities') }}
+                                        </a>
+                                    @endif
                                     @foreach (auth()->user()->entities as $entity)
                                         <a href="{{ route('entities.stories.index', $entity) }}"
                                             class="flex p-3 border-b gap-2 align-center hover:bg-black/5">
@@ -63,13 +70,6 @@
                                             {{ $entity->name() }}
                                         </a>
                                     @endforeach
-                                    @if (auth()->user()->admin)
-                                        <a href="{{ route('entities.index') }}"
-                                            class="flex p-3 border-b gap-2 align-center hover:bg-black/5">
-                                            @include ('common.icon', ['icon' => 'cog'])
-                                            {{ __('Entities') }}
-                                        </a>
-                                    @endif
                                     <a href="/logout" class="flex p-3 border-b gap-2 align-center hover:bg-black/5">
                                         @include ('common.icon', ['icon' => 'x'])
                                         {{ __('Log Out') }}
