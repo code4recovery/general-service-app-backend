@@ -1,4 +1,5 @@
 {
+    "<a :link>unsplash.com</a> is a good resource for free images.": "<a :link>unsplash.com</a> est une bonne ressource pour des images gratuites.",
     ":app Login": "Connexion :app",
     "Add": "Ajouter",
     "Add to Calendar": "Ajouter au calendrier",
@@ -106,7 +107,6 @@
     "Target": "Cible",
     "The area and district numbers. For example, Area 4, District 20.": "Les numéros de région et de district. Par exemple, Région 4, District 20.",
     "The communication structure of Alcoholics Anonymous is represented by an upside-down triangle. The purpose of the structure is two-way communication. This app provides a unified communication system by which District Officers, Area Officers and the General Service Office can communicate with Group General Service Representatives about what is happening in A.A. as a whole.": "La structure de communication des Alcooliques anonymes est représentée par un triangle inversé. Le but de la structure est la communication bidirectionnelle. Cette application fournit un système de communication unifié par lequel les Officiers de District, les Officiers de Région et le Bureau du Service Général peuvent communiquer avec les Représentants de Service Général de Groupe sur ce qui se passe dans A.A. dans son ensemble.",
-    "These should be 1200×300 JPGs, under 100kb. Black text should be legible above the light version, and white text above the dark version.": "Il doit s'agir de fichiers JPG de 1 200 × 300, inférieurs à 100 Ko. Le texte noir doit être lisible au-dessus de la version claire et le texte blanc au-dessus de la version sombre.",
     "This is the button text.": "Ceci est le texte du bouton.",
     "This is the content of your story. This is plain text only because apps have trouble displaying rich text.": "Ceci est le contenu de votre histoire. Il s'agit uniquement de texte brut car les applications ont du mal à afficher du texte enrichi.",
     "This is the headline of your story.": "Ceci est le titre de votre histoire.",

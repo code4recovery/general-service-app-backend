@@ -75,14 +75,18 @@
                         <div class="grid gap-1">
                             <label for="{{ $banner_key }}">{{ $banner_label }}</label>
                             @if ($entity->$banner_key)
-                                <img src="{{ $entity->$banner_key }}" class="w-full h-auto rounded block">
+                                <img src="{{ $entity->$banner_key }}" class="w-full h-auto rounded block" alt="">
                             @endif
-                            <input type="file" name="{{ $banner_key }}" accept="image/jpeg" class="w-full">
+                            <input type="file" id="{{ $banner_key }}" name="{{ $banner_key }}" accept="image/jpeg"
+                                class="w-full">
                         </div>
                     @endforeach
                 </div>
                 <div class="text-sm lg:pt-6">
-                    {{ __('These should be 1200×300 JPGs, under 100kb. Black text should be legible above the light version, and white text above the dark version.') }}
+                    {!! __('<a :link>unsplash.com</a> is a good resource for free images.', [
+                        'link' =>
+                            'href="https://unsplash.com/" target="_blank" rel="noopener noreferrer" class="text-blue-700 dark:text-blue-300"',
+                    ]) !!}
                 </div>
             </div>
 
