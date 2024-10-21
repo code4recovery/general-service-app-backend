@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Entity;
 use App\Models\User;
+use Intervention\Image\Laravel\Facades\Image;
 
 class EntityController extends Controller
 {
@@ -59,23 +60,30 @@ class EntityController extends Controller
             'district' => ['max:255'],
             'website' => ['max:255'],
             'language' => ['max:2'],
-            'banner' => ['max:255'],
-            'banner_dark' => ['max:255'],
             'map_id' => ['nullable', 'max:255'],
             'timezone' => ['required', 'timezone:all'],
         ]);
 
-        $entity->update([
+        $updates = [
             'name' => $validated['name'],
             'area' => $validated['area'],
             'district' => $validated['district'],
             'website' => $validated['website'],
             'language' => $validated['language'],
-            'banner' => $validated['banner'],
-            'banner_dark' => $validated['banner_dark'],
             'map_id' => !empty($validated['map_id']) ? $validated['map_id'] : null,
             'timezone' => $validated['timezone'],
-        ]);
+        ];
+
+        foreach (['banner', 'banner_dark'] as $banner) {
+            if (request()->hasFile($banner)) {
+                $file = request()->file($banner);
+                $path = $banner . '/' . $entity->id . '.' . $file->getClientOriginalExtension();
+                Image::read($file->getRealPath())->scaleDown(width: 1200)->save(storage_path('app/public/' . $path));
+                $updates[$banner] = url($path);
+            }
+        }
+
+        $entity->update($updates);
 
         self::updateJson($entity->id);
 

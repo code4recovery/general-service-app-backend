@@ -7,7 +7,7 @@
                 'rounded-l' => $loop->first,
                 'rounded-r' => $loop->last,
             ])
-                :class="{ 'bg-transparent font-bold': {{ $name }} === '{{ $key }}', '{{ $bg_css }}': {{ $name }} !== '{{ $key }}' }">
+                :class="{ '{{ $bg_css }}': {{ $name }} === '{{ $key }}' }">
                 <input @class([
                     'appearance-none absolute top-0 left-0 right-0 bottom-0 cursor-pointer',
                     'rounded-l' => $loop->first,

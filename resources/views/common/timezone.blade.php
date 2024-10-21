@@ -2,7 +2,7 @@
     <label for="{{ $name }}" class="block">{{ $label }}</label>
     <div>
         <select name="{{ $name }}" id="{{ $name }}" @class([
-            'w-full p-2 border border-gray-300 rounded text-black appearance-none h-11',
+            'w-full p-2 border border-gray-300 rounded text-black appearance-none h-11 bg-transparent',
             $focus_css,
         ]) required>
             @foreach ([

@@ -26,7 +26,7 @@
                     : []),
         ])
 
-        <form method="post" class="grid gap-8"
+        <form method="post" class="grid gap-8" enctype="multipart/form-data"
             action="{{ isset($entity) ? route('entities.update', $entity) : route('entities.store') }}"
             x-data="{{ Js::from([
                 'language' => old('language', !empty($entity['language']) ? $entity['language'] : 'en'),
@@ -70,19 +70,16 @@
             </div>
 
             <div class="grid lg:grid-cols-2 gap-3 lg:gap-8 items-center">
-                <div class="flex gap-5">
-                    @include('common.input', [
-                        'label' => __('App Banner (Light)'),
-                        'name' => 'banner',
-                        'type' => 'url',
-                        'value' => isset($entity) ? $entity['banner'] : '',
-                    ])
-                    @include('common.input', [
-                        'label' => __('App Banner (Dark)'),
-                        'name' => 'banner_dark',
-                        'type' => 'url',
-                        'value' => isset($entity) ? $entity['banner_dark'] : '',
-                    ])
+                <div class="grid grid-cols-2 gap-5">
+                    @foreach (['banner' => __('App Banner (Light)'), 'banner_dark' => __('App Banner (Dark)')] as $key => $label)
+                        <div class="grid gap-1">
+                            <label for="{{ $key }}">{{ $label }}</label>
+                            @if ($entity->$key)
+                                <img src="{{ $entity->$key }}" class="w-full h-auto rounded block">
+                            @endif
+                            <input type="file" name="{{ $key }}" accept="image/jpeg" class="w-full">
+                        </div>
+                    @endforeach
                 </div>
                 <div class="text-sm lg:pt-6">
                     {{ __('These should be 1200×300 JPGs, under 100kb. Black text should be legible above the light version, and white text above the dark version.') }}

@@ -1,5 +1,5 @@
 @if (!count($rows))
-    <p class="h-48 bg-black/10 dark:bg-white/10 flex justify-center items-center rounded-md">
+    <p @class(['h-48 flex justify-center items-center rounded-md', $bg_css])>
         {{ $empty }}
     </p>
 @else

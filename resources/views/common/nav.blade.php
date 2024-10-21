@@ -4,7 +4,7 @@
         @foreach ($links as $navhref => [$icon, $label])
             <a href="{{ $navhref }}" @class([
                 'px-6 py-3 flex gap-3 items-center',
-                'bg-white/50 dark:bg-white/10' => Request::url() === $navhref,
+                $bg_css => request()->url() === $navhref,
                 $hover_css,
             ])>
                 @include('common.icon', ['icon' => $icon])
