@@ -71,13 +71,13 @@
 
             <div class="grid lg:grid-cols-2 gap-3 lg:gap-8 items-center">
                 <div class="grid grid-cols-2 gap-5">
-                    @foreach (['banner' => __('App Banner (Light)'), 'banner_dark' => __('App Banner (Dark)')] as $key => $label)
+                    @foreach (['banner' => __('App Banner (Light)'), 'banner_dark' => __('App Banner (Dark)')] as $banner_key => $banner_label)
                         <div class="grid gap-1">
-                            <label for="{{ $key }}">{{ $label }}</label>
-                            @if ($entity->$key)
-                                <img src="{{ $entity->$key }}" class="w-full h-auto rounded block">
+                            <label for="{{ $banner_key }}">{{ $banner_label }}</label>
+                            @if ($entity->$banner_key)
+                                <img src="{{ $entity->$banner_key }}" class="w-full h-auto rounded block">
                             @endif
-                            <input type="file" name="{{ $key }}" accept="image/jpeg" class="w-full">
+                            <input type="file" name="{{ $banner_key }}" accept="image/jpeg" class="w-full">
                         </div>
                     @endforeach
                 </div>
