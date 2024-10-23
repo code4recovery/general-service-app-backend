@@ -79,7 +79,7 @@ class EntityController extends Controller
                 $file = request()->file($banner);
                 $path = $banner . '/' . $entity->id . '.' . $file->getClientOriginalExtension();
                 Image::read($file->getRealPath())->scaleDown(width: 1200)->save(storage_path('app/public/' . $path));
-                $updates[$banner] = url($path);
+                $updates[$banner] = url('storage/' . $path);
             }
         }
 
