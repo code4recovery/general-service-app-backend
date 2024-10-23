@@ -1,10 +1,7 @@
 <div class="grid gap-1 w-full">
     <label for="{{ $name }}" class="block">{{ $label }}</label>
     <div>
-        <select name="{{ $name }}" id="{{ $name }}" @class([
-            'w-full p-2 border border-gray-300 rounded text-black appearance-none h-11 bg-transparent',
-            $focus_css,
-        ]) required>
+        <select name="{{ $name }}" id="{{ $name }}" @class([$border_css, $focus_css, $input_css, 'appearance-none h-11']) required>
             @foreach ([
         'America/Halifax' => __('Atlantic Time'),
         'America/New_York' => __('Eastern Time'),

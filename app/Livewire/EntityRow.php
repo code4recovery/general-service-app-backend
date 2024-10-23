@@ -41,7 +41,7 @@ class EntityRow extends Component
 
         $user->entities()->detach($this->entity);
 
-        if (!$user->entities()->count()) {
+        if (!$user->entities()->count() && !$user->admin) {
             $user->delete();
         } else {
             $user->save();

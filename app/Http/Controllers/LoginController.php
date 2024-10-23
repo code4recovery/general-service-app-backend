@@ -55,7 +55,13 @@ class LoginController extends Controller
         Auth::user()->update(['last_seen' => now()]);
 
         $entity = Auth::user()->entities()->first();
-        return redirect()->route('entities.stories.index', $entity);
+        if ($entity) {
+            return redirect()->route('entities.stories.index', $entity);
+        } else if (Auth::user()->admin) {
+            return redirect()->route('entities.index');
+        }
+
+        return redirect()->route('home');
     }
 
     public function logout(Request $request): RedirectResponse
