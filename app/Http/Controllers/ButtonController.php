@@ -21,7 +21,6 @@ class ButtonController extends Controller
         $entity = Entity::find(request('entity'));
         $story = $entity->stories->where('id', request('story'))->first();
 
-
         $validated = request()->validate([
             'type' => ['required', 'in:link,calendar'],
         ]);
@@ -36,6 +35,7 @@ class ButtonController extends Controller
                 'type' => 'link',
                 'link' => $validated['link'],
                 'style' => 'primary',
+                'order' => $story->buttons->max('order') + 1,
             ]);
         } else {
             $validated = request()->validate([
@@ -59,6 +59,7 @@ class ButtonController extends Controller
                 'formatted_address' => $validated['formatted_address'],
                 'notes' => $validated['notes'],
                 'style' => 'primary',
+                'order' => $story->buttons->max('order') + 1,
             ]);
         }
 
