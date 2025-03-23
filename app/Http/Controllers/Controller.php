@@ -137,6 +137,13 @@ abstract class Controller
                 'name' => $area->name,
                 'website' => $area->website,
                 'districts' => $districts->where('area', $area->area)->map(function ($district) {
+
+                    // for historical reasons, the coordinates are stored as [longitude, latitude]
+                    $coordinates = json_decode($district->boundary)->coordinates[0];
+                    $coordinates = array_map(function ($coordinate) {
+                        return [$coordinate[1], $coordinate[0]];
+                    }, $coordinates);
+
                     return [
                         'id' => $district->id,
                         'district' => $district->district,
