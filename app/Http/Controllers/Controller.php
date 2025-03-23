@@ -152,7 +152,7 @@ abstract class Controller
                         'website' => $district->website,
                         'language' => $district->language,
                         'color' => $district->color,
-                        'boundary' => json_decode($district->boundary)->coordinates[0],
+                        'boundary' => $coordinates,
                         'story_max' => $district->stories->max('end_at')?->getTimestamp(),
                     ];
                 })->values()->toArray()
