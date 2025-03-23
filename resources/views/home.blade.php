@@ -9,10 +9,10 @@
     <div class="max-w-6xl mx-auto px-4 grid lg:grid-cols-3 gap-8">
         <div class="lg:col-span-2 grid gap-10 content-start">
             <div class="flex gap-4 justify-center md:justify-start">
-                <a href="https://apps.apple.com/us/app/aa-general-service/id1580190136">
+                <a href="https://apps.apple.com/us/app/general-service/id6670377389">
                     <img src="{{ asset('download-apple.svg') }}" alt="App Store" class="w-44 block pointer-events-none">
                 </a>
-                <a href="https://play.google.com/store/apps/details?id=com.aa.generalservice">
+                <a href="https://play.google.com/store/apps/details?id=app.generalservice">
                     <img src="{{ asset('download-google.svg') }}" alt="Google Play" class="w-44 block pointer-events-none">
                 </a>
             </div>

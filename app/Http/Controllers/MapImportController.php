@@ -95,7 +95,7 @@ class MapImportController extends Controller
                         }
                     }
                 }
-            list($description, $website) = self::parseDistrictDescription($description);
+                list($description, $website) = self::parseDistrictDescription($description);
 
                 // add district
                 $districts[] = [
@@ -107,7 +107,7 @@ class MapImportController extends Controller
                     'boundary' => 'POLYGON((' . join(',', array_map(
                         function ($coordinates) {
                             list($lng, $lat) = explode(',', $coordinates);
-                            return $lng . ' ' . $lat;
+                            return $lat . ' ' . $lng;
                         },
                         array_filter(
                             array_map(
