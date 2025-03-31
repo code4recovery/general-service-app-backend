@@ -14,8 +14,7 @@
 <body>
     <div id="map" class="h-dvh"></div>
 
-    <script src="https://area-map.netlify.app/app.js" type="module" async></script>
-    <link rel="stylesheet" href="https://area-map.netlify.app/app.css" />
+    @vite('resources/js/app.js')
 </body>
 
 </html>

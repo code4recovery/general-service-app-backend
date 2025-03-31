@@ -1,0 +1,137 @@
+#map {
+  --border-color: #eee;
+  --hover-color: #f6f6f6;
+  --selected-color: #eee;
+  --text-color: #222;
+  --ui-color: #fff;
+
+  align-items: stretch;
+  background-color: var(--border-color);
+  display: flex;
+
+  aside {
+    background-color: var(--ui-color);
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    position: relative;
+    width: 320px;
+
+    input,
+    button {
+      background-position: 12px center;
+      background-repeat: no-repeat;
+      background-size: 20px;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-color);
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      padding: 8px 16px 8px 40px;
+      text-align: left;
+      width: 100%;
+    }
+
+    input {
+      background-image: url("./icons/magnifying-glass.svg");
+    }
+
+    > button {
+      background-image: url("./icons/map-pin.svg");
+    }
+
+    button {
+      p {
+        display: none;
+        font-size: 14px;
+        margin: 0;
+        &:first-child {
+          margin-top: 8px;
+        }
+        &:last-child {
+          margin-bottom: 8px;
+        }
+      }
+      &:hover {
+        background-color: var(--hover-color);
+      }
+      &[aria-expanded="true"],
+      &[aria-pressed="true"] {
+        background-color: var(--selected-color);
+      }
+      &[aria-pressed="true"] p {
+        display: block;
+      }
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      li {
+        margin: 0;
+        padding: 0;
+        &[aria-expanded="false"] {
+          > button {
+            background-image: url("./icons/chevron-right.svg");
+          }
+          > ul {
+            display: none;
+          }
+        }
+        &[aria-expanded="true"] {
+          > button {
+            background-image: url("./icons/chevron-down.svg");
+          }
+        }
+      }
+    }
+  }
+
+  main {
+    flex: 1;
+    .gm-style iframe + div {
+      border: none !important;
+    }
+
+    div[role="group"] {
+      border-radius: 4px;
+      display: grid;
+      margin: 10px;
+      overflow: hidden;
+
+      button {
+        background-color: var(--ui-color);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 20px;
+        border: 0;
+        cursor: pointer;
+        height: 36px;
+        width: 36px;
+        &:first-child {
+          background-image: url("./icons/plus.svg");
+          border-bottom: 1px solid var(--border-color);
+        }
+        &:last-child {
+          background-image: url("./icons/minus.svg");
+        }
+        &:hover {
+          background-color: var(--hover-color);
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    aside {
+      width: 100%;
+      height: 40%;
+    }
+    main {
+      height: 60%;
+    }
+  }
+}

@@ -56,8 +56,6 @@ class EntityController extends Controller
 
         $validated = request()->validate([
             'name' => ['max:255'],
-            'area' => ['nullable', 'integer'],
-            'district' => ['max:255'],
             'website' => ['max:255'],
             'language' => ['max:2'],
             'map_id' => ['nullable', 'max:255'],
@@ -66,8 +64,6 @@ class EntityController extends Controller
 
         $updates = [
             'name' => $validated['name'],
-            'area' => $validated['area'],
-            'district' => $validated['district'],
             'website' => $validated['website'],
             'language' => $validated['language'],
             'map_id' => !empty($validated['map_id']) ? $validated['map_id'] : null,

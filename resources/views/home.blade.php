@@ -29,7 +29,7 @@
                 <p>
                     {!! __(
                         'Reach out to your Area Delegate for your Area to be onboarded into the app. Once your area is added, you will receive an email for you to <a :link>get started</a>.',
-                        ['link' => 'href="/get-started" class="text-blue-700 dark:text-blue-300 underline"'],
+                        ['link' => 'href="/get-started" class="' . $link_css . '"'],
                     ) !!}
                 </p>
             </div>

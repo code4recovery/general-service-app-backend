@@ -36,25 +36,6 @@
                 @method('put')
             @endisset
 
-            <div class="grid lg:grid-cols-2 gap-3 lg:gap-8 items-center">
-                <div class="flex gap-5">
-                    @include('common.input', [
-                        'label' => __('Area'),
-                        'name' => 'area',
-                        'type' => 'number',
-                        'value' => isset($entity) ? $entity['area'] : '',
-                    ])
-                    @include('common.input', [
-                        'label' => __('District'),
-                        'name' => 'district',
-                        'type' => 'text',
-                        'value' => isset($entity) ? $entity['district'] : '',
-                    ])
-                </div>
-                <div class="text-sm lg:pt-6">
-                    {{ __('The area and district numbers. For example, Area 4, District 20.') }}
-                </div>
-            </div>
 
             <div class="grid lg:grid-cols-2 gap-3 lg:gap-8 items-center">
                 @include('common.input', [
@@ -84,8 +65,7 @@
                 </div>
                 <div class="text-sm lg:pt-6">
                     {!! __('<a :link>unsplash.com</a> is a good resource for free images.', [
-                        'link' =>
-                            'href="https://unsplash.com/" target="_blank" rel="noopener noreferrer" class="text-blue-700 dark:text-blue-300"',
+                        'link' => 'href="https://unsplash.com/" target="_blank" rel="noopener noreferrer" class="' . $link_css . '"',
                     ]) !!}
                 </div>
             </div>
@@ -107,23 +87,46 @@
                 ])
             </div>
 
-            <div class="grid lg:grid-cols-2 gap-3 lg:gap-8">
-                <div class="flex gap-5">
-                    @include('common.timezone', [
-                        'label' => __('Timezone'),
-                        'name' => 'timezone',
-                        'value' => old('timezone', isset($entity) ? $entity['timezone'] : 'America/Los_Angeles'),
-                    ])
-                    @if (!empty($entity->area) && empty($entity->district))
-                        @include('common.input', [
-                            'label' => __('Map ID'),
-                            'name' => 'map_id',
-                            'type' => 'text',
-                            'value' => old('map_id', isset($entity) ? $entity['map_id'] : null),
-                        ])
-                    @endif
-                </div>
+            <div class="grid lg:grid-cols-2 gap-3 lg:gap-8 items-center">
+                @include('common.timezone', [
+                    'label' => __('Timezone'),
+                    'name' => 'timezone',
+                    'value' => old('timezone', isset($entity) ? $entity['timezone'] : 'America/Los_Angeles'),
+                ])
             </div>
+
+            @if (!empty($entity->area) && empty($entity->district))
+                <div class="grid lg:grid-cols-2 gap-3 lg:gap-8 items-center">
+                    @include('common.input', [
+                        'label' => __('Map ID'),
+                        'name' => 'map_id',
+                        'type' => 'text',
+                        'value' => old('map_id', isset($entity) ? $entity['map_id'] : null),
+                    ])
+                    <div class="text-sm lg:pt-6">
+                        @if (empty($entity['map_id']))
+                            {!! __(
+                                'Google maps are used as the source of truth for the districts in your area. <a :link>Find out more</a>.',
+                                [
+                                    'link' =>
+                                        'href="https://docs.google.com/document/d/1nImP4ksUdR68UpV0W0pcaAuKRVl_OlILLvsMxYkUik8/edit?tab=t.0#heading=h.542fhy6fggd8" target="_blank" rel="noopener noreferrer" class="' .
+                                        $link_css .
+                                        '"',
+                                ],
+                            ) !!}
+                        @else
+                            {!! __('<a :link>Here is the Google Map</a> used for this area.', [
+                                'link' =>
+                                    'href="https://www.google.com/maps/d/u/0/edit?mid=' .
+                                    $entity['map_id'] .
+                                    '" target="_blank" rel="noopener noreferrer" class="' .
+                                    $link_css .
+                                    '"',
+                            ]) !!}
+                        @endif
+                    </div>
+                </div>
+            @endif
 
 
             @include('common.submit', [

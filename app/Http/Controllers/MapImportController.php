@@ -66,7 +66,7 @@ class MapImportController extends Controller
         $counter = 0;
 
         foreach ($xml->Document->Folder as $layer) {
-            $import = stristr($layer->name, 'district');
+            $layerIsDistricts = stristr($layer->name, 'district');
             $language = stristr($layer->name, 'French') ? 'fr' : (stristr($layer->name, 'Spanish') ? 'es' : 'en');
 
             foreach ($layer->Placemark as $placemark) {
@@ -78,13 +78,14 @@ class MapImportController extends Controller
                 }
 
                 // skip if not a district
-                if (!$import && !stristr($placemark->name, 'district')) {
+                if (!$layerIsDistricts && !stristr($placemark->name, 'district')) {
                     // $this->error('skipping ' . $placemark->name . ' because it is not a district');
                     continue;
                 }
 
                 // parse district name
-                list($district, $name) = self::parseDistrictName($placemark->name);
+                $name = self::convertUnicode($placemark->name->__toString());
+                list($district, $name) = self::parseDistrictName($name);
 
                 // parse district description
                 $description = $placemark->description->__toString();
@@ -95,6 +96,8 @@ class MapImportController extends Controller
                         }
                     }
                 }
+                $description = self::convertUnicode($description);
+                $description = strip_tags($description);
                 list($description, $website) = self::parseDistrictDescription($description);
 
                 // add district
@@ -107,7 +110,7 @@ class MapImportController extends Controller
                     'boundary' => 'POLYGON((' . join(',', array_map(
                         function ($coordinates) {
                             list($lng, $lat) = explode(',', $coordinates);
-                            return $lat . ' ' . $lng;
+                            return round($lat, 4) . ' ' . round($lng, 4);
                         },
                         array_filter(
                             array_map(
@@ -134,8 +137,8 @@ class MapImportController extends Controller
                 ->first();
             if ($entity) {
                 $entity->update([
-                    // 'name' => $district['name'],
-                    // 'language' => $district['language'],
+                    'name' => $district['name'],
+                    'language' => $district['language'],
                     'color' => $district['color'],
                     'boundary' => DB::raw("ST_GeomFromText('" . $district['boundary'] . "')"),
                     'order' => $district['order'],
@@ -162,6 +165,11 @@ class MapImportController extends Controller
                 $log[] = 'skipped adding area: ' . $area->area . ' district: ' . $district['district'] . ' name: ' . $district['name'];
             }
         }
+
+        // set simplified boundary
+        Entity::whereNotNull('boundary')->update([
+            'boundary_simplified' => DB::raw("ST_Simplify(boundary, 0.01)")
+        ]);
 
         Controller::updateMapJson();
 
@@ -199,13 +207,41 @@ class MapImportController extends Controller
         return $xml;
     }
 
+    /**
+     * Convert unicode characters to utf-8
+     * 
+     * @param string $string
+     * @return string
+     */
+    private static function convertUnicode($string)
+    {
+        return str_replace(chr(194) . chr(160), ' ', $string);
+    }
+
+    /**
+     * Parse the district name from the placemark name.
+     * 
+     * 'District 1: Downtown' => ['1', 'Downtown']
+     * '19 / 10C' => ['19 / 10C']
+     *
+     * @param string $placemarkName
+     * @return array
+     */
     private static function parseDistrictName($placemarkName)
     {
         $placemarkName = trim($placemarkName);
 
+        // remove extra spaces
+        $placemarkName = implode(' ', array_filter(explode(' ', $placemarkName)));
+
         // remove District prefix (e.g. District 1: Downtown)
         if (str_starts_with($placemarkName, 'District ')) {
             $placemarkName = substr($placemarkName, 9);
+        }
+
+        // remove Districts prefix (e.g. Districts 1+2: Combined)
+        if (str_starts_with($placemarkName, 'Districts ')) {
+            $placemarkName = substr($placemarkName, 10);
         }
 
         $districtParts = array_map('trim', explode(':', $placemarkName, 2));
@@ -220,6 +256,9 @@ class MapImportController extends Controller
     {
         $description = null;
         $website = null;
+
+        // remove extra spaces
+        $placemarkDescription = implode(' ', array_filter(explode(' ', $placemarkDescription)));
 
         $description_lines = array_values(array_filter(array_map('trim', explode('<br>', $placemarkDescription))));
         $number_of_lines = count($description_lines);
