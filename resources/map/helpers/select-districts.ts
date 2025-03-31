@@ -68,7 +68,6 @@ export function selectDistricts({
     }
     if (selected.length === 1) {
         url.searchParams.set("district", selected[0].district);
-        console.log(`Selected ${selected[0].boundary.length} points`);
     }
     history.replaceState({}, "", url);
 }

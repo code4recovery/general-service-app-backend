@@ -6,11 +6,12 @@ import { initApp } from "./helpers/init-app";
 import { initClick } from "./helpers/init-click";
 import { initData } from "./helpers/init-data";
 import { initPanel } from "./helpers/init-panel";
+import { initSelected } from "./helpers/init-selected";
 import { initZoomButtons } from "./helpers/init-zoom-buttons";
 import { selectDistricts } from "./helpers/select-districts";
 
 (async () => {
-    const { mapElement, panelElement, selectedArea } = initApp();
+    const { mapElement, panelElement, defaultArea } = initApp();
 
     const { Map } = await new Loader({
         // @ts-ignore
@@ -35,16 +36,24 @@ import { selectDistricts } from "./helpers/select-districts";
 
     initClick({ districts, map });
 
-    const selectedDistricts =
-        areas.find(({ area }) => area === selectedArea)?.districts ?? [];
+    const { selectedArea, selectedDistrict } = initSelected({
+        defaultArea,
+        areas,
+    });
 
-    if (selectedDistricts.length) {
-        selectDistricts({ districts, map, selected: selectedDistricts });
-    } else {
+    if (!selectedArea && !selectedDistrict) {
         map.setOptions({ center: { lat: 45, lng: -100 }, zoom: 4 });
     }
 
-    initPanel({ areas, districts, map, marker, panelElement, selectedArea });
+    initPanel({
+        areas,
+        districts,
+        map,
+        marker,
+        panelElement,
+        selectedArea,
+        selectedDistrict,
+    });
 
     initZoomButtons(map);
 })();

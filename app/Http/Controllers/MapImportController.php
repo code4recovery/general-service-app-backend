@@ -168,7 +168,7 @@ class MapImportController extends Controller
 
         // set simplified boundary
         Entity::whereNotNull('boundary')->update([
-            'boundary_simplified' => DB::raw("ST_Simplify(boundary, 0.01)")
+            'boundary_simplified' => DB::raw("ST_Simplify(boundary, 0.0025)")
         ]);
 
         Controller::updateMapJson();

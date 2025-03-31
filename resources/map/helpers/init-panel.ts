@@ -12,13 +12,15 @@ export function initPanel({
     marker,
     panelElement,
     selectedArea,
+    selectedDistrict,
 }: {
     areas: Area[];
     districts: District[];
     map: google.maps.Map;
     marker: google.maps.Marker;
     panelElement: HTMLElement;
-    selectedArea: number | null;
+    selectedArea?: number;
+    selectedDistrict?: District;
 }) {
     const form = document.createElement("form");
 
@@ -83,6 +85,7 @@ export function initPanel({
     panelElement.appendChild(findMeButton);
 
     let selectedAreaButton: HTMLButtonElement | null = null;
+    let selectedDistrictButton: HTMLButtonElement | null = null;
 
     const areaList = document.createElement("ul");
     areaList.role = "tree";
@@ -113,6 +116,10 @@ export function initPanel({
                 districtItem.role = "treeitem";
                 districtItem.appendChild(district.button);
                 districtList.appendChild(districtItem);
+
+                if (selectedDistrict === district) {
+                    selectedDistrictButton = district.button;
+                }
             });
 
             area.button.innerText = formatAreaName(area);
@@ -157,6 +164,12 @@ export function initPanel({
 
     panelElement.appendChild(areaList);
 
-    // @ts-ignore
-    selectedAreaButton?.click();
+    // expand selected area
+    if (selectedDistrictButton) {
+        // @ts-ignore
+        selectedDistrictButton.click();
+    } else if (selectedAreaButton) {
+        // @ts-ignore
+        selectedAreaButton?.click();
+    }
 }

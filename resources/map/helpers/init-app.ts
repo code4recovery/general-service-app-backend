@@ -13,16 +13,9 @@ export function initApp() {
     embedElement.appendChild(mapElement);
 
     // if the map element has a data-area attribute, use that as the selected area
-    let selectedArea = embedElement.hasAttribute("data-area")
+    const defaultArea = embedElement.hasAttribute("data-area")
         ? parseInt(embedElement.getAttribute("data-area") as string)
-        : null;
+        : undefined;
 
-    // but override with URL param
-    const urlParams = new URLSearchParams(window.location.search);
-    const area = urlParams.get("area");
-    if (area) {
-        selectedArea = parseInt(area);
-    }
-
-    return { mapElement, panelElement, selectedArea };
+    return { mapElement, panelElement, defaultArea };
 }
