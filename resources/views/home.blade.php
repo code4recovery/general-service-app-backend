@@ -26,7 +26,7 @@
                     {{ __('The communication structure of Alcoholics Anonymous is represented by an upside-down triangle. The purpose of the structure is two-way communication. This app provides a unified communication system by which District Officers, Area Officers and the General Service Office can communicate with Group General Service Representatives about what is happening in A.A. as a whole.') }}
                 </p>
 
-                <p>
+                <p hidden>
                     {!! __(
                         'Reach out to your Area Delegate for your Area to be onboarded into the app. Once your area is added, you will receive an email for you to <a :link>get started</a>.',
                         ['link' => 'href="/get-started" class="' . $link_css . '"'],
