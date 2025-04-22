@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Entity;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Laravel\Facades\Image;
 
 class EntityController extends Controller
@@ -117,5 +119,31 @@ class EntityController extends Controller
         return view('districts', compact('entity', 'breadcrumbs', 'districts'));
     }
 
+    public function coverage(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'lat' => ['numeric'],
+            'lng' => ['numeric'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => 'invalid lat or lng params'], 500);
+        }
+
+        $validated = $validator->validated();
+
+        $districts = Entity::whereRaw('ST_CONTAINS(boundary, POINT(?, ?))', [
+            $validated['lat'],
+            $validated['lng']
+        ])
+            ->select([
+                'name',
+                'area',
+                'district',
+                'language',
+            ])->get();
+
+        return compact('districts');
+    }
 
 }

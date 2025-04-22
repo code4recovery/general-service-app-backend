@@ -31,6 +31,8 @@ Route::view('/map', 'map')->name('map');
 
 Route::view('/get-started', 'get-started')->name('get-started');
 
+Route::get('/api/coverage', [EntityController::class, 'coverage']);
+
 # Authenticated Routes
 
 Route::middleware(['auth', 'verified'])->group(function () {
