@@ -9,10 +9,10 @@
     <div class="max-w-6xl mx-auto px-4 grid lg:grid-cols-3 gap-8">
         <div class="lg:col-span-2 grid gap-10 content-start">
             <div class="flex gap-4 justify-center md:justify-start">
-                <a href="https://apps.apple.com/us/app/general-service/id6670377389">
+                <a href="/download/ios">
                     <img src="{{ asset('download-apple.svg') }}" alt="App Store" class="w-44 block pointer-events-none">
                 </a>
-                <a href="https://play.google.com/store/apps/details?id=app.generalservice">
+                <a href="/download/android">
                     <img src="{{ asset('download-google.svg') }}" alt="Google Play" class="w-44 block pointer-events-none">
                 </a>
             </div>
@@ -28,18 +28,13 @@
 
                 <p hidden>
                     {!! __(
-                        'Reach out to your Area Delegate for your Area to be onboarded into the app. Once your area is added, you will receive an email for you to <a :link>get started</a>.',
-                        ['link' => 'href="/get-started" class="' . $link_css . '"'],
-                    ) !!}
+        'Reach out to your Area Delegate for your Area to be onboarded into the app. Once your area is added, you will receive an email for you to <a :link>get started</a>.',
+        ['link' => 'href="/get-started" class="' . $link_css . '"'],
+    ) !!}
                 </p>
             </div>
             <ul class="grid grid-cols-2 gap-4 md:grid-cols-4 mt-3">
-                @foreach ([
-            'gift' => __('Free of Charge'),
-            'eye-slash' => __('No Tracking'),
-            'moon' => __('Light / Dark Modes'),
-            'language' => __('English, French, and Spanish'),
-        ] as $navicon => $navtext)
+                @foreach (['gift' => __('Free of Charge'), 'eye-slash' => __('No Tracking'), 'moon' => __('Light / Dark Modes'), 'language' => __('English, French, and Spanish'),] as $navicon => $navtext)
                     <li
                         class="py-6 grid gap-2 rounded-xl justify-items-center text-center text-sm flex-grow basis-1 flex-1 bg-black/5 dark:bg-white/10">
                         @include('common.icon', ['icon' => $navicon, 'size' => 'size-8'])

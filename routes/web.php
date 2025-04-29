@@ -33,6 +33,12 @@ Route::view('/get-started', 'get-started')->name('get-started');
 
 Route::get('/api/coverage', [EntityController::class, 'coverage']);
 
+Route::prefix('/download')->group(function () {
+    Route::view('/', 'download');
+    Route::redirect('/ios', 'https://apps.apple.com/us/app/general-service/id6670377389', 301);
+    Route::redirect('/android', 'https://play.google.com/store/apps/details?id=app.generalservice', 301);
+});
+
 # Authenticated Routes
 
 Route::middleware(['auth', 'verified'])->group(function () {
