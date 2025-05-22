@@ -8,7 +8,6 @@ import { initData } from "./helpers/init-data";
 import { initPanel } from "./helpers/init-panel";
 import { initSelected } from "./helpers/init-selected";
 import { initZoomButtons } from "./helpers/init-zoom-buttons";
-import { selectDistricts } from "./helpers/select-districts";
 
 (async () => {
     const { mapElement, panelElement, defaultArea } = initApp();

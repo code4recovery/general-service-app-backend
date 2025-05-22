@@ -4,6 +4,7 @@ import { getDistrictAtPoint } from "./get-district-at-point.ts";
 import { Area, District } from "./types.ts";
 import { strings } from "./constants.ts";
 import { formatAreaName } from "./format.ts";
+import { polygonHoveredStyle, polygonSelectedStyle } from "./styles.ts";
 
 export function initPanel({
     areas,
@@ -116,6 +117,12 @@ export function initPanel({
                 districtItem.role = "treeitem";
                 districtItem.appendChild(district.button);
                 districtList.appendChild(districtItem);
+                district.button.onmouseenter = () => {
+                    district.polygon.setOptions(polygonHoveredStyle);
+                };
+                district.button.onmouseleave = () => {
+                    district.polygon.setOptions(polygonSelectedStyle);
+                };
 
                 if (selectedDistrict === district) {
                     selectedDistrictButton = district.button;
