@@ -22,10 +22,11 @@
                     route('entities.edit', $entity) => ['cog', __('Settings')],
                 ],
                 isset($entity->area) && !isset($entity->district)
-                    ? [
-                        route('districts', $entity) => ['home', __('Districts')],
-                    ]
-                    : []),
+                ? [
+                    route('districts', $entity) => ['home', __('Districts')],
+                ]
+                : []
+            ),
             'button' => [
                 'href' => route('entities.stories.create', $entity),
                 'label' => __('Create Story'),
@@ -46,7 +47,7 @@
                                 'href' => route('entities.stories.edit', [$entity, $story]),
                                 'id' => $story->id,
                                 'values' => [
-                                    $story->title,
+                                    $story->title . ($story->language !== $entity->language ? ' • ' . strtoupper($story->language) : ''),
                                     $story->start_at->format('M j'),
                                     $story->end_at->format('M j'),
                                 ],
