@@ -104,14 +104,14 @@ abstract class Controller
 
         // adjust story start and end dates by entity timezone
         foreach ($entities as &$entity) {
-            $entity['stories'] = array_filter(
+            $entity['stories'] = array_values(array_filter(
                 array_map(fn($story) => [
                     ...$story,
                     'start_at' => isset($story['start_at']) ? Carbon::parse($story['start_at'], $entity['timezone'])->toIso8601String() : null,
                     'end_at' => isset($story['end_at']) ? Carbon::parse($story['end_at'], $entity['timezone'])->toIso8601String() : null,
                 ], $entity['stories']),
-                fn($story) => $story['end_at'] && Carbon::parse($story['end_at'])->isFuture()
-            );
+                fn($story) => $story['end_at'] && Carbon::parse($story['end_at'], $entity['timezone'])->isFuture()
+            ));
         }
 
         $json = json_encode($entities, env('APP_DEBUG', false) ? JSON_PRETTY_PRINT : 0);
