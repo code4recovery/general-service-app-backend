@@ -165,6 +165,10 @@ class StoryController extends Controller
     {
         $story = $this->getStory(request('story'));
 
+        if (!$story) {
+            return redirect()->back()->with('error', __('Story to delete was not found.'));
+        }
+
         foreach ($story->buttons as $button) {
             $button->delete();
         }

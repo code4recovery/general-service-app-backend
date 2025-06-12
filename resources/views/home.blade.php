@@ -36,7 +36,7 @@
             <ul class="grid grid-cols-2 gap-4 md:grid-cols-4 mt-3">
                 @foreach (['gift' => __('Free of Charge'), 'eye-slash' => __('No Tracking'), 'moon' => __('Light / Dark Modes'), 'language' => __('English, French, and Spanish'),] as $navicon => $navtext)
                     <li
-                        class="py-6 grid gap-2 rounded-xl justify-items-center text-center text-sm flex-grow basis-1 flex-1 bg-black/5 dark:bg-white/10">
+                        class="px-3 py-6 grid gap-2 rounded-xl justify-items-center text-center text-sm flex-grow basis-1 flex-1 bg-black/5 dark:bg-white/10">
                         @include('common.icon', ['icon' => $navicon, 'size' => 'size-8'])
                         {{ $navtext }}
                     </li>

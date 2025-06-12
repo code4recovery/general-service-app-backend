@@ -6,6 +6,7 @@ use App\Models\Entity;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 abstract class Controller
 {
@@ -101,6 +102,15 @@ abstract class Controller
         $filename = $district->id . '.json';
 
         $entities = [$district->toArray(), $area->toArray(), $gso->toArray()];
+
+        // adjust story start and end dates by entity timezone
+        foreach ($entities as &$entity) {
+            $entity['stories'] = array_map(fn($story) => [
+                ...$story,
+                'start_at' => isset($story['start_at']) ? Carbon::parse($story['start_at'])->setTimezone($entity['timezone'])->toIso8601String() : null,
+                'end_at' => isset($story['end_at']) ? Carbon::parse($story['end_at'])->setTimezone($entity['timezone'])->toIso8601String() : null,
+            ], $entity['stories']);
+        }
 
         $json = json_encode($entities, env('APP_DEBUG', false) ? JSON_PRETTY_PRINT : 0);
 

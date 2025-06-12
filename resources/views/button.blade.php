@@ -68,7 +68,7 @@
                     'value' => isset($button) ? $button['link'] : '',
                 ])
                 <div class="text-sm lg:pt-6">
-                    {{ __('This is the URL the button will link to. Must start with `https`') }}
+                    {{ __('This is the URL the button will link to. Must start with `https`.') }}
                 </div>
             </div>
 
