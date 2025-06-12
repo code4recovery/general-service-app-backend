@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Entity;
 use App\Models\Story;
+use Carbon\Carbon;
 
 class StoryController extends Controller
 {
@@ -44,7 +45,6 @@ class StoryController extends Controller
             'entities',
             'entities.stories' => function ($query) {
                 $query->orderBy('order', 'asc');
-                $query->where('end_at', '>', now());
             }
         ])->first();
 
@@ -52,7 +52,6 @@ class StoryController extends Controller
             $entity = Entity::with([
                 'stories' => function ($query) {
                     $query->orderBy('order', 'asc');
-                    $query->where('end_at', '>', now());
                 }
             ])
                 ->where('id', request('entity'))
@@ -63,6 +62,10 @@ class StoryController extends Controller
                 return redirect()->route('home');
             }
         }
+
+        $entity->stories = $entity->stories->filter(function ($story) use ($entity) {
+            return Carbon::parse($story->end_at, $entity->timezone)->addDay()->isFuture();
+        });
 
         return view('stories', ['entity' => $entity, 'breadcrumbs' => self::breadcrumbs($entity), 'types' => $this->types]);
     }
@@ -76,7 +79,7 @@ class StoryController extends Controller
 
         return view('story', [
             'entity' => $entity,
-            'now' => now()->setTimezone('America/Chicago'),
+            'now' => now()->setTimezone($entity->timezone),
             'buttons' => $this->buttons,
             'types' => $this->types,
             'language' => $entity->language,
