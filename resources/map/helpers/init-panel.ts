@@ -1,10 +1,10 @@
-import { selectDistricts } from "./select-districts.ts";
 import { getDistrictAtPoint } from "./get-district-at-point.ts";
+import { selectDistricts } from "./select-districts.ts";
 
-import { Area, District } from "./types.ts";
 import { strings } from "./constants.ts";
 import { formatAreaName } from "./format.ts";
-import { polygonHoveredStyle, polygonSelectedStyle } from "./styles.ts";
+import { polygonDefaultStyle, polygonHoveredStyle } from "./styles.ts";
+import { Area, District } from "./types.ts";
 
 export function initPanel({
     areas,
@@ -121,7 +121,7 @@ export function initPanel({
                     district.polygon.setOptions(polygonHoveredStyle);
                 };
                 district.button.onmouseleave = () => {
-                    district.polygon.setOptions(polygonSelectedStyle);
+                    district.polygon.setOptions(polygonDefaultStyle);
                 };
 
                 if (selectedDistrict === district) {

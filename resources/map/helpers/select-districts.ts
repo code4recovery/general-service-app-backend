@@ -17,6 +17,9 @@ export function selectDistricts({
         .forEach((district) => {
             district.polygon?.setOptions(polygonDefaultStyle);
             district.button.removeAttribute("aria-pressed");
+            district.button.onmouseleave = () => {
+                district.polygon.setOptions(polygonDefaultStyle);
+            };
         });
 
     // reset map if no districts selected
@@ -40,6 +43,10 @@ export function selectDistricts({
         bounds.union(district.bounds);
         if (selected.length === 1) {
             district.button.setAttribute("aria-pressed", "true");
+
+            district.button.onmouseleave = () => {
+                district.polygon.setOptions(polygonSelectedStyle);
+            };
 
             if (district.areaButton.getAttribute("aria-pressed") !== "true") {
                 district.areaItem.setAttribute("aria-expanded", "true");
