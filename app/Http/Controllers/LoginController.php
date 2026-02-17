@@ -15,7 +15,12 @@ class LoginController extends Controller
         // redirect if already logged in
         if (auth()->check()) {
             $entity = Auth::user()->entities()->first();
-            return redirect()->route('entities.stories.index', $entity);
+
+            if ($entity) {
+                return redirect()->route('entities.stories.index', $entity);
+            }
+
+            return redirect()->route('entities.index');
         }
 
         return view('login');
@@ -27,7 +32,7 @@ class LoginController extends Controller
             'email' => ['required', 'email', 'max:255'],
         ]);
 
-        $user = User::whereEmail($credentials['email'])->first();
+        $user = User::where('email', $credentials['email'])->first();
 
         if ($user) {
             $user->sendLoginLink();
