@@ -63,9 +63,6 @@ class StoryController extends Controller
             }
         }
 
-        $entity->stories = $entity->stories->filter(function ($story) use ($entity) {
-            return Carbon::parse($story->end_at, $entity->timezone)->addDay()->isFuture();
-        });
 
         return view('stories', ['entity' => $entity, 'breadcrumbs' => self::breadcrumbs($entity), 'types' => $this->types]);
     }
