@@ -1,10 +1,14 @@
-import { getDistrictAtPoint } from "./get-district-at-point.ts";
-import { selectDistricts } from "./select-districts.ts";
+import { getDistrictAtPoint } from "./get-district-at-point";
+import { selectDistricts } from "./select-districts";
 
-import { strings } from "./constants.ts";
-import { formatAreaName } from "./format.ts";
-import { polygonDefaultStyle, polygonHoveredStyle } from "./styles.ts";
-import { Area, District } from "./types.ts";
+import { strings } from "./constants";
+import { formatAreaName } from "./format";
+import {
+    polygonDefaultStyle,
+    polygonHoveredStyle,
+    polygonSelectedStyle,
+} from "./styles";
+import { Area, District } from "./types";
 
 export function initPanel({
     areas,
@@ -76,11 +80,11 @@ export function initPanel({
                 });
                 (
                     document.getElementById(
-                        "address_search"
+                        "address_search",
                     ) as HTMLInputElement
                 ).value = "";
             },
-            () => alert(strings.errorGeolocation)
+            () => alert(strings.errorGeolocation),
         );
     };
     panelElement.appendChild(findMeButton);
@@ -121,7 +125,11 @@ export function initPanel({
                     district.polygon.setOptions(polygonHoveredStyle);
                 };
                 district.button.onmouseleave = () => {
-                    district.polygon.setOptions(polygonDefaultStyle);
+                    district.polygon.setOptions(
+                        selectedArea === area.area
+                            ? polygonSelectedStyle
+                            : polygonDefaultStyle,
+                    );
                 };
 
                 if (selectedDistrict === district) {

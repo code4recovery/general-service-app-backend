@@ -1,6 +1,6 @@
-import { polygonDefaultStyle, polygonSelectedStyle } from "./styles.ts";
+import { polygonDefaultStyle, polygonSelectedStyle } from "./styles";
 
-import { District } from "./types.ts";
+import { District } from "./types";
 
 export function selectDistricts({
     districts,

@@ -1,7 +1,7 @@
-import { formatDistrictName } from "./format.ts";
-import { polygonDefaultStyle } from "./styles.ts";
+import { formatDistrictName } from "./format";
+import { polygonDefaultStyle } from "./styles";
 
-import { Area } from "./types.ts";
+import { Area } from "./types";
 
 export function initData({
     data,

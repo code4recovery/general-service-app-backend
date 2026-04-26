@@ -1,5 +1,6 @@
 import { Loader } from "@googlemaps/js-api-loader";
 
+// @ts-ignore
 import "./map.css";
 
 import { initApp } from "./helpers/init-app";

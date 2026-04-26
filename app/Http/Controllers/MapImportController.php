@@ -181,10 +181,8 @@ class MapImportController extends Controller
         // fetch file with latest polygons
         $file = Http::get('https://www.google.com/maps/d/kml?mid=' . $map_id);
 
-
         // save file locally
         Storage::put('temp.kmz', $file->body());
-
 
         // unzip file
         $zip = new ZipArchive();
