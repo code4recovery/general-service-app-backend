@@ -62,24 +62,38 @@ class MapImportController extends Controller
         }
 
         // parse file
+        $log = [];
         $districts = [];
         $counter = 0;
 
         foreach ($xml->Document->Folder as $layer) {
             $layerIsDistricts = stristr($layer->name, 'district');
-            $language = stristr($layer->name, 'French') ? 'fr' : (stristr($layer->name, 'Spanish') ? 'es' : 'en');
+            $language = self::parseLayerLanguage($layer->name->__toString());
 
             foreach ($layer->Placemark as $placemark) {
 
+                $boundary = $placemark->Polygon->outerBoundaryIs->LinearRing->coordinates ?? null;
+
                 // skip if not a polygon
-                if (!isset($placemark->Polygon->outerBoundaryIs->LinearRing->coordinates)) {
-                    // $this->error('skipping ' . $placemark->name . ' because it is not a polygon');
+                if (!$boundary) {
+                    if ($placemark->MultiGeometry) {
+                        // if it's multiple polygons, get the longest one
+                        $boundaries = [];
+                        foreach ($placemark->MultiGeometry->Polygon as $polygon) {
+                            $boundaries[] = $polygon->outerBoundaryIs->LinearRing->coordinates ?? null;
+                        }
+                        $boundary = collect($boundaries)->sortByDesc(fn($boundary) => strlen($boundary))->first();
+                    } elseif ($placemark->Point) {
+                        $log[] = 'skipping ' . $placemark->name . ' because it is a point';
+                    } else {
+                        $log[] = 'skipping ' . $placemark->name . ' because it is not a polygon';
+                    }
                     continue;
                 }
 
                 // skip if not a district
-                if (!$layerIsDistricts && !stristr($placemark->name, 'district')) {
-                    // $this->error('skipping ' . $placemark->name . ' because it is not a district');
+                if (!$layerIsDistricts && !stristr($placemark->name, 'district') && !stristr($placemark->name, 'distrito')) {
+                    $log[] = 'skipping ' . $placemark->name . ' because it is not a district';
                     continue;
                 }
 
@@ -109,15 +123,10 @@ class MapImportController extends Controller
                     'color' => $colors[$placemark->styleUrl->__toString()],
                     'boundary' => 'POLYGON((' . join(',', array_map(
                         function ($coordinates) {
-                            list($lng, $lat) = explode(',', $coordinates);
+                            [$lng, $lat] = explode(',', $coordinates);
                             return round($lat, 4) . ' ' . round($lng, 4);
                         },
-                        array_filter(
-                            array_map(
-                                'trim',
-                                explode("\n", $placemark->Polygon->outerBoundaryIs->LinearRing->coordinates)
-                            )
-                        )
+                        array_filter(array_map('trim', explode("\n", $boundary)))
                     )) . '))',
                     'order' => $counter++,
                     'description' => $description,
@@ -126,7 +135,6 @@ class MapImportController extends Controller
             }
         }
 
-        $log = [];
 
         $areaHasDistricts = Entity::where('area', $area->area)->whereNotNull('district')->count() > 0;
 
@@ -232,14 +240,13 @@ class MapImportController extends Controller
         // remove extra spaces
         $placemarkName = implode(' ', array_filter(explode(' ', $placemarkName)));
 
-        // remove District prefix (e.g. District 1: Downtown)
-        if (str_starts_with($placemarkName, 'District ')) {
-            $placemarkName = substr($placemarkName, 9);
-        }
+        $prefixesToRemove = ['District', 'Districts', 'Distrito', 'Distritos'];
 
-        // remove Districts prefix (e.g. Districts 1+2: Combined)
-        if (str_starts_with($placemarkName, 'Districts ')) {
-            $placemarkName = substr($placemarkName, 10);
+        foreach ($prefixesToRemove as $prefix) {
+            if (str_starts_with($placemarkName, $prefix . ' ')) {
+                $placemarkName = substr($placemarkName, strlen($prefix) + 1);
+                break;
+            }
         }
 
         $districtParts = array_map('trim', explode(':', $placemarkName, 2));
@@ -276,6 +283,26 @@ class MapImportController extends Controller
 
 
         return [$description, $website];
+    }
+
+    private static function parseLayerLanguage($layerName)
+    {
+        $frenchKeywords = ['French', 'Français', 'Francaise'];
+        $spanishKeywords = ['Spanish', 'Español', 'Espanol', 'Hispanos'];
+
+        foreach ($frenchKeywords as $keyword) {
+            if (stristr($layerName, $keyword)) {
+                return 'fr';
+            }
+        }
+
+        foreach ($spanishKeywords as $keyword) {
+            if (stristr($layerName, $keyword)) {
+                return 'es';
+            }
+        }
+
+        return 'en';
     }
 
 
