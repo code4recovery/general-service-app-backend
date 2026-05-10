@@ -138,6 +138,7 @@ abstract class Controller
         $districts = Entity::whereNotNull('boundary')->select(DB::raw('(ST_AsGeoJSON(IFNULL(boundary_simplified, boundary))) AS `boundary`, id, name, area, district, description, website, language, color'))->orderBy('order')->get();
         $areas = Entity::whereNotNull('area')->whereNull('district')->get()->map(function ($area) use ($districts) {
             return [
+                'id' => $area->id,
                 'area' => $area->area,
                 'name' => $area->name,
                 'website' => $area->website,

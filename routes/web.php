@@ -31,7 +31,10 @@ Route::view('/map', 'map')->name('map');
 
 Route::view('/get-started', 'get-started')->name('get-started');
 
-Route::get('/api/coverage', [EntityController::class, 'coverage']);
+Route::prefix('/api')->group(function () {
+    Route::get('/coverage', [EntityController::class, 'coverage']);
+    Route::get('/entities/{entity}/stories', [EntityController::class, 'stories']);
+});
 
 Route::prefix('/download')->group(function () {
     Route::view('/', 'download');

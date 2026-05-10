@@ -119,11 +119,18 @@ class EntityController extends Controller
         return view('districts', compact('entity', 'breadcrumbs', 'districts'));
     }
 
+    public function stories()
+    {
+        $entity = $this->getEntity(request('entity'));
+        $stories = $entity->stories()->where('end_at', '>', now())->orderBy('order')->orderBy('created_at', 'desc')->get();
+        return $stories;
+    }
+
     public function coverage(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'lat' => ['numeric'],
-            'lng' => ['numeric'],
+            'lat' => ['numeric', 'required'],
+            'lng' => ['numeric', 'required'],
         ]);
 
         if ($validator->fails()) {
