@@ -121,9 +121,7 @@ class EntityController extends Controller
 
     public function stories()
     {
-        $entity = $this->getEntity(request('entity'));
-        $stories = $entity->stories()->where('end_at', '>', now())->orderBy('order')->orderBy('created_at', 'desc')->get();
-        return $stories;
+        return Entity::find(request('entity'))->stories()->where('end_at', '>', now())->orderBy('order')->orderBy('created_at', 'desc')->get();
     }
 
     public function coverage(Request $request)
